@@ -27,7 +27,7 @@ features_names_ids = NULL
 ui = fluidPage(
   theme = shinytheme("paper"),
   
-  titlePanel("scrnaseq"),
+  titlePanel(title = div(img(src = "MHH.png", align = "right"),"scrnaseq")),
   
   sidebarPanel(
     h5("Plots:"),
