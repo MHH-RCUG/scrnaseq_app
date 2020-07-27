@@ -1,102 +1,91 @@
-#
-# This is a Shiny web application. You can run the application by clicking
-# the 'Run App' button above.
-#
-# Find out more about building applications with Shiny here:
-#
-#    http://shiny.rstudio.com/
-#
+# Author: Marius Rüve
 
+#Load packages
 library(shiny)
 library(Seurat)
 library(ggplot2)
+library(shinythemes)
+library(markdown)
 
+# Set max upload size to 300 MB
 options(shiny.maxRequestSize=300*1024^2)
-#source("FeaturePlot.R")
 
+# Parameter list for convenience
 param = list()
 param$col = "palevioletred"
 
+# Load data if upload is broken
 #sc = readRDS(file = "pbmc_2020-06-09.rds")
-#sc = c("test1","test2","test3")
-features_names_ids = NULL
 #features_names_ids = paste(rownames(sc[["RNA"]][[]]), "_", sc[["RNA"]][[]][,1], sep = "")
-test = FALSE
+
+# Empty object so Input UI gets rendered
+features_names_ids = NULL
+
+
 
 # Define UI for application that draws a histogram
 ui = fluidPage(
-        titlePanel("scrnaseq"),
-
-        sidebarPanel(
-            fileInput("rds_file","Choose Seurat file:", accept = ".rds", buttonLabel = "Browse..."),
-            selectInput("genes", "Genes:", features_names_ids, multiple = TRUE),
-            numericInput("x_axis", "X-Axis (px):", value = 1024, min = 1, max = 3000),
-            numericInput("y_axis", "Y-Axis (px):", value = 576, min = 1, max = 3000),
-            textInput('archive_download',"Enter name of archive (.zip):", value = paste0("Download", "_", Sys.Date()), placeholder = paste0("Download", "_", Sys.Date())),
-            checkboxInput("check_featureplot", "FeaturePlot", value = TRUE),
-            checkboxInput("check_ridgeplot", "RidgePlot", value = TRUE),
-            checkboxInput("check_dotplot", "DotPlot", value = TRUE),
-            checkboxInput("check_vlnplot", "ViolinPlot", value = TRUE),
-            downloadButton('download_plots')
-            # conditionalPanel( condition = "input.rds_file$datapath",
-            #                   )
-        ),
-        
-        mainPanel(
-            tabsetPanel(type = "tabs",
-                        tabPanel("FeaturePlot", uiOutput('ui_feature')),
-                        #tabPanel("Feature", plotOutput('plot_feature_test')),
-                        tabPanel("RidgePlot", uiOutput('ui_ridge')),
-                        tabPanel("DotPlot", plotOutput('plot_dotplot')),
-                        tabPanel("ViolinPlot", plotOutput('ui_vlnplot'))
-            )
-        )
+  theme = shinytheme("paper"),
+  
+  titlePanel("scrnaseq"),
+  
+  sidebarPanel(
+    h5("Plots:"),
+    fileInput("rds_file","Choose Seurat file:", accept = ".rds", buttonLabel = "Browse..."), # File upload
+    selectInput("genes", "Genes:", features_names_ids, multiple = TRUE), # Select genes 
+    numericInput("x_axis", "X-Axis (px):", value = 1024, min = 1, max = 3000), # Change axes (px)
+    numericInput("y_axis", "Y-Axis (px):", value = 576, min = 1, max = 3000),
+    actionButton("restore_axes", "Default settings for axes"), # Restore default values of axes (px)
+    # br() extend spacing between elements
+    br(),
+    br(),
+    h5("Download:"),
+    textInput('archive_download',"Enter name of archive (.zip):", value = paste0("Download", "_", Sys.Date()), placeholder = paste0("Download", "_", Sys.Date())),
+    checkboxInput("check_featureplot", "FeaturePlot", value = TRUE),
+    checkboxInput("check_ridgeplot", "RidgePlot", value = TRUE),
+    checkboxInput("check_dotplot", "DotPlot", value = TRUE),
+    checkboxInput("check_vlnplot", "ViolinPlot", value = TRUE),
+    downloadButton('download_plots')
+    # conditionalPanel( condition = "input.rds_file$datapath",
+    #                   )
+  ),
+  
+  mainPanel(
+    tabsetPanel(type = "tabs",
+                tabPanel("FeaturePlot", uiOutput('ui_feature')),
+                tabPanel("RidgePlot", uiOutput('ui_ridge')),
+                tabPanel("DotPlot", plotOutput('plot_dotplot')),
+                tabPanel("ViolinPlot", plotOutput('ui_vlnplot')),
+                tabPanel("Help", includeMarkdown("include.md"))
+    )
+  )
 )
-
 
 server = function(input, output, session) {
   
+  # File upload
   sc <- reactive({
     inFile <- input$rds_file
     if (is.null(inFile)) {
-      d <- NULL
+      tmp_sc <- NULL
     } else {
-      d <- readRDS(inFile$datapath)
+      tmp_sc <- readRDS(inFile$datapath)
     }
-    d
+    tmp_sc
   })
-  
-  # output$contents <- renderTable({
-  #   myData()
-  # })
   
   observe({
     if(!is.null(sc())){
-      updateSelectInput(session, "genes",
-                        label = "Gene(s):",
-                        choices = paste(rownames(sc()[["RNA"]][[]]), "_", sc()[["RNA"]][[]][,1], sep = ""))
+      updateSelectInput(session, "genes","Gene(s):",paste(rownames(sc()[["RNA"]][[]]), "_", sc()[["RNA"]][[]][,1], sep = ""))
     }
   })
   
-  renderUI({
-    
+  # Button to restore default settings for axes
+  observeEvent(input$restore_axes,{
+    updateNumericInput(session,"x_axis", "X-Axis (px):", value = 1024, min = 1, max = 3000)
+    updateNumericInput(session,"y_axis", "X-Axis (px):", value = 576, min = 1, max = 3000)
   })
-  #sc = c("test1","test2","test3")
 
-  # fileInput = eventReactive(input$rds_file, {
-  #   sc = readRDS(input$rds_file$datapath)
-  #   print("done")
-  # 
-  #   features_names_ids = paste(rownames(sc[["RNA"]][[]]), "_", sc[["RNA"]][[]][,1], sep = "")
-  #   updateSelectInput(session, "genes", label = features_names_ids, multiple = TRUE)
-  #   return(features_names_ids)
-  # })
-  # 
-  # reactive({
-  #   features_names_ids = fileInput()
-  # })
-
-  ########################################
   # Feature Plot
   output$ui_feature = renderUI({
       out_feature = list()
@@ -120,7 +109,6 @@ server = function(input, output, session) {
         }
     })
 
-    ########################################
     #Ridge Plot
     output$ui_ridge = renderUI({
         out_ridge = list()
@@ -144,7 +132,6 @@ server = function(input, output, session) {
         }                                  
     })
     
-    ########################################
     # DotPlot
     output$plot_dotplot = renderPlot({
       Seurat::DotPlot(sc(), features=unlist(strsplit(input$genes,"_"))[c(T,F)], cols=c("lightgrey", param$col))
@@ -174,15 +161,13 @@ server = function(input, output, session) {
     #   }                                  
     # })
     
-    ########################################
     # Download
     output$download_plots = downloadHandler(
         filename = function() {
           paste0(input$archive_download, ".zip")
         },
         content = function(file) {
-          #ggsave(file, plot = out_feature[[1]], device = "png")
-
+          
           owd <- setwd(tempdir())
           on.exit(setwd(owd))
           
@@ -196,7 +181,6 @@ server = function(input, output, session) {
           
           if (input$check_featureplot == TRUE) {
             for (i in 1:length(input$genes)){
-              #print(paste0(input$archive_download,"_0",i,".png"))
               fileName <- paste0("FeaturePlot_",input$genes[[i]],".png")
               
               png(fileName,width = input$x_axis, height = input$y_axis)
@@ -209,7 +193,6 @@ server = function(input, output, session) {
           
           if (input$check_ridgeplot == TRUE) {
             for (i in 1:length(input$genes)){
-              #print(paste0(input$archive_download,"_0",i,".png"))
               fileName <- paste0("RidgePlot_",input$genes[[i]],".png")
 
               png(fileName,width = input$x_axis, height = input$y_axis)
@@ -221,7 +204,6 @@ server = function(input, output, session) {
           }
           
           if (input$check_dotplot == TRUE) {
-            #print(paste0(input$archive_download,"_0",i,".png"))
             fileName <- paste0("DotPlot",".png")
 
             png(fileName,width = input$x_axis, height = input$y_axis)
@@ -234,15 +216,6 @@ server = function(input, output, session) {
           zip(file,files)
         }
     )
-    
-    ########################################
-    # Test
-    # output$plot_feature_test = renderPlot({
-    #   p = Seurat::FeaturePlot(sc, features=input$genes, cols=c("lightgrey", param$col), combine=FALSE)
-    #   names(p) = input$genes
-    #   for (i in input$genes) p[[i]] = PlotMystyle(p[[i]], title=i)
-    #   patchwork::wrap_plots(p, ncol=1)
-    # })
 }
 
 # Run the application 
