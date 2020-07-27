@@ -26,25 +26,33 @@ features_names_ids = NULL
 # Define UI for application that draws a histogram
 ui = fluidPage(
   theme = shinytheme("paper"),
+  img(src = "MHH.png", align = "right"),
+  titlePanel("scrnaseq_app"),
   
-  titlePanel(title = div(img(src = "MHH.png", align = "right"),"scrnaseq")),
-  
-  sidebarPanel(
+  sidebarPanel(width = 3,
     h5("Plots:"),
-    fileInput("rds_file","Choose Seurat file:", accept = ".rds", buttonLabel = "Browse..."), # File upload
-    selectInput("genes", "Genes:", features_names_ids, multiple = TRUE), # Select genes 
-    numericInput("x_axis", "X-Axis (px):", value = 1024, min = 1, max = 3000), # Change axes (px)
-    numericInput("y_axis", "Y-Axis (px):", value = 576, min = 1, max = 3000),
+    fileInput("rds_file", "Choose Seurat file:", accept = ".rds", buttonLabel = "Browse..."), # File upload
+    selectInput("genes", "Gene(s):", features_names_ids, multiple = TRUE), # Select genes 
+    
+    fluidRow(column(6, numericInput("x_axis", "X-Axis (px):", value = 1024, min = 1, max = 3000)),
+             column(6, ofset = 3, numericInput("y_axis", "Y-Axis (px):", value = 576, min = 1, max = 3000))
+    ),
+    
     actionButton("restore_axes", "Default settings for axes"), # Restore default values of axes (px)
+    
     # br() extend spacing between elements
     br(),
     br(),
+    
     h5("Download:"),
     textInput('archive_download',"Enter name of archive (.zip):", value = paste0("Download", "_", Sys.Date()), placeholder = paste0("Download", "_", Sys.Date())),
-    checkboxInput("check_featureplot", "FeaturePlot", value = TRUE),
-    checkboxInput("check_ridgeplot", "RidgePlot", value = TRUE),
-    checkboxInput("check_dotplot", "DotPlot", value = TRUE),
-    checkboxInput("check_vlnplot", "ViolinPlot", value = TRUE),
+    fluidRow(
+      column(4, checkboxInput("check_featureplot", "FeaturePlot", value = TRUE)),
+      column(4, checkboxInput("check_ridgeplot", "RidgePlot", value = TRUE)),
+      column(4, checkboxInput("check_dotplot", "DotPlot", value = TRUE)),
+      column(4, checkboxInput("check_vlnplot", "ViolinPlot", value = TRUE))
+    ),
+
     downloadButton('download_plots')
     # conditionalPanel( condition = "input.rds_file$datapath",
     #                   )
@@ -64,12 +72,12 @@ ui = fluidPage(
 server = function(input, output, session) {
   
   # File upload
-  sc <- reactive({
-    inFile <- input$rds_file
+  sc = reactive({
+    inFile = input$rds_file
     if (is.null(inFile)) {
-      tmp_sc <- NULL
+      tmp_sc = NULL
     } else {
-      tmp_sc <- readRDS(inFile$datapath)
+      tmp_sc = readRDS(inFile$datapath)
     }
     tmp_sc
   })
@@ -103,7 +111,7 @@ server = function(input, output, session) {
             local({  #because expressions are evaluated at app init
                 ii = i
                 output[[paste0('plot_feature',ii)]] = renderPlot({
-                  return(Seurat::FeaturePlot(sc(), features=unlist(strsplit(input$genes[[ii]],"_"))[c(T,F)], cols=c("lightgrey", param$col), combine=FALSE))
+                  return(Seurat::FeaturePlot(sc(), features=unlist(strsplit(input$genes[[ii]],"_"))[c(T,F)], cols=c("lightgrey", param$col), label=TRUE, combine=FALSE))
                 })
             })
         }
@@ -137,28 +145,27 @@ server = function(input, output, session) {
       Seurat::DotPlot(sc(), features=unlist(strsplit(input$genes,"_"))[c(T,F)], cols=c("lightgrey", param$col))
     })
     
-    ########################################
     # VlnPlot
     # output$ui_vlnplot = renderUI({
     #   out_vln = list()
-    #   
+    # 
     #   if (length(input$genes)==0){return(NULL)}
     #   for (i in 1:length(input$genes)){
     #     out_vln[[i]] =  plotOutput(outputId = paste0("plot_vln",i),
     #                                  width = paste0(input$x_axis, "px"),
     #                                  height = paste0(input$y_axis, "px"))
-    #   }  
-    #   return(out_vln) 
+    #   }
+    #   return(out_vln)
     # })
-    # observe({  
-    #   for (i in 1:length(input$genes)){  
+    # observe({
+    #   for (i in 1:length(input$genes)){
     #     local({  #because expressions are evaluated at app init
-    #       ii = i 
-    #       output[[paste0('plot_vln',ii)]] = renderPlot({ 
+    #       ii = i
+    #       output[[paste0('plot_vln',ii)]] = renderPlot({
     #         return(Seurat::VlnPlot(sc, features=unlist(strsplit(input$genes[[ii]],"_"))[c(T,F)], combine=FALSE))
     #       })
     #     })
-    #   }                                  
+    #   }
     # })
     
     # Download
@@ -168,51 +175,82 @@ server = function(input, output, session) {
         },
         content = function(file) {
           
-          owd <- setwd(tempdir())
+          # temporarily switch to the temp dir, in case you do not have write permission to the current working directory
+          owd = setwd(tempdir())
           on.exit(setwd(owd))
           
+          # Idea to check if all devices are off on exit
           # on.exit({
           #  setwd(owd)
           #  while length(dev.list())>1; do
           #    dev.off()
           # })
         
-          files <- NULL;
+          files = NULL;
           
+          # Download FeaturPlot
           if (input$check_featureplot == TRUE) {
+            # PNG
             for (i in 1:length(input$genes)){
-              fileName <- paste0("FeaturePlot_",input$genes[[i]],".png")
+              fileName_png = paste0("FeaturePlot_",input$genes[[i]],".png")
               
-              png(fileName,width = input$x_axis, height = input$y_axis)
-              print(Seurat::FeaturePlot(sc(), features=unlist(strsplit(input$genes[[i]],"_"))[c(T,F)], cols=c("lightgrey", param$col), combine=FALSE))
+              png(fileName_png,width = input$x_axis, height = input$y_axis)
+              print(Seurat::FeaturePlot(sc(), features=unlist(strsplit(input$genes[[i]],"_"))[c(T,F)], cols=c("lightgrey", param$col), label=TRUE, combine=FALSE))
               dev.off()
               
-              files <- c(fileName,files)
+              files = c(fileName_png,files)
             }
+            # PDF
+            fileName_pdf = "FeaturePlots.pdf"
+            pdf(file = fileName_pdf, width = 16, height = 9)
+            for(i in 1:length(input$genes)){
+              print(Seurat::FeaturePlot(sc(), features=unlist(strsplit(input$genes[[i]],"_"))[c(T,F)], cols=c("lightgrey", param$col), label=TRUE, combine=FALSE))
+            }
+            dev.off()
+            files = c(fileName_pdf,files)
           }
           
+          # Download RidgePlot
           if (input$check_ridgeplot == TRUE) {
+            # PNG
             for (i in 1:length(input$genes)){
-              fileName <- paste0("RidgePlot_",input$genes[[i]],".png")
+              fileName_png = paste0("RidgePlot_",input$genes[[i]],".png")
 
-              png(fileName,width = input$x_axis, height = input$y_axis)
+              png(fileName_png,width = input$x_axis, height = input$y_axis)
               print(Seurat::RidgePlot(sc(), features=unlist(strsplit(input$genes[[i]],"_"))[c(T,F)], combine=FALSE))
               dev.off()
 
-              files <- c(fileName,files)
+              files = c(fileName_png,files)
             }
+            # PDF
+            fileName_pdf = "RidgePlot.pdf"
+            pdf(file = fileName_pdf, width = 16, height = 9)
+            for(i in 1:length(input$genes)){
+              print(Seurat::RidgePlot(sc(), features=unlist(strsplit(input$genes[[i]],"_"))[c(T,F)], combine=FALSE))
+            }
+            dev.off()
+            files = c(fileName_pdf,files)
           }
           
+          # Download DotPlot
           if (input$check_dotplot == TRUE) {
-            fileName <- paste0("DotPlot",".png")
+            # PNG
+            fileName_png = "DotPlot.png"
 
-            png(fileName,width = input$x_axis, height = input$y_axis)
+            png(fileName_png,width = input$x_axis, height = input$y_axis)
             print(Seurat::DotPlot(sc(), features=unlist(strsplit(input$genes,"_"))[c(T,F)], cols=c("lightgrey", param$col)))
             dev.off()
 
-            files <- c(fileName,files)
+            files = c(fileName_png,files)
+            
+            # PDF
+            fileName_pdf = "DotPlot.pdf"
+            pdf(file = fileName_pdf, width = 16, height = 9)
+            print(Seurat::DotPlot(sc(), features=unlist(strsplit(input$genes,"_"))[c(T,F)], cols=c("lightgrey", param$col)))
+            dev.off()
+            files = c(fileName_pdf,files)
           }
-          
+          # Create zip file for Download, uses array of files
           zip(file,files)
         }
     )
