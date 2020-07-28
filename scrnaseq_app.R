@@ -32,7 +32,7 @@ ui = fluidPage(
   sidebarPanel(width = 3,
     h5("Plots:"),
     fileInput("rds_file", "Choose Seurat file:", accept = ".rds", buttonLabel = "Browse..."), # File upload
-    selectInput("genes", "Gene(s):", features_names_ids, multiple = TRUE), # Select genes 
+    selectInput("genes", "Genes:", features_names_ids, multiple = TRUE), # Select genes 
     
     fluidRow(column(6, numericInput("x_axis", "X-Axis (px):", value = 1024, min = 1, max = 3000)),
              column(6, ofset = 3, numericInput("y_axis", "Y-Axis (px):", value = 576, min = 1, max = 3000))
@@ -84,7 +84,7 @@ server = function(input, output, session) {
   
   observe({
     if(!is.null(sc())){
-      updateSelectInput(session, "genes","Gene(s):",paste(rownames(sc()[["RNA"]][[]]), "_", sc()[["RNA"]][[]][,1], sep = ""))
+      updateSelectInput(session, "genes","Genes:",paste(rownames(sc()[["RNA"]][[]]), "_", sc()[["RNA"]][[]][,1], sep = ""))
     }
   })
   
