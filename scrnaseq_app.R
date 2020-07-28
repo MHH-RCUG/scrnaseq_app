@@ -1,4 +1,4 @@
-# Author: Marius Rüve
+# Author: Marius Rueve
 
 #Load packages
 library(shiny)
