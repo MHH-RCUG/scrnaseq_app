@@ -1,5 +1,7 @@
 # Author: Marius Rueve
 
+# Global ---------------------------------
+
 # Load packages
 library(shiny)
 library(Seurat)
@@ -23,10 +25,8 @@ param$col = "palevioletred"
 features_names_ids = NULL
 
 
+# UI ---------------------------------
 
-########################################
-# UI
-########################################
 ui = fluidPage(
   theme = shinytheme("paper"),
   img(src = "MHH.png", align = "right"),
@@ -35,6 +35,7 @@ ui = fluidPage(
   sidebarPanel(
     width = 3,
     h5("Plots:"),
+    
     fileInput(
       "rds_file",
       "Select Seurat file:",
@@ -86,6 +87,8 @@ ui = fluidPage(
       value = paste0("Download", "_", Sys.Date()),
       placeholder = paste0("Download", "_", Sys.Date())
     ),
+    
+    # Checkboxes
     fluidRow(
       column(
         5,
@@ -115,6 +118,7 @@ ui = fluidPage(
     #                   )
   ),
   
+  # Tabs
   mainPanel(
     tabsetPanel(
       type = "tabs",
@@ -130,11 +134,12 @@ ui = fluidPage(
 )
 
 
+# Server ---------------------------------
 
-########################################
-# SERVER
-########################################
 server = function(input, output, session) {
+  
+  # Upload =================================
+  
   # File upload
   sc = reactive({
     inFile = input$rds_file
@@ -146,76 +151,38 @@ server = function(input, output, session) {
     tmp_sc
   })
   
+  # Excel file input
+  excel_genes = reactive({
+    inFile = input$xlsx_file
+    if (is.null(inFile)) {
+      tmp = NULL
+    } else {
+      tmp = read_excel(path = inFile$datapath,
+                       sheet = 1,
+                       col_names = input$header)
+    }
+    tmp
+  })
+  
   observe({
+    
     if (!is.null(sc())) {
       features_names_ids = paste(rownames(sc()[["RNA"]][[]]), "_", sc()[["RNA"]][[]][, 1], sep = "")
       #print(features_names_ids)
       updateSelectInput(session, "genes", "Genes:", features_names_ids)
     }
+    
+    if(!is.null(sc()) & !is.null(excel_genes())){
+      
+      excel_list = unlist(excel_genes()[,1])
+      
+      x = features_names_ids[unlist(lapply(excel_list, function(one_gene)grep(one_gene, features_names_ids)))]
+
+      updateSelectInput(session, "genes", "Genes:", features_names_ids, selected = x)
+
+    }
   })
   
-  # # Excel file input
-  # excel_genes = reactive({
-  #   inFile = input$xlsx_file
-  #   if (is.null(inFile)) {
-  #     tmp = NULL
-  #   } else {
-  #     tmp = read_excel(path = inFile$datapath,
-  #                      sheet = 1,
-  #                      col_names = input$header)
-  #   }
-  #   tmp
-  # })
-  
-  # observe({
-  #   if(!is.null(sc()) & !is.null(excel_genes())){
-  #     print("xxx")
-  #     #
-  #     # excel_ensemblids = excel_genes()[,1]
-  #     #
-  #     # print(excel_ensemblids)
-  #     #
-  #     # print(grepl(features_names_ids[1,], excel_ensemblids()[1,]))
-  #   }
-  # })
-  
-  # observe({
-  #
-  #   req(input$xlsx_file)
-  #
-  #   inFile <- input$xlsx_file
-  #
-  #   df_excel_file = read_excel(path = inFile$datapath,
-  #                              sheet = 1,
-  #                              col_names = input$header)
-  #
-  #   excel_ensemblids = as.vector(df_excel_file[,1])
-  #
-  #   #print(excel_ensemblids)
-  #
-  #   x = vector()
-  #
-  #   print(excel_ensemblids[[1]])
-  #
-  #   #print(grepl(features_names_ids[1,], excel_ensemblids[1,]))
-  #
-  #   for(i in excel_ensemblids){
-  #     for(ii in features_names_ids){
-  #       if(grep(i, ii, ignore.case = TRUE)){
-  #         print("grepl")
-  #       }
-  #       print(i)
-  #       print(ii)
-  #     }
-  #   }
-  #
-  #   updateSelectInput(session = session,
-  #                     inputId = "genes",
-  #                     label = "Genes:",
-  #                     choices = features_names_ids,
-  #                     selected = x)
-  #
-  # })
   
   # Button to restore default settings for axes
   observeEvent(input$restore_axes, {
@@ -237,7 +204,10 @@ server = function(input, output, session) {
     )
   })
   
-  # Feature Plot
+  
+  # Plots =================================
+  
+  ### Plot FeaturePlot ############################# 
   output$ui_feature = renderUI({
     out_feature = list()
     
@@ -273,7 +243,8 @@ server = function(input, output, session) {
     }
   })
   
-  #Ridge Plot Raw
+
+  ### Plot RidgePlot Raw ############################# 
   output$ui_ridge_raw = renderUI({
     out_ridge_raw = list()
     
@@ -309,7 +280,8 @@ server = function(input, output, session) {
     }
   })
   
-  #Ridge Plot Normalised
+
+  ### Plot RidgePlot Normalised ############################# 
   output$ui_ridge_norm = renderUI({
     out_ridge_norm = list()
     
@@ -342,7 +314,8 @@ server = function(input, output, session) {
     }
   })
   
-  #Violin plot of raw gene expression counts
+  
+  ### Plot ViolinPlot Raw ############################# 
   output$ui_vln_raw = renderUI({
     out_vln_raw = list()
 
@@ -379,7 +352,8 @@ server = function(input, output, session) {
     }
   })
 
-  #Violin plot of normalised gene expression data
+  
+  ### Plot ViolinPlot Normalised ############################# 
   output$ui_vln_norm = renderUI({
     out_vln_norm = list()
 
@@ -412,7 +386,7 @@ server = function(input, output, session) {
     }
   })
   
-  # DotPlot
+  ### Plot DotPlot ############################# 
   output$plot_dotplot = renderPlot({
     Seurat::DotPlot(
       sc(),
@@ -421,9 +395,9 @@ server = function(input, output, session) {
     )
   })
   
-  ########################################
-  # Download
-  ########################################
+
+  # Downloads =================================
+  
   output$download_plots = downloadHandler(
     filename = function() {
       paste0(input$archive_download, ".zip")
@@ -439,11 +413,12 @@ server = function(input, output, session) {
       #  while length(dev.list())>1; do
       #    dev.off()
       # })
-      
+
       files = NULL
+      on.exit(unlink(files))
       
-      ########################################
-      # Download FeaturPlot
+
+      ### Download FeaturPlot ############################# 
       if (input$check_featureplot == TRUE) {
         # PNG
         for (i in 1:length(input$genes)) {
@@ -485,8 +460,7 @@ server = function(input, output, session) {
         files = c(fileName_pdf, files)
       }
       
-      ########################################
-      # Download RidgePlot Raw
+      ### Download RidgePlot Raw ############################# 
       if (input$check_ridgeplot_raw == TRUE) {
         # PNG
         for (i in 1:length(input$genes)) {
@@ -528,8 +502,8 @@ server = function(input, output, session) {
         files = c(fileName_pdf, files)
       }
       
-      ########################################
-      # Download RidgePlot Normalised
+
+      ### Download RidgePlot Normalised ############################# 
       if (input$check_ridgeplot_norm == TRUE) {
         # PNG
         for (i in 1:length(input$genes)) {
@@ -565,8 +539,8 @@ server = function(input, output, session) {
         files = c(fileName_pdf, files)
       }
       
-      ########################################
-      # Download ViolinPlot Raw
+
+      ### Download ViolinPlot Raw ############################# 
       if (input$check_vlnplot_raw == TRUE) {
         # PNG ViolinPlot Raw
         for (i in 1:length(input$genes)) {
@@ -607,8 +581,8 @@ server = function(input, output, session) {
         files = c(fileName_pdf, files)
       }
       
-      ########################################
-      # Download ViolinPlot Normalised
+
+      ### Download ViolinPlor Normalised ############################# 
       if (input$check_vlnplot_norm == TRUE) {
         # PNG ViolinPlot Normalised
         for (i in 1:length(input$genes)) {
@@ -644,7 +618,8 @@ server = function(input, output, session) {
         files = c(fileName_pdf, files)
       }
       
-      # Download DotPlot
+      
+      ### Download DotPlot ############################# 
       if (input$check_dotplot == TRUE) {
         # PNG
         fileName_png = "DotPlot.png"
