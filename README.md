@@ -88,8 +88,27 @@
 
 To get the app running you need to follow these simple steps.
 
-### Upload files
-First you need to upload a .rds file containing your Seurat object. If you don't have this file you can use this [example](https://owncloud.gwdg.de/index.php/s/rRawkhIOVe1T5qi).
+### Upload .rds file
+First you need to upload a .rds file containing your Seurat object. If you don't have this file, you can use this [example](https://owncloud.gwdg.de/index.php/s/rRawkhIOVe1T5qi).
+
+### Select genes
+
+#### Select genes through UI
+Once the .rds file is uploaded and processed, you can click on the field below "Genes" and select your genes by clicking or searching. To delete genes you have to click on the gene and hit the backspace key.
+
+#### Select genes through an excel file with header (EnsemblIDs)
+You can select genes by uploading an .xlsx file ([excel document]())
+The spreadsheet has to look something like this:
+
+| EnemblIDs | Genes       |
+|-----------|-------------|
+| First ID  | First Gene  |
+| Second ID | Second Gene |
+
+The app will only read the first column where it expects EnsemblIDs. The column "Genes" is optional.
+
+#### Select genes through an excel file without header (EnsemblIDs)
+If your .xlsx file contains no header please uncheck the checkbox. Otherwise the first row/ EnsemblID will not show up in the selection.
 
 ### Installation
 
