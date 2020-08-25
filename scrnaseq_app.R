@@ -128,7 +128,7 @@ ui = fluidPage(
       tabPanel("ViolinPlot (Raw)", uiOutput("ui_vln_raw")),
       tabPanel("ViolinPlot (Norm)", uiOutput("ui_vln_norm")),
       tabPanel("DotPlot", plotOutput("plot_dotplot")),
-      tabPanel("Help", includeMarkdown("include.md"))
+      tabPanel("Help", includeMarkdown("README.md"))
     )
   )
 )
