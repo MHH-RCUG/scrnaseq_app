@@ -9,7 +9,7 @@
     <img src="www/MHH.png" alt="Logo">
   </a>
 
-  <h3 align="center">scrnaseq_app</h3>
+  <h2 align="center">scrnaseq_app</h2>
 
   <p align="center">
     A shiny app to generate and download plots
@@ -32,16 +32,14 @@
 
 * [About the Project](#about-the-project)
   * [Built With](#built-with)
-* [Getting Started](#getting-started)
+* [Usage](#usage)
   * [Upload .rds file](#upload-rds-file)
   * [Select genes](#select-genes)
     * [Select genes through UI](select-genes-through-ui)
     * [Select genes through an excel file with header](select-genes-through-an-excel-file-with-header)
     * [Select genes through an excel file without header](select-genes-through-an-excel-file-without-header)
-* [Usage](#usage)
-* [Roadmap](#roadmap)
+* [Getting Started](#getting-started)
 * [Contributing](#contributing)
-* [License](#license)
 * [Contact](#contact)
 * [Acknowledgements](#acknowledgements)
 
@@ -59,9 +57,8 @@
 * [Seurat](https://satijalab.org/seurat/)
 
 
-
-<!-- GETTING STARTED -->
-## Getting Started
+<!-- USAGE EXAMPLES -->
+## Usage
 
 To get the app running you need to follow these simple steps.
 
@@ -87,34 +84,21 @@ The app will only read the first column where it expects EnsemblIDs, whereas rhe
 #### Select genes through an excel file without header
 If your .xlsx file contains no header please uncheck the checkbox. Otherwise the first row/ EnsemblID will not show up in the selection.
 
+<!-- GETTING STARTED -->
+## Getting Started
+
 ### Installation
+
+#### Singularity
+If you are in the network of the MHH, you can use this [link](http://172.24.148.210:3838/)
+
+#### Local
+This is an example of how you may give instructions on setting up your project locally. To get a local copy up and running follow these simple example steps.
 
 1. Clone the repo
 ```sh
-git clone https://github.com/github_username/repo_name.git
+git clone https://github.com/MHH-RCUG/scrnaseq_app
 ```
-2. Install NPM packages
-```sh
-npm install
-```
-
-
-
-<!-- USAGE EXAMPLES -->
-## Usage
-
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
-
-_For more examples, please refer to the [Documentation](https://example.com)_
-
-
-
-<!-- ROADMAP -->
-## Roadmap
-
-See the [open issues](https://github.com/github_username/repo_name/issues) for a list of proposed features (and known issues).
-
-
 
 <!-- CONTRIBUTING -->
 ## Contributing
@@ -139,9 +123,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - email
-
-Project Link: [https://github.com/github_username/repo_name](https://github.com/github_username/repo_name)
+Project Link: [https://github.com/MHH-RCUG/scrnaseq_app](https://github.com/MHH-RCUG/scrnaseq_app)
 
 
 
@@ -150,16 +132,8 @@ Project Link: [https://github.com/github_username/repo_name](https://github.com/
 
 * [scrnaseq](https://github.com/ktrns/scrnaseq)
 * [README-Template](https://github.com/othneildrew/Best-README-Template)
-* []()
 
 [![Contributors](https://img.shields.io/github/contributors/MHH-RCUG/scrnaseq_app)](https://github.com/MHH-RCUG/scrnaseq_app/graphs/contributors)
 [![GitHub issues](https://img.shields.io/github/issues/MHH-RCUG/scrnaseq_app)](https://github.com/MHH-RCUG/scrnaseq_app/issues)
 [![GitHub forks](https://img.shields.io/github/forks/MHH-RCUG/scrnaseq_app)](https://github.com/MHH-RCUG/scrnaseq_app/network)
 [![GitHub stars](https://img.shields.io/github/stars/MHH-RCUG/scrnaseq_app)](https://github.com/MHH-RCUG/scrnaseq_app/stargazers)
-
-# scrnaseq_app
-Shiny app for visualisation of scRNASeq data
-
-Link to singularity container: [Link](http://172.24.148.210:3838/)
-
-File for testing purposes: [Link](https://owncloud.gwdg.de/index.php/s/rRawkhIOVe1T5qi)
