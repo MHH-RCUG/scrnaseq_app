@@ -77,24 +77,19 @@
 
 ### Built With
 
-* []()
-* []()
-* []()
+* [R](https://www.r-project.org/)
+* [Shiny from RStudio](https://shiny.rstudio.com/)
+* [Seurat](https://satijalab.org/seurat/)
 
 
 
 <!-- GETTING STARTED -->
 ## Getting Started
 
-To get a local copy up and running follow these simple steps.
+To get the app running you need to follow these simple steps.
 
-### Prerequisites
-
-This is an example of how to list things you need to use the software and how to install them.
-* npm
-```sh
-npm install npm@latest -g
-```
+### Upload files
+First you need to upload a .rds file containing your Seurat object. If you don't have this file you can use this [example](https://owncloud.gwdg.de/index.php/s/rRawkhIOVe1T5qi).
 
 ### Installation
 
