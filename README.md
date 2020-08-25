@@ -8,7 +8,7 @@
   <h2 align="center">scrnaseq_app</h2>
 
   <p align="center">
-    A shiny app to generate and download plots
+    Shiny app for visualisation of scRNASeq data
     <br />
     <a href="https://github.com/MHH-RCUG/scrnaseq_app"><strong>Explore the docs »</strong></a>
     <br />
