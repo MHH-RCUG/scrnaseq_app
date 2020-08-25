@@ -17,10 +17,9 @@
     <a href="https://github.com/MHH-RCUG/scrnaseq_app"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/MHH-RCUG/scrnaseq_app">View Demo</a>
-    ·
+     :bug:
     <a href="https://github.com/MHH-RCUG/scrnaseq_app/issues">Report Bug</a>
-    ·
+    ·  :question:
     <a href="https://github.com/MHH-RCUG/scrnaseq_app/issues">Request Feature</a>
   </p>
 </p>
