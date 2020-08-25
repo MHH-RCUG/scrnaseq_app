@@ -35,10 +35,10 @@
     <img src="www/MHH.png" alt="Logo">
   </a>
 
-  <h3 align="center">YOUR_TITLE</h3>
+  <h3 align="center">scrnaseq_app</h3>
 
   <p align="center">
-    YOUR_SHORT_DESCRIPTION
+    A shiny app to generate and download plots
     <br />
     <a href="https://github.com/github_username/repo_name"><strong>Explore the docs »</strong></a>
     <br />
