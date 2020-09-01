@@ -70,12 +70,12 @@ Once the .rds file is uploaded and processed, you can click on the field below `
 You can select genes by uploading an .xlsx file ([example](https://owncloud.gwdg.de/index.php/s/ZwY0iVPji6uBVKO)).  
 The spreadsheet has to look something like this:
 
-| EnemblIDs | Genes       |
+| Ensembl_IDs | Genes       |
 |-----------|-------------|
 | First ID  | First Gene  |
 | Second ID | Second Gene |
 
-The app will only read the first column where it expects EnsemblIDs, whereas the column `Genes` is optional.
+The app will only read the first column where it expects Ensembl IDs, whereas the column `Genes` is optional.
 
 #### Select genes through an excel file without header
 If your .xlsx file contains no header please uncheck the checkbox. Otherwise the first row/ EnsemblID will not show up in the selection.
