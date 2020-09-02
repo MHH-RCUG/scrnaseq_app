@@ -7,11 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [1.0.0] - 2017-06-20 (Example)
+## [0.0.1] - 02-09-2020
 
 ### Added
 
-- x
+- Created a [CHANGELOG](https://github.com/MHH-RCUG/scrnaseq_app/blob/master/CHANGELOG.md) to keep track of changes
 
 ### Changed
 
@@ -23,4 +23,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 [unreleased]: https://github.com/MHH-RCUG/scrnaseq_app/compare/dev
-[1.0.0]: https://github.com/MHH-RCUG/scrnaseq_app
+[0.0.1]: https://github.com/MHH-RCUG/scrnaseq_app
