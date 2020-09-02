@@ -197,7 +197,7 @@ server = function(input, output, session) {
     updateNumericInput(
       session,
       "y_axis",
-      "X-Axis (px):",
+      "Y-Axis (px):",
       value = 576,
       min = 1,
       max = 3000
