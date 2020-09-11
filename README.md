@@ -8,7 +8,7 @@
   <h2 align="center">scrnaseq_app</h2>
 
   <p align="center">
-    Shiny app for visualisation of scRNASeq data
+    Shiny app for visualisation of scRNASeq data. In this app you can select genes which will generate several plots for those.
     <br />
     <a href="https://github.com/MHH-RCUG/scrnaseq_app"><strong>Explore the docs »</strong></a>
     <br />
