@@ -45,6 +45,7 @@
 ## About The Project
 
 ![screenshot](https://github.com/MHH-RCUG/scrnaseq_app/blob/master/www/screenshot.PNG)
+The app reads a .rds file which contains the seurat-object. Therefore every data is available and the user can generate plots for every gene they select through the select list or an excel file (.xlsx). If the user has the selection of genes that are interesting, it is possible to download those plots in .pdf and .png format.
 
 ### Built With
 
