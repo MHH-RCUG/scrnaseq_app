@@ -8,7 +8,7 @@
   <h2 align="center">scrnaseq_app</h2>
 
   <p align="center">
-    Shiny app for visualisation of scRNASeq data. In this app you can select genes which will generate several plots for those.
+    Shiny app for visualisation of scRNASeq data. In the UI you can select genes and the app will generate several plots (Feature, Ridge, Violin and Dot-Plot).
     This project is based around <a href="https://github.com/ktrns/scrnaseq">scrnaseq</a>. This workflow and was developed by <a href="https://github.com/ktrns">Katrin Sameith</a> and <a href="https://github.com/andpet0101">Andreas Petzold</a> at the <a href="https://genomecenter.tu-dresden.de/about-us">Dresden-concept Genome Center (Dresden, Germany)</a>. Through collaboration with the <a href="https://www.mhh.de/genomics">Research Core Unit Genomics (Hannover, Germany)</a> the workflow has grown substantially and has been standardised.
     <br />
     <a href="https://github.com/MHH-RCUG/scrnaseq_app"><strong>Explore the docs »</strong></a>
