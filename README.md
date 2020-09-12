@@ -102,10 +102,10 @@ If you are in the network of the MHH, you can use this [link](http://172.24.148.
 #### Local
 This is an example of how you may give instructions on setting up your project locally. To get a local copy up and running follow these simple example steps.
 
-1. Clone the repo
-```sh
-git clone https://github.com/MHH-RCUG/scrnaseq_app
-```
+1. Head to [Releases](https://github.com/MHH-RCUG/scrnaseq_app/releases) and download the latest release
+2. Unzip the project und run scrnaseq_app.R with [RStudio](https://rstudio.com/)
+3. Install needed libraries
+
 
 <!-- CONTRIBUTING -->
 ## Contributing
