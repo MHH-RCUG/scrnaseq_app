@@ -8,7 +8,9 @@
   <h2 align="center">scrnaseq_app</h2>
 
   <p align="center">
-    Shiny app for visualisation of scRNASeq data. After you select genes in the user interface, the app will generate several plots, including feature plots, ridge plots, violin plots and dot plots. This project is based on <a href="https://github.com/ktrns/scrnaseq">scrnaseq</a>. The scrnaseq workflow was and is being developed by <a href="https://github.com/ktrns">Katrin Sameith</a> and <a href="https://github.com/andpet0101">Andreas Petzold</a> at the <a href="https://genomecenter.tu-dresden.de/about-us">DRESDEN-concept Genome Center (Dresden, Germany)</a>, in collaboration with the <a href="https://www.mhh.de/genomics">Research Core Unit Genomics (Hannover, Germany)</a>.
+    Shiny app for visualisation of scRNASeq data. 
+  
+  Based on a provided Seurat object, one or more genes can be selected through a user interface, and several plots are generated, including feature plots, ridge plots, violin plots and dot plots. This project is based on <a href="https://github.com/ktrns/scrnaseq">scrnaseq</a>. The scrnaseq workflow was and is being developed by <a href="https://github.com/ktrns">Katrin Sameith</a> and <a href="https://github.com/andpet0101">Andreas Petzold</a> at the <a href="https://genomecenter.tu-dresden.de/about-us">DRESDEN-concept Genome Center (Dresden, Germany)</a>, in collaboration with the <a href="https://www.mhh.de/genomics">Research Core Unit Genomics (Hannover, Germany)</a>.
     <br />
     <a href="https://github.com/MHH-RCUG/scrnaseq_app"><strong>Explore the docs »</strong></a>
     <br />
@@ -31,8 +33,8 @@
   * [Upload .rds file](#upload-rds-file)
   * [Select genes](#select-genes)
     * [Select genes through UI](select-genes-through-ui)
-    * [Select genes through an excel file with header](select-genes-through-an-excel-file-with-header)
-    * [Select genes through an excel file without header](select-genes-through-an-excel-file-without-header)
+    * [Select genes through an Excel file with header](select-genes-through-an-Excel-file-with-header)
+    * [Select genes through an Excel file without header](select-genes-through-an-Excel-file-without-header)
 * [Getting Started](#getting-started)
 * [Contributing](#contributing)
 * [Contact](#contact)
@@ -67,7 +69,7 @@ First, you need to upload an .rds file containing your Seurat object. If you do 
 #### Select genes through the user interface
 Once the .rds file is uploaded and processed, you can click on the field below `Genes` and select your genes by clicking or searching. To delete genes again, you have to click on the gene and hit the backspace key.
 
-#### Select genes through an excel file with header
+#### Select genes through an Excel file with header
 You can select genes by uploading an .xlsx file ([example](https://owncloud.gwdg.de/index.php/s/ZwY0iVPji6uBVKO)).  
 The spreadsheet has to look as follows:
 
@@ -78,7 +80,7 @@ The spreadsheet has to look as follows:
 
 The app will only read the first column including the Ensembl IDs. The second column `Genes` is optional.
 
-#### Select genes through an excel file without header
+#### Select genes through an Excel file without header
 If your .xlsx file contains no header, please uncheck the checkbox. Otherwise, the first Ensembl ID will not show up in the selection.
 
 ### Aspect Ratio
