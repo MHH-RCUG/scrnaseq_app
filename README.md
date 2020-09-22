@@ -8,9 +8,7 @@
   <h2 align="center">scrnaseq_app</h2>
 
   <p align="center">
-    Shiny app for visualisation of scRNASeq data. 
-  
-  Based on a provided Seurat object, one or more genes can be selected through a user interface, and several plots are generated, including feature plots, ridge plots, violin plots and dot plots. This project is based on <a href="https://github.com/ktrns/scrnaseq">scrnaseq</a>. The scrnaseq workflow was and is being developed by <a href="https://github.com/ktrns">Katrin Sameith</a> and <a href="https://github.com/andpet0101">Andreas Petzold</a> at the <a href="https://genomecenter.tu-dresden.de/about-us">DRESDEN-concept Genome Center (Dresden, Germany)</a>, in collaboration with the <a href="https://www.mhh.de/genomics">Research Core Unit Genomics (Hannover, Germany)</a>.
+    Shiny app for visualisation of scRNASeq data. Based on a provided Seurat object, one or more genes can be selected through a user interface, and several plots are generated, including feature plots, ridge plots, violin plots and dot plots. This project is based on <a href="https://github.com/ktrns/scrnaseq">scrnaseq</a>. The scrnaseq workflow was and is being developed by <a href="https://github.com/ktrns">Katrin Sameith</a> and <a href="https://github.com/andpet0101">Andreas Petzold</a> at the <a href="https://genomecenter.tu-dresden.de/about-us">DRESDEN-concept Genome Center (Dresden, Germany)</a>, in collaboration with the <a href="https://www.mhh.de/genomics">Research Core Unit Genomics (Hannover, Germany)</a>.
     <br />
     <a href="https://github.com/MHH-RCUG/scrnaseq_app"><strong>Explore the docs »</strong></a>
     <br />
