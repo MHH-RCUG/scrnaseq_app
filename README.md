@@ -8,8 +8,9 @@
   <h2 align="center">scrnaseq_app</h2>
 
   <p align="center">
-    Shiny app for visualisation of scRNASeq data. In the UI you can select genes and the app will generate several plots (Feature, Ridge, Violin and Dot-Plot).
-    This project is based around <a href="https://github.com/ktrns/scrnaseq">scrnaseq</a>. This workflow and was developed by <a href="https://github.com/ktrns">Katrin Sameith</a> and <a href="https://github.com/andpet0101">Andreas Petzold</a> at the <a href="https://genomecenter.tu-dresden.de/about-us">Dresden-concept Genome Center (Dresden, Germany)</a>. Through collaboration with the <a href="https://www.mhh.de/genomics">Research Core Unit Genomics (Hannover, Germany)</a> the workflow has grown substantially and has been standardised.
+    Shiny app for visualisation of scRNASeq data. 
+  
+  Based on a provided Seurat object, one or more genes can be selected through a user interface, and several plots are generated, including feature plots, ridge plots, violin plots and dot plots. This project is based on <a href="https://github.com/ktrns/scrnaseq">scrnaseq</a>. The scrnaseq workflow was and is being developed by <a href="https://github.com/ktrns">Katrin Sameith</a> and <a href="https://github.com/andpet0101">Andreas Petzold</a> at the <a href="https://genomecenter.tu-dresden.de/about-us">DRESDEN-concept Genome Center (Dresden, Germany)</a>, in collaboration with the <a href="https://www.mhh.de/genomics">Research Core Unit Genomics (Hannover, Germany)</a>.
     <br />
     <a href="https://github.com/MHH-RCUG/scrnaseq_app"><strong>Explore the docs »</strong></a>
     <br />
@@ -32,8 +33,8 @@
   * [Upload .rds file](#upload-rds-file)
   * [Select genes](#select-genes)
     * [Select genes through UI](select-genes-through-ui)
-    * [Select genes through an excel file with header](select-genes-through-an-excel-file-with-header)
-    * [Select genes through an excel file without header](select-genes-through-an-excel-file-without-header)
+    * [Select genes through an Excel file with header](select-genes-through-an-Excel-file-with-header)
+    * [Select genes through an Excel file without header](select-genes-through-an-Excel-file-without-header)
 * [Getting Started](#getting-started)
 * [Contributing](#contributing)
 * [Contact](#contact)
@@ -45,7 +46,7 @@
 ## About The Project
 
 ![screenshot](https://github.com/MHH-RCUG/scrnaseq_app/blob/master/www/screenshot.PNG)
-The app reads a .rds file which contains the seurat-object. Therefore every data is available and the user can generate plots for every gene they select through the select list or an excel file (.xlsx). If the user has the selection of genes that are interesting, it is possible to download those plots in .pdf and .png format.
+The app reads an .rds file which contains the Seurat object and all associated data. The user can then select genes through a list or an Excel file (.xlsx). The generated plots can then be downloaded in .pdf and .png format. 
 
 ### Built With
 
@@ -58,35 +59,35 @@ The app reads a .rds file which contains the seurat-object. Therefore every data
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-To get the app running you need to follow these simple steps.
+To get the app running, you need to follow these simple steps.
 
 ### Upload .rds file
-First you need to upload a .rds file containing your Seurat object. If you don't have this file, you can use this [example](https://owncloud.gwdg.de/index.php/s/rRawkhIOVe1T5qi).
+First, you need to upload an .rds file containing your Seurat object. If you do not have this file yet but would still like to try the app, you can use this [example](https://owncloud.gwdg.de/index.php/s/rRawkhIOVe1T5qi).
 
 ### Select genes
 
-#### Select genes through UI
-Once the .rds file is uploaded and processed, you can click on the field below `Genes` and select your genes by clicking or searching. To delete genes you have to click on the gene and hit the backspace key.
+#### Select genes through the user interface
+Once the .rds file is uploaded and processed, you can click on the field below `Genes` and select your genes by clicking or searching. To delete genes again, you have to click on the gene and hit the backspace key.
 
-#### Select genes through an excel file with header
+#### Select genes through an Excel file with header
 You can select genes by uploading an .xlsx file ([example](https://owncloud.gwdg.de/index.php/s/ZwY0iVPji6uBVKO)).  
-The spreadsheet has to look something like this:
+The spreadsheet has to look as follows:
 
-| Ensembl_IDs | Genes       |
-|-----------|-------------|
-| First ID  | First Gene  |
-| Second ID | Second Gene |
+| Ensembl_IDs | Gene_Names |
+| :--- | :--- |
+| First ID  | First Name |
+| Second ID | Second Name |
 
-The app will only read the first column where it expects Ensembl IDs, whereas the column `Genes` is optional.
+The app will only read the first column including the Ensembl IDs. The second column `Genes` is optional.
 
-#### Select genes through an excel file without header
-If your .xlsx file contains no header please uncheck the checkbox. Otherwise the first row/ EnsemblID will not show up in the selection.
+#### Select genes through an Excel file without header
+If your .xlsx file contains no header, please uncheck the checkbox. Otherwise, the first Ensembl ID will not show up in the selection.
 
 ### Aspect Ratio
-In order to change the aspect ratio of the plots you can change the pixels of the X and Y-Axis. By clicking on `Default settings for axes` the default settings will be restored: `X = 1024px`and `Y = 576px`
+In order to change the aspect ratio of the plots you can change the pixels of the x and y-axis. By clicking on `Default settings for axes` the default settings will be restored: `X = 1024px`and `Y = 576px`
 
 ### Download
-Once the plots are generated you can download them. The download is an archive which contains a **PDF and PNG** version of the selected plots.
+Once the plots are generated, you can download them. The download is an archive which contains a **PDF and PNG** version of the selected plots.
 If you want to rename your archive before downloading, you can do so in the given field.
 
 
@@ -97,14 +98,13 @@ If you want to rename your archive before downloading, you can do so in the give
 ### Installation
 
 #### Singularity
-If you are in the network of the MHH, you can use this [link](http://172.24.148.210:3838/)
+If you are within the network of the MHH, use this [link](http://172.24.148.210:3838/).
 
 #### Local
-This is an example of how you may give instructions on setting up your project locally. To get a local copy up and running follow these simple example steps.
-
-1. Head to [Releases](https://github.com/MHH-RCUG/scrnaseq_app/releases) and download the latest release
+To run a copy of this app locally, follow these steps:
+1. Go to [Releases](https://github.com/MHH-RCUG/scrnaseq_app/releases) and download the latest release
 2. Unzip the project und run scrnaseq_app.R with [RStudio](https://rstudio.com/)
-3. Install needed libraries
+3. Install required libraries
 
 
 <!-- CONTRIBUTING -->
