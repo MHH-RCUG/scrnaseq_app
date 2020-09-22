@@ -229,15 +229,14 @@ server = function(input, output, session) {
         #because expressions are evaluated at app init
         ii = i
         output[[paste0("plot_feature", ii)]] = renderPlot({
-          return(
-            Seurat::FeaturePlot(
+            p = Seurat::FeaturePlot(
               sc(),
               features = unlist(strsplit(input$genes[[ii]], "_"))[c(T, F)],
               cols = c("lightgrey", param$col),
-              label = TRUE,
-              combine = FALSE
-            )
-          )
+              label = TRUE
+              ) + 
+              theme_light() + theme(panel.border = element_blank())
+            return(p)
         })
       })
     }
@@ -266,15 +265,16 @@ server = function(input, output, session) {
         #because expressions are evaluated at app init
         ii = i
         output[[paste0("plot_ridge_raw", ii)]] = renderPlot({
-          return(
-            Seurat::RidgePlot(
-              sc(),
-              features = unlist(strsplit(input$genes[[ii]], "_"))[c(T, F)],
-              assay = "RNA",
-              slot = "counts",
-              combine = FALSE
-            )
-          )
+          p = Seurat::RidgePlot(
+            sc(),
+            features = unlist(strsplit(input$genes[[ii]], "_"))[c(T, F)],
+            assay = "RNA",
+            slot = "counts"
+            ) + 
+            theme_light() + theme(panel.border = element_blank()) +
+            labs(color="Cell identity", fill="Cell identity") + 
+            ylab("Cluster")
+          return(p)
         })
       })
     }
@@ -303,12 +303,15 @@ server = function(input, output, session) {
         #because expressions are evaluated at app init
         ii = i
         output[[paste0("plot_ridge_norm", ii)]] = renderPlot({
-          return(Seurat::RidgePlot(
+          p = Seurat::RidgePlot(
             sc(),
             features = unlist(strsplit(input$genes[[ii]], "_"))[c(T, F)],
-            slot = "data",
-            combine = FALSE
-          ))
+            slot = "data"
+          ) + 
+            theme_light() + theme(panel.border = element_blank()) +
+            labs(color="Cell identity", fill="Cell identity") + 
+            ylab("Cluster")
+          return(p)
         })
       })
     }
@@ -337,22 +340,23 @@ server = function(input, output, session) {
         #because expressions are evaluated at app init
         ii = i
         output[[paste0("plot_vln_raw", ii)]] = renderPlot({
-          return(
-            Seurat::VlnPlot(
-              sc(),
-              features = unlist(strsplit(input$genes[[ii]], "_"))[c(T, F)],
-              assay = "RNA",
-              slot = "counts",
-              combine = FALSE,
-              pt.size = 0.2
-            )
-          )
+          p = Seurat::VlnPlot( 
+            sc(),
+            features = unlist(strsplit(input$genes[[ii]], "_"))[c(T, F)],
+            assay = "RNA",
+            slot = "counts",
+            pt.size = 0.2
+            ) + 
+            theme_light() + theme(panel.border = element_blank()) +
+            labs(color="Cell identity", fill="Cell identity") + 
+            xlab("Cluster")
+          return(p)
         })
       })
     }
   })
 
-  
+
   ### Plot ViolinPlot Normalised ############################# 
   output$ui_vln_norm = renderUI({
     out_vln_norm = list()
@@ -375,12 +379,15 @@ server = function(input, output, session) {
         #because expressions are evaluated at app init
         ii = i
         output[[paste0("plot_vln_norm", ii)]] = renderPlot({
-          return(Seurat::VlnPlot(
+          p = Seurat::VlnPlot(
             sc(),
             features = unlist(strsplit(input$genes[[ii]], "_"))[c(T, F)],
-            combine = FALSE,
             pt.size = 0.2
-          ))
+            ) + 
+            theme_light() + theme(panel.border = element_blank()) +
+            labs(color="Cell identity", fill="Cell identity") + 
+            xlab("Cluster")
+          return(p)
         })
       })
     }
@@ -388,13 +395,16 @@ server = function(input, output, session) {
   
   ### Plot DotPlot ############################# 
   output$plot_dotplot = renderPlot({
-    Seurat::DotPlot(
+    p = Seurat::DotPlot(
       sc(),
       features = unlist(strsplit(input$genes, "_"))[c(T, F)],
       cols = c("lightgrey", param$col)
-    )
+      ) + 
+      theme_light() + theme(panel.border = element_blank()) + 
+      ylab("Cluster") + 
+      theme(axis.text.x = element_text(angle=90, hjust=1, vjust=.5))
+    return(p)
   })
-  
 
   # Downloads =================================
   
