@@ -215,7 +215,6 @@ server = function(input, output, session) {
   
   # Plots =================================
   ## Rendering Plots
-  
   observeEvent(input$genes, {
     
     for (i in 1:length(input$genes)) {
