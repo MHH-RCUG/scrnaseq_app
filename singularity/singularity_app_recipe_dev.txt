@@ -1,0 +1,148 @@
+# Singularity: R_app_recipe.txt. Test/work in progress! 
+# Intended to download and run the R Shiny code from https://github.com/mariusrueve/scrnaseq in a singularity container based on Ubuntu 20.04
+# Colin Davenport, June 2020 - July 2020
+#
+#
+# 1. Make sure your proxy settings are set up in your environment eg in .bashrc file as below
+#HTTPS_proxy=http://proxy.mycompany.de:8080
+#http_proxy=proxy.mycompany.de:8080
+#GOPROXY=proxy.mycompany.de:8080
+#
+# 2. Run the build: sudo singularity build ../scrnaseq_app.simg singularity_app_recipe.txt
+
+Bootstrap: debootstrap
+OSVersion: focal
+MirrorURL: http://de.archive.ubuntu.com/ubuntu/
+
+
+%runscript
+    #!/bin/bash
+    exec echo "Container version 0.1 dev August 2020"
+
+    library(shiny) 
+    library(Seurat) 
+    library(ggplot2) 
+    library(readxl)
+
+    cd /data/scrnaseq_app/
+    # only if some branch is used, not master branch
+    #git checkout marius_changes
+    git checkout dev
+    
+    # Run container in R Shiny
+    R -e "options('shiny.port'=3838,shiny.host='0.0.0.0'); shiny::runApp('/data/scrnaseq_app/scrnaseq_app.R')"
+
+
+
+%files
+     /mnt/ngsnfs/tools/rstudio/rstudio_cran_gpg.key    /data/rstudio_cran_gpg.key
+
+%environment
+    export IN_CONTAINER=true
+
+%labels
+   AUTHOR Dr Colin Davenport and Marius Rueve
+
+%post
+
+    #echo "The post section is where you can install, and configure your container."
+
+
+    # In order to get locales working properly inside a Singularity container
+    # we need to do the following:
+    apt-get update && apt-get install -y \
+            locales language-pack-fi language-pack-en
+            export LANGUAGE=en_US.UTF-8 && \
+            export LANG=en_US.UTF-8 && \
+            export LC_ALL=en_US.UTF-8 && \
+            locale-gen en_US.UTF-8 && \
+            dpkg-reconfigure locales
+
+
+    # generate users
+    groupadd rcug -g 9415
+    useradd -s /bin/bash rcug -u 9415 -g 9415 -m
+    groupadd shiny -g 19987
+    useradd -s /bin/bash shiny -u 19987 -g 19987 -m
+
+
+
+    # debootstrap will only find packages from one apt source, this is the workaround
+    sed -i 's/$/ universe/' /etc/apt/sources.list
+
+    # Get current R, eg R4.0
+    apt install -y gnupg ca-certificates
+    apt-key add /data/rstudio_cran_gpg.key
+    echo "deb https://cloud.r-project.org/bin/linux/ubuntu focal-cran40/" > /etc/apt/sources.list.d/cloud_r_project_org_bin_linux_ubuntu.list
+
+
+    # try to speed up R package compliation (success, now 10-15m, was 30-45m)
+    echo "options(Ncpus = 24)" > ~/.Rprofile
+
+    # Install R dependencies, Python, misc. utilities
+    apt update
+    apt -y install python3 build-essential libcurl4-openssl-dev openssh-client openssh-server libssh-dev wget vim git nano cmake 
+    apt -y install gfortran g++ curl python3 autoconf bzip2 libtool libtool-bin python3-dev libxml2-dev
+    apt -y install r-base-core libopenblas-dev python3-pip  
+    apt clean
+
+
+    # Install required R packages
+    R --slave -e 'install.packages(c("shiny", "Seurat"), repos="https://cloud.r-project.org/")'
+    R --slave -e 'install.packages(c("ggplot2", "readxl"), repos="https://cloud.r-project.org/")'
+    R --slave -e 'install.packages(c("golem"), repos="https://cloud.r-project.org/")'
+    R --slave -e 'install.packages(c("shinythemes"), repos="https://cloud.r-project.org/")'
+    R --slave -e 'install.packages(c("markdown"), repos="https://cloud.r-project.org/")'
+
+
+    #mkdir /data
+    cd /data
+    
+    # Get current actual app to run:
+    git clone https://github.com/MHH-RCUG/scrnaseq_app
+    cd scrnaseq_app/
+    git checkout dev
+
+
+    # download required example file
+    #wget https://owncloud.gwdg.de/index.php/s/rRawkhIOVe1T5qi/download
+    #mv download pbmc_2020-06-08.rds
+
+
+
+
+
+
+
+
+    #############
+    # The following are all just unused alternatives and comments
+    ############
+
+    # Alternatives - Electron app - used by cerebro.
+    # An even more appropriate system might be shinyproxy. 
+    # https://www.shinyproxy.io/
+
+
+    # Example docker code for R Shiny app using golem
+
+    #FROM rocker/tidyverse:3.6.1
+#    R -e 'install.packages("remotes")'
+    #R -e 'remotes::install_github("r-lib/remotes", ref = "97bbf81")'
+#    R -e 'remotes::install_cran("shiny")'
+#    R -e 'remotes::install_cran("golem")'
+#    cp app.R /app.R
+    # open port in singularity, expose sounds like docker syntax
+#    EXPOSE 3838
+#    R -e "options('shiny.port'=3838,shiny.host='0.0.0.0'); shiny::runApp('app.R')"
+
+#    R -e "sessInfo()"
+
+
+    # to get shiny server running with ports etc is complex
+    # see https://github.com/vsoch/singularity-shiny
+    # https://github.com/vsoch/singularity-shiny/blob/master/prepare_template.sh
+#    mkdir -p /var/log/shiny-server
+#    chown shiny:shiny /var/log/shiny-server
+
+
