@@ -24,6 +24,14 @@ param$col = "palevioletred"
 # Empty object so Input UI gets rendered
 features_names_ids = NULL
 
+# Define global variable for plots
+plots_FeaturePlot = NULL
+plots_RidgePlotRaw = NULL
+plots_RidgePlotNorm = NULL
+plots_ViolinPlotRaw = NULL
+plots_ViolinPlotNorm = NULL
+plots_DotPlot = NULL
+
 
 # UI ---------------------------------
 
@@ -206,11 +214,86 @@ server = function(input, output, session) {
   
   
   # Plots =================================
+  ## Rendering Plots
   
-  ### Plot FeaturePlot ############################# 
+  observeEvent(input$genes, {
+    
+    for (i in 1:length(input$genes)) {
+      
+      # Feature Plots
+      plots_FeaturePlot[[i]] <<- # <<- for global assignments
+        Seurat::FeaturePlot(
+          sc(),
+          features = unlist(strsplit(input$genes[[i]], "_"))[c(T, F)],
+          cols = c("lightgrey", param$col),
+          label = TRUE
+        ) +
+        theme_light() + theme(panel.border = element_blank())
+      
+      # Ridge Plots Raw
+      plots_RidgePlotRaw[[i]] <<- 
+        Seurat::RidgePlot(
+          sc(),
+          features = unlist(strsplit(input$genes[[i]], "_"))[c(T, F)],
+          assay = "RNA",
+          slot = "counts"
+        ) + 
+        theme_light() + theme(panel.border = element_blank()) +
+        labs(color="Cell identity", fill="Cell identity") + 
+        ylab("Cluster")
+      
+      # Ridge Plots Norm
+      plots_RidgePlotNorm[[i]] <<- 
+        Seurat::RidgePlot(
+          sc(),
+          features = unlist(strsplit(input$genes[[i]], "_"))[c(T, F)],
+          slot = "data"
+        ) + 
+        theme_light() + theme(panel.border = element_blank()) +
+        labs(color="Cell identity", fill="Cell identity") + 
+        ylab("Cluster")
+      
+      # Violin Plots Raw
+      plots_ViolinPlotRaw[[i]] <<-
+        Seurat::VlnPlot( 
+          sc(),
+          features = unlist(strsplit(input$genes[[i]], "_"))[c(T, F)],
+          assay = "RNA",
+          slot = "counts",
+          pt.size = 0.2
+        ) + 
+        theme_light() + theme(panel.border = element_blank()) +
+        labs(color="Cell identity", fill="Cell identity") + 
+        xlab("Cluster")
+      
+      # Violin Plots Norm
+      plots_ViolinPlotNorm[[i]] <<-
+        Seurat::VlnPlot(
+          sc(),
+          features = unlist(strsplit(input$genes[[i]], "_"))[c(T, F)],
+          pt.size = 0.2
+        ) + 
+        theme_light() + theme(panel.border = element_blank()) +
+        labs(color="Cell identity", fill="Cell identity") + 
+        xlab("Cluster")
+      
+      # Dot Plot
+      plots_DotPlot <<-
+        Seurat::DotPlot(
+          sc(),
+          features = unlist(strsplit(input$genes, "_"))[c(T, F)],
+          cols = c("lightgrey", param$col)
+        ) + 
+        theme_light() + theme(panel.border = element_blank()) + 
+        ylab("Cluster") + 
+        theme(axis.text.x = element_text(angle=90, hjust=1, vjust=.5))
+    }
+  })
+  
+  ### UI FeaturePlot ############################# 
   output$ui_feature = renderUI({
     out_feature = list()
-    
+
     if (length(input$genes) == 0) {
       return(NULL)
     }
@@ -223,27 +306,8 @@ server = function(input, output, session) {
     }
     return(out_feature)
   })
-  observe({
-    for (i in 1:length(input$genes)) {
-      local({
-        #because expressions are evaluated at app init
-        ii = i
-        output[[paste0("plot_feature", ii)]] = renderPlot({
-            p = Seurat::FeaturePlot(
-              sc(),
-              features = unlist(strsplit(input$genes[[ii]], "_"))[c(T, F)],
-              cols = c("lightgrey", param$col),
-              label = TRUE
-              ) + 
-              theme_light() + theme(panel.border = element_blank())
-            return(p)
-        })
-      })
-    }
-  })
   
-
-  ### Plot RidgePlot Raw ############################# 
+  ### UI RidgePlot Raw ############################# 
   output$ui_ridge_raw = renderUI({
     out_ridge_raw = list()
     
@@ -259,29 +323,8 @@ server = function(input, output, session) {
     }
     return(out_ridge_raw)
   })
-  observe({
-    for (i in 1:length(input$genes)) {
-      local({
-        #because expressions are evaluated at app init
-        ii = i
-        output[[paste0("plot_ridge_raw", ii)]] = renderPlot({
-          p = Seurat::RidgePlot(
-            sc(),
-            features = unlist(strsplit(input$genes[[ii]], "_"))[c(T, F)],
-            assay = "RNA",
-            slot = "counts"
-            ) + 
-            theme_light() + theme(panel.border = element_blank()) +
-            labs(color="Cell identity", fill="Cell identity") + 
-            ylab("Cluster")
-          return(p)
-        })
-      })
-    }
-  })
   
-
-  ### Plot RidgePlot Normalised ############################# 
+  ### UI RidgePlot Normalised ############################# 
   output$ui_ridge_norm = renderUI({
     out_ridge_norm = list()
     
@@ -297,31 +340,11 @@ server = function(input, output, session) {
     }
     return(out_ridge_norm)
   })
-  observe({
-    for (i in 1:length(input$genes)) {
-      local({
-        #because expressions are evaluated at app init
-        ii = i
-        output[[paste0("plot_ridge_norm", ii)]] = renderPlot({
-          p = Seurat::RidgePlot(
-            sc(),
-            features = unlist(strsplit(input$genes[[ii]], "_"))[c(T, F)],
-            slot = "data"
-          ) + 
-            theme_light() + theme(panel.border = element_blank()) +
-            labs(color="Cell identity", fill="Cell identity") + 
-            ylab("Cluster")
-          return(p)
-        })
-      })
-    }
-  })
   
-  
-  ### Plot ViolinPlot Raw ############################# 
+  ### UI ViolinPlot Raw ############################# 
   output$ui_vln_raw = renderUI({
     out_vln_raw = list()
-
+    
     if (length(input$genes) == 0) {
       return(NULL)
     }
@@ -334,33 +357,11 @@ server = function(input, output, session) {
     }
     return(out_vln_raw)
   })
-  observe({
-    for (i in 1:length(input$genes)) {
-      local({
-        #because expressions are evaluated at app init
-        ii = i
-        output[[paste0("plot_vln_raw", ii)]] = renderPlot({
-          p = Seurat::VlnPlot( 
-            sc(),
-            features = unlist(strsplit(input$genes[[ii]], "_"))[c(T, F)],
-            assay = "RNA",
-            slot = "counts",
-            pt.size = 0.2
-            ) + 
-            theme_light() + theme(panel.border = element_blank()) +
-            labs(color="Cell identity", fill="Cell identity") + 
-            xlab("Cluster")
-          return(p)
-        })
-      })
-    }
-  })
-
-
-  ### Plot ViolinPlot Normalised ############################# 
+  
+  ### UI ViolinPlot Normalised ############################# 
   output$ui_vln_norm = renderUI({
     out_vln_norm = list()
-
+    
     if (length(input$genes) == 0) {
       return(NULL)
     }
@@ -373,37 +374,38 @@ server = function(input, output, session) {
     }
     return(out_vln_norm)
   })
+  
+  ### renderPlots() --> plotOutput() --> renderUI()
   observe({
     for (i in 1:length(input$genes)) {
       local({
         #because expressions are evaluated at app init
         ii = i
+        output[[paste0("plot_feature", ii)]] = renderPlot({
+            plots_FeaturePlot[[ii]]
+        })
+        
+        output[[paste0("plot_ridge_raw", ii)]] = renderPlot({
+          plots_RidgePlotRaw[[ii]]
+        })
+        
+        output[[paste0("plot_ridge_norm", ii)]] = renderPlot({
+          plots_RidgePlotNorm[[ii]]
+        })
+        
+        output[[paste0("plot_vln_raw", ii)]] = renderPlot({
+          plots_ViolinPlotRaw[[ii]]
+        })
+        
         output[[paste0("plot_vln_norm", ii)]] = renderPlot({
-          p = Seurat::VlnPlot(
-            sc(),
-            features = unlist(strsplit(input$genes[[ii]], "_"))[c(T, F)],
-            pt.size = 0.2
-            ) + 
-            theme_light() + theme(panel.border = element_blank()) +
-            labs(color="Cell identity", fill="Cell identity") + 
-            xlab("Cluster")
-          return(p)
+          plots_ViolinPlotNorm[[ii]]
+        })
+        
+        output$plot_dotplot = renderPlot({
+          plots_DotPlot
         })
       })
     }
-  })
-  
-  ### Plot DotPlot ############################# 
-  output$plot_dotplot = renderPlot({
-    p = Seurat::DotPlot(
-      sc(),
-      features = unlist(strsplit(input$genes, "_"))[c(T, F)],
-      cols = c("lightgrey", param$col)
-      ) + 
-      theme_light() + theme(panel.border = element_blank()) + 
-      ylab("Cluster") + 
-      theme(axis.text.x = element_text(angle=90, hjust=1, vjust=.5))
-    return(p)
   })
 
   # Downloads =================================
@@ -427,7 +429,6 @@ server = function(input, output, session) {
       files = NULL
       on.exit(unlink(files))
       
-
       ### Download FeaturPlot ############################# 
       if (input$check_featureplot == TRUE) {
         # PNG
@@ -438,16 +439,9 @@ server = function(input, output, session) {
               width = input$x_axis,
               height = input$y_axis)
           print(
-            Seurat::FeaturePlot(
-              sc(),
-              features = unlist(strsplit(input$genes[[i]], "_"))[c(T, F)],
-              cols = c("lightgrey", param$col),
-              label = TRUE,
-              combine = FALSE
-            )
+            plots_FeaturePlot[[i]]
           )
           dev.off()
-          
           files = c(fileName_png, files)
         }
         # PDF
@@ -457,13 +451,7 @@ server = function(input, output, session) {
             height = 9)
         for (i in 1:length(input$genes)) {
           print(
-            Seurat::FeaturePlot(
-              sc(),
-              features = unlist(strsplit(input$genes[[i]], "_"))[c(T, F)],
-              cols = c("lightgrey", param$col),
-              label = TRUE,
-              combine = FALSE
-            )
+            plots_FeaturePlot[[i]]
           )
         }
         dev.off()
@@ -480,16 +468,9 @@ server = function(input, output, session) {
               width = input$x_axis,
               height = input$y_axis)
           print(
-            Seurat::RidgePlot(
-              sc(),
-              features = unlist(strsplit(input$genes[[i]], "_"))[c(T, F)],
-              assay = "RNA",
-              slot = "counts",
-              combine = FALSE
-            )
+            plots_RidgePlotRaw[[i]]
           )
           dev.off()
-          
           files = c(fileName_png, files)
         }
         # PDF
@@ -499,21 +480,14 @@ server = function(input, output, session) {
             height = 9)
         for (i in 1:length(input$genes)) {
           print(
-            Seurat::RidgePlot(
-              sc(),
-              features = unlist(strsplit(input$genes[[i]], "_"))[c(T, F)],
-              assay = "RNA",
-              slot = "counts",
-              combine = FALSE
-            )
+            plots_RidgePlotRaw[[i]]
           )
         }
         dev.off()
         files = c(fileName_pdf, files)
       }
-      
 
-      ### Download RidgePlot Normalised ############################# 
+      ### Download RidgePlot Normalised #############################
       if (input$check_ridgeplot_norm == TRUE) {
         # PNG
         for (i in 1:length(input$genes)) {
@@ -522,14 +496,10 @@ server = function(input, output, session) {
           png(fileName_png,
               width = input$x_axis,
               height = input$y_axis)
-          print(Seurat::RidgePlot(
-            sc(),
-            features = unlist(strsplit(input$genes[[i]], "_"))[c(T, F)],
-            slot = "data",
-            combine = FALSE
-          ))
+          print(
+            plots_RidgePlotNorm[[i]]
+          )
           dev.off()
-          
           files = c(fileName_png, files)
         }
         # PDF
@@ -538,17 +508,13 @@ server = function(input, output, session) {
             width = 16,
             height = 9)
         for (i in 1:length(input$genes)) {
-          print(Seurat::RidgePlot(
-            sc(),
-            features = unlist(strsplit(input$genes[[i]], "_"))[c(T, F)],
-            slot = "data",
-            combine = FALSE
-          ))
+          print(
+            plots_RidgePlotNorm[[i]]
+          )
         }
         dev.off()
         files = c(fileName_pdf, files)
       }
-      
 
       ### Download ViolinPlot Raw ############################# 
       if (input$check_vlnplot_raw == TRUE) {
@@ -559,16 +525,10 @@ server = function(input, output, session) {
           png(fileName_png,
               width = input$x_axis,
               height = input$y_axis)
-          print(Seurat::VlnPlot(
-            sc(),
-            features = unlist(strsplit(input$genes[[i]], "_"))[c(T, F)],
-            assay = "RNA",
-            slot = "counts",
-            combine = FALSE,
-            pt.size = 0.2
-          ))
+          print(
+            plots_ViolinPlotRaw[[i]]
+          )
           dev.off()
-          
           files = c(fileName_png, files)
         }
         
@@ -578,21 +538,15 @@ server = function(input, output, session) {
             width = 16,
             height = 9)
         for (i in 1:length(input$genes)) {
-          print(Seurat::VlnPlot(
-            sc(),
-            features = unlist(strsplit(input$genes[[i]], "_"))[c(T, F)],
-            assay = "RNA",
-            slot = "counts",
-            combine = FALSE,
-            pt.size = 0.2
-          ))
+          print(
+            plots_ViolinPlotRaw[[i]]
+          )
         }
         dev.off()
         files = c(fileName_pdf, files)
       }
-      
 
-      ### Download ViolinPlor Normalised ############################# 
+      ### Download ViolinPlot Normalised ############################# 
       if (input$check_vlnplot_norm == TRUE) {
         # PNG ViolinPlot Normalised
         for (i in 1:length(input$genes)) {
@@ -601,14 +555,10 @@ server = function(input, output, session) {
           png(fileName_png,
               width = input$x_axis,
               height = input$y_axis)
-          print(Seurat::VlnPlot(
-            sc(),
-            features = unlist(strsplit(input$genes[[i]], "_"))[c(T, F)],
-            combine = FALSE,
-            pt.size = 0.2
-          ))
+          print(
+            plots_ViolinPlotNorm[[i]]
+          )
           dev.off()
-          
           files = c(fileName_png, files)
         }
         # PDF ViolinPlot Normalised
@@ -617,17 +567,13 @@ server = function(input, output, session) {
             width = 16,
             height = 9)
         for (i in 1:length(input$genes)) {
-          print(Seurat::VlnPlot(
-            sc(),
-            features = unlist(strsplit(input$genes[[i]], "_"))[c(T, F)],
-            combine = FALSE,
-            pt.size = 0.2
-          ))
+          print(
+            plots_ViolinPlotNorm[[i]]
+          )
         }
         dev.off()
         files = c(fileName_pdf, files)
       }
-      
       
       ### Download DotPlot ############################# 
       if (input$check_dotplot == TRUE) {
@@ -637,13 +583,10 @@ server = function(input, output, session) {
         png(fileName_png,
             width = input$x_axis,
             height = input$y_axis)
-        print(Seurat::DotPlot(
-          sc(),
-          features = unlist(strsplit(input$genes, "_"))[c(T, F)],
-          cols = c("lightgrey", param$col)
-        ))
+        print(
+          plots_DotPlot
+        )
         dev.off()
-        
         files = c(fileName_png, files)
         
         # PDF
@@ -651,11 +594,9 @@ server = function(input, output, session) {
         pdf(file = fileName_pdf,
             width = 16,
             height = 9)
-        print(Seurat::DotPlot(
-          sc(),
-          features = unlist(strsplit(input$genes, "_"))[c(T, F)],
-          cols = c("lightgrey", param$col)
-        ))
+        print(
+          plots_DotPlot
+        )
         dev.off()
         files = c(fileName_pdf, files)
       }
