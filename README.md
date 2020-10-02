@@ -43,7 +43,8 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-![screenshot](https://github.com/MHH-RCUG/scrnaseq_app/blob/master/www/screenshot.PNG)
+![screenshot1](https://github.com/MHH-RCUG/scrnaseq_app/blob/master/www/Screenshot%202020-10-02%20220712.jpg)
+![screenshot2](https://github.com/MHH-RCUG/scrnaseq_app/blob/master/www/Screenshot%202020-10-02%20220712.png)
 The app reads an .rds file which contains the Seurat object and all associated data. The user can then select genes through a list or an Excel file (.xlsx). The generated plots can then be downloaded in .pdf and .png format. 
 
 ### Built With
