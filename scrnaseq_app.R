@@ -601,7 +601,8 @@ server = function(input, output, session) {
       }
       #print(files)
       # Create zip file for Download, uses array of files
-      zip(zipfile = file, files =  files)
+      #zip(zipfile = file, files =  files)
+      system2("zip", args=(paste(file,files,sep=" ")))
     },
     contentType = "application/zip"
   )
