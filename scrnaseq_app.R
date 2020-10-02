@@ -36,6 +36,7 @@ plots_DotPlot = NULL
 # UI ---------------------------------
 
 ui = fluidPage(
+
   theme = shinytheme("paper"),
   img(src = "MHH.png", align = "right"),
   titlePanel("scrnaseq_app"),
@@ -173,21 +174,22 @@ server = function(input, output, session) {
   })
   
   observe({
-    
     if (!is.null(sc())) {
       features_names_ids = paste(rownames(sc()[["RNA"]][[]]), "_", sc()[["RNA"]][[]][, 1], sep = "")
       #print(features_names_ids)
       updateSelectInput(session, "genes", "Genes:", features_names_ids)
+      showNotification(ui = h4("Succesfully uploaded the .rds file."),
+                       duration = 10,
+                       type = "message")
     }
     
     if(!is.null(sc()) & !is.null(excel_genes())){
-      
       excel_list = unlist(excel_genes()[,1])
-      
       x = features_names_ids[unlist(lapply(excel_list, function(one_gene)grep(one_gene, features_names_ids)))]
-
       updateSelectInput(session, "genes", "Genes:", features_names_ids, selected = x)
-
+      showNotification(ui = h4("Succesfully uploaded the .xlsx file and selected given genes."),
+                       duration = 10,
+                       type = "message")
     }
   })
   
