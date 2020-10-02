@@ -65,7 +65,7 @@ ui = fluidPage(
       numericInput(
         "x_axis",
         "X-Axis (px):",
-        value = 1024,
+        value = 1280,
         min = 1,
         max = 3000
       )
@@ -76,7 +76,7 @@ ui = fluidPage(
       numericInput(
         "y_axis",
         "Y-Axis (px):",
-        value = 576,
+        value = 720,
         min = 1,
         max = 3000
       )
@@ -198,7 +198,7 @@ server = function(input, output, session) {
       session,
       "x_axis",
       "X-Axis (px):",
-      value = 1024,
+      value = 1280,
       min = 1,
       max = 3000
     )
@@ -206,7 +206,7 @@ server = function(input, output, session) {
       session,
       "y_axis",
       "Y-Axis (px):",
-      value = 576,
+      value = 720,
       min = 1,
       max = 3000
     )
