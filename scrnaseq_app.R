@@ -9,6 +9,7 @@ library(ggplot2)
 library(shinythemes)
 library(markdown)
 library(readxl)
+library(zip)
 
 # Set max upload size to 300 MB
 options(shiny.maxRequestSize = 300 * 1024 ^ 2)
@@ -605,8 +606,7 @@ server = function(input, output, session) {
       }
       #print(files)
       # Create zip file for Download, uses array of files
-      #zip(zipfile = file, files =  files)
-      system2("zip", args=(paste(file,files,sep=" ")))
+      zip(zipfile = file, files =  files)
     },
     contentType = "application/zip"
   )
