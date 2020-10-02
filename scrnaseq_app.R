@@ -46,17 +46,19 @@ ui = fluidPage(
     h5("Plots:"),
     
     fileInput(
-      "rds_file",
-      "Select Seurat file:",
+      inputId = "rds_file",
+      label = "Select Seurat file:",
       accept = ".rds",
-      buttonLabel = "Browse..."
+      buttonLabel = "Browse",
+      placeholder = "  No file selected"
     ), # File upload
     
     fileInput(
-      "xlsx_file",
-      "Select Excel file:",
+      inputId = "xlsx_file",
+      label = "Select Excel file:",
       accept = ".xlsx",
-      buttonLabel = "Browse..."
+      buttonLabel = "Browse",
+      placeholder = "  No file selected"
     ),
     checkboxInput("header", "Check if column names are given: (Header)", TRUE),
     selectInput("genes", "Genes:", features_names_ids, multiple = TRUE), # Select genes
@@ -83,7 +85,7 @@ ui = fluidPage(
       )
     )),
     
-    actionButton("restore_axes", "Default settings for axes"), # Restore default values of axes (px)
+    actionButton("restore_axes", "Default axes"), # Restore default values of axes (px)
     
     # br() extend spacing between elements
     br(),
