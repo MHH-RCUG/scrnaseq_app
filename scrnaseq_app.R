@@ -599,9 +599,11 @@ server = function(input, output, session) {
         dev.off()
         files = c(fileName_pdf, files)
       }
+      #print(files)
       # Create zip file for Download, uses array of files
-      zip(file, files)
-    }
+      zip(zipfile = file, files =  files)
+    },
+    contentType = "application/zip"
   )
 }
 
