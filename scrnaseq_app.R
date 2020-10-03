@@ -169,7 +169,7 @@ server = function(input, output, session) {
     if (is.null(inFile)) {
       tmp = NULL
     } else {
-      tmp = read_excel(path = inFile$datapath,
+      tmp = readxl::read_excel(path = inFile$datapath,
                        sheet = 1,
                        col_names = input$header)
     }
