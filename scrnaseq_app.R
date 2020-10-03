@@ -433,6 +433,10 @@ server = function(input, output, session) {
       files = NULL
       on.exit(unlink(files))
       
+      showNotification(ui = h4("Files are being created, download will start soon."),
+                       duration = 10,
+                       type = "message")
+      
       ### Download FeaturPlot ############################# 
       if (input$check_featureplot == TRUE) {
         # PNG
