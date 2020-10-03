@@ -40,7 +40,6 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-![screenshot](www/screenshot.png)
 <p align="center">
   <a href="https://github.com/MHH-RCUG/scrnaseq_app/blob/dev/www/screenshot.PNG">
     <img src="www/screenshot.PNG" alt="screenshot">
