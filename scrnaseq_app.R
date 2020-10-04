@@ -38,31 +38,36 @@ plots_DotPlot = NULL
 
 ui = fluidPage(
 
-  theme = shinytheme("paper"),
+  #theme = shinytheme("paper"),
   img(src = "MHH.png", align = "right"),
   titlePanel("scrnaseq_app"),
   
   sidebarPanel(
     width = 3,
-    h5("Plots:"),
+    h4("Upload:"),
     
     fileInput(
       inputId = "rds_file",
-      label = "Select Seurat file:",
+      label = "Upload Seurat file: (.rds)",
       accept = ".rds",
       buttonLabel = "Browse",
-      placeholder = "  No file selected"
+      placeholder = "Please upload .rds file!"
     ), # File upload
     
     fileInput(
       inputId = "xlsx_file",
-      label = "Select Excel file:",
+      label = "Upload Excel file: (.xlsx)",
       accept = ".xlsx",
       buttonLabel = "Browse",
-      placeholder = "  No file selected"
+      placeholder = "No file selected"
     ),
-    checkboxInput("header", "Check if column names are given: (Header)", TRUE),
-    selectInput("genes", "Genes:", features_names_ids, multiple = TRUE), # Select genes
+    checkboxInput("header", "Check if Excel file contains Headers", TRUE),
+    
+    tags$hr(),
+  
+    selectInput("genes", "Select genes:", features_names_ids, multiple = TRUE), # Select genes
+    
+    tags$hr(),
     
     fluidRow(column(
       6,
@@ -88,11 +93,9 @@ ui = fluidPage(
     
     actionButton("restore_axes", "Default axes"), # Restore default values of axes (px)
     
-    # br() extend spacing between elements
-    br(),
-    br(),
+    tags$hr(),
     
-    h5("Download:"),
+    h4("Download:"),
     textInput(
       "archive_download",
       "Enter name of archive (.zip):",
@@ -296,6 +299,7 @@ server = function(input, output, session) {
   
   ### UI FeaturePlot ############################# 
   output$ui_feature = renderUI({
+    
     out_feature = list()
 
     if (length(input$genes) == 0) {
