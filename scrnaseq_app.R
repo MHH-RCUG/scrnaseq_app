@@ -168,10 +168,10 @@ server = function(input, output, session) {
   
   observeEvent(input$rds_file,{
     shinyalert(
-      title = "Upload complete",
+      title = "Please wait!",
       text = "Upload complete! Please wait while the data is being processed!",
       size = "s",
-      type = "warning",
+      type = "info",
       showConfirmButton = FALSE
     )
     
@@ -186,7 +186,8 @@ server = function(input, output, session) {
       x = features_names_ids[unlist(lapply(excel_list, function(one_gene)grep(one_gene, features_names_ids)))]
       updateSelectInput(session, "genes", "Genes:", features_names_ids, selected = x)
     }
-    shinyjs::delay(2000,shinyjs::runjs("swal.close();"))
+    shinyjs::delay(10,shinyjs::runjs("swal.close();"))
+    #shinyjs::runjs("swal.close();")
     
   })
   
@@ -431,17 +432,17 @@ server = function(input, output, session) {
           title = "Download failed!",
           text = "Failed to download plots! Please make sure to upload .rds file and select genes before downloading!",
           size = "s", 
-          closeOnEsc = TRUE,
-          closeOnClickOutside = FALSE,
-          html = FALSE,
-          type = "error",
-          showConfirmButton = TRUE,
-          showCancelButton = FALSE,
-          timer = 0,
-          imageUrl = "",
-          animation = TRUE
+          type = "error"
         )
         return(NULL)
+      }else{
+        shinyalert(
+          title = "Please wait!",
+          text = "The creation of files (.png and .pdf) can take a while. The download will start, once everything is ready.",
+          size = "s",
+          type = "info",
+          showConfirmButton = FALSE
+        )
       }
       
       ### Download FeaturPlot ############################# 
@@ -618,6 +619,7 @@ server = function(input, output, session) {
       #print(files)
       # Create zip file for Download, uses array of files
       zip(zipfile = file, files =  files)
+      shinyjs::runjs("swal.close();")
     },
     contentType = "application/zip"
   )
