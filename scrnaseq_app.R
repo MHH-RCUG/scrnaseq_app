@@ -9,6 +9,8 @@ library(ggplot2)
 library(shinythemes)
 library(markdown)
 library(readxl)
+library(shinyalert)
+library(shinyjs)
 library(zip)
 
 # Set max upload size to 300 MB
@@ -37,14 +39,14 @@ plots_DotPlot = NULL
 # UI ---------------------------------
 
 ui = fluidPage(
-
+  
   #theme = shinytheme("paper"),
   img(src = "MHH.png", align = "right"),
   titlePanel("scrnaseq_app"),
   
   sidebarPanel(
     width = 3,
-    h4("Upload:"),
+    h4("1. Upload:"),
     
     fileInput(
       inputId = "rds_file",
@@ -54,87 +56,13 @@ ui = fluidPage(
       placeholder = "Please upload .rds file!"
     ), # File upload
     
-    fileInput(
-      inputId = "xlsx_file",
-      label = "Upload Excel file: (.xlsx)",
-      accept = ".xlsx",
-      buttonLabel = "Browse",
-      placeholder = "No file selected"
-    ),
-    checkboxInput("header", "Check if Excel file contains Headers", TRUE),
-    
-    tags$hr(),
-  
-    selectInput("genes", "Select genes:", features_names_ids, multiple = TRUE), # Select genes
-    
-    tags$hr(),
-    
-    fluidRow(column(
-      6,
-      numericInput(
-        "x_axis",
-        "X-Axis (px):",
-        value = 1280,
-        min = 1,
-        max = 3000
-      )
-    ),
-    column(
-      6,
-      ofset = 3,
-      numericInput(
-        "y_axis",
-        "Y-Axis (px):",
-        value = 720,
-        min = 1,
-        max = 3000
-      )
-    )),
-    
-    actionButton("restore_axes", "Default axes"), # Restore default values of axes (px)
-    
-    tags$hr(),
-    
-    h4("Download:"),
-    textInput(
-      "archive_download",
-      "Enter name of archive (.zip):",
-      value = paste0("Download", "_", Sys.Date()),
-      placeholder = paste0("Download", "_", Sys.Date())
-    ),
-    
-    # Checkboxes
-    fluidRow(
-      column(
-        5,
-        checkboxInput("check_featureplot", "FeaturePlot", value = TRUE)
-      ),
-      column(
-        5,
-        checkboxInput("check_ridgeplot_raw", "RidgePlot (Raw)", value = TRUE)
-      ),
-      column(
-        5,
-        checkboxInput("check_ridgeplot_norm", "RidgePlot (Norm)", value = TRUE)
-      ),
-      column(
-        5,
-        checkboxInput("check_vlnplot_raw", "ViolinPlot (Raw)", value = TRUE)
-      ),
-      column(
-        5,
-        checkboxInput("check_vlnplot_norm", "ViolinPlot (Norm)", value = TRUE)
-      ),
-      column(5, checkboxInput("check_dotplot", "DotPlot", value = TRUE))
-    ),
-    
-    downloadButton("download_plots")
-    # conditionalPanel( condition = "input.rds_file$datapath",
-    #                   )
+    uiOutput("insert_ui"),
   ),
   
   # Tabs
   mainPanel(
+    useShinyjs(),
+    useShinyalert(),
     tabsetPanel(
       type = "tabs",
       tabPanel("FeaturePlot", uiOutput("ui_feature")),
@@ -150,11 +78,66 @@ ui = fluidPage(
 
 
 # Server ---------------------------------
-
 server = function(input, output, session) {
   
-  # Upload =================================
+  output$insert_ui = renderUI({
+    req(input$rds_file)
+    tagList(
+      tags$hr(),
+      h4("2. Select genes:"),
+      selectInput("genes", "Select through list:", features_names_ids, multiple = TRUE), # Select genes 
+      checkboxInput("header", "Check if Excel file contains Headers", TRUE),
+      fileInput(
+        inputId = "xlsx_file",
+        label = "Select through excel file: (.xlsx)",
+        accept = ".xlsx",
+        buttonLabel = "Browse",
+        placeholder = "No file selected"
+      ),
+      tags$hr(),
+      fluidRow(column(
+        6,
+        numericInput(
+          "x_axis",
+          "X-Axis (px):",
+          value = 1280,
+          min = 1,
+          max = 3000
+        )
+      ),
+      column(
+        6,
+        ofset = 3,
+        numericInput(
+          "y_axis",
+          "Y-Axis (px):",
+          value = 720,
+          min = 1,
+          max = 3000
+        )
+      )),
+      actionButton("restore_axes", "Default settings"), # Restore default values of axes (px)
+      tags$hr(),
+      h4("3. Download:"),
+      textInput(
+        "archive_download",
+        "Enter name of archive (.zip):",
+        value = paste0("Download", "_", Sys.Date()),
+        placeholder = paste0("Download", "_", Sys.Date())
+      ),
+      # Checkboxes
+      fluidRow(
+        column(5,checkboxInput("check_featureplot", "FeaturePlot", value = TRUE)),
+        column(5,checkboxInput("check_ridgeplot_raw", "RidgePlot (Raw)", value = TRUE)),
+        column(5,checkboxInput("check_ridgeplot_norm", "RidgePlot (Norm)", value = TRUE)),
+        column(5,checkboxInput("check_vlnplot_raw", "ViolinPlot (Raw)", value = TRUE)),
+        column(5,checkboxInput("check_vlnplot_norm", "ViolinPlot (Norm)", value = TRUE)),
+        column(5, checkboxInput("check_dotplot", "DotPlot", value = TRUE))),
+      downloadButton("download_plots")
+    )
+  })
   
+  # Upload =================================
   # File upload
   sc = reactive({
     inFile = input$rds_file
@@ -179,26 +162,33 @@ server = function(input, output, session) {
     tmp
   })
   
-  observe({
+  # observe({
+  # 
+  # })
+  
+  observeEvent(input$rds_file,{
+    shinyalert(
+      title = "Upload complete",
+      text = "Upload complete! Please wait while the data is being processed!",
+      size = "s",
+      type = "warning",
+      showConfirmButton = FALSE
+    )
+    
     if (!is.null(sc())) {
       features_names_ids = paste(rownames(sc()[["RNA"]][[]]), "_", sc()[["RNA"]][[]][, 1], sep = "")
       #print(features_names_ids)
-      updateSelectInput(session, "genes", "Genes:", features_names_ids)
-      showNotification(ui = h4("Succesfully uploaded the .rds file."),
-                       duration = 10,
-                       type = "message")
+      updateSelectInput(session, "genes", "Select Genes:", features_names_ids)
     }
     
     if(!is.null(sc()) & !is.null(excel_genes())){
       excel_list = unlist(excel_genes()[,1])
       x = features_names_ids[unlist(lapply(excel_list, function(one_gene)grep(one_gene, features_names_ids)))]
       updateSelectInput(session, "genes", "Genes:", features_names_ids, selected = x)
-      showNotification(ui = h4("Succesfully uploaded the .xlsx file and selected given genes."),
-                       duration = 10,
-                       type = "message")
     }
+    shinyjs::delay(2000,shinyjs::runjs("swal.close();"))
+    
   })
-  
   
   # Button to restore default settings for axes
   observeEvent(input$restore_axes, {
@@ -224,7 +214,6 @@ server = function(input, output, session) {
   # Plots =================================
   ## Rendering Plots
   observeEvent(input$genes, {
-    
     for (i in 1:length(input$genes)) {
       
       # Feature Plots
@@ -437,9 +426,23 @@ server = function(input, output, session) {
       files = NULL
       on.exit(unlink(files))
       
-      showNotification(ui = h4("Files are being created, download will start soon."),
-                       duration = 10,
-                       type = "message")
+      if(length(input$genes) == 0){
+        shinyalert(
+          title = "Download failed!",
+          text = "Failed to download plots! Please make sure to upload .rds file and select genes before downloading!",
+          size = "s", 
+          closeOnEsc = TRUE,
+          closeOnClickOutside = FALSE,
+          html = FALSE,
+          type = "error",
+          showConfirmButton = TRUE,
+          showCancelButton = FALSE,
+          timer = 0,
+          imageUrl = "",
+          animation = TRUE
+        )
+        return(NULL)
+      }
       
       ### Download FeaturPlot ############################# 
       if (input$check_featureplot == TRUE) {
