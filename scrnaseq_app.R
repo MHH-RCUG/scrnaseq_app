@@ -37,7 +37,6 @@ plots_DotPlot = NULL
 
 
 # UI ---------------------------------
-
 ui = fluidPage(
   
   #theme = shinytheme("paper"),
@@ -138,18 +137,34 @@ server = function(input, output, session) {
   })
   
   # Upload =================================
-  # File upload
+  # .rds file upload
   sc = reactive({
     inFile = input$rds_file
     if (is.null(inFile)) {
-      tmp_sc = NULL
+      tmp = NULL
     } else {
-      tmp_sc = readRDS(inFile$datapath)
+      shinyalert(
+        title = "Please wait!",
+        text = "Upload complete! Please wait while the data is being processed!",
+        size = "s",
+        type = "info",
+        showConfirmButton = FALSE
+      )
+      tmp = readRDS(inFile$datapath)
     }
-    tmp_sc
+    return(tmp)
   })
   
-  # Excel file input
+  observeEvent(sc(),{
+    if (!is.null(sc())) {
+      features_names_ids <<- paste(rownames(sc()[["RNA"]][[]]), "_", sc()[["RNA"]][[]][, 1], sep = "")
+      #print(features_names_ids)
+      updateSelectInput(session, "genes", "Select Genes:", features_names_ids)
+    }
+    shinyjs::delay(500,shinyjs::runjs("swal.close();"))
+  })
+  
+  # Excel file upload
   excel_genes = reactive({
     inFile = input$xlsx_file
     if (is.null(inFile)) {
@@ -158,37 +173,36 @@ server = function(input, output, session) {
       tmp = readxl::read_excel(path = inFile$datapath,
                        sheet = 1,
                        col_names = input$header)
+      shinyalert(
+        title = "Please wait!",
+        text = "Upload complete! Please wait while the data is being processed!",
+        size = "s",
+        type = "info",
+        showConfirmButton = FALSE
+      )
     }
-    tmp
+    return(tmp)
   })
   
-  # observe({
-  # 
-  # })
-  
-  observeEvent(input$rds_file,{
-    shinyalert(
-      title = "Please wait!",
-      text = "Upload complete! Please wait while the data is being processed!",
-      size = "s",
-      type = "info",
-      showConfirmButton = FALSE
-    )
-    
-    if (!is.null(sc())) {
-      features_names_ids = paste(rownames(sc()[["RNA"]][[]]), "_", sc()[["RNA"]][[]][, 1], sep = "")
-      #print(features_names_ids)
-      updateSelectInput(session, "genes", "Select Genes:", features_names_ids)
-    }
-    
-    if(!is.null(sc()) & !is.null(excel_genes())){
+  observeEvent(excel_genes(),{
+    if(length(excel_genes()) == 0){
+      print("test")
+      shinyjs::runjs("swal.close();")
+      shinyjs::delay(1000)
+      shinyalert(
+        title = "Error!",
+        text = "The Excel file was empty!",
+        size = "s",
+        type = "error",
+        showConfirmButton = TRUE
+      )
+      return(NULL)
+    }else{
       excel_list = unlist(excel_genes()[,1])
       x = features_names_ids[unlist(lapply(excel_list, function(one_gene)grep(one_gene, features_names_ids)))]
-      updateSelectInput(session, "genes", "Genes:", features_names_ids, selected = x)
+      updateSelectInput(session, "genes", "Select Genes:", features_names_ids, selected = x)
+      shinyjs::delay(500,shinyjs::runjs("swal.close();"))
     }
-    shinyjs::delay(10,shinyjs::runjs("swal.close();"))
-    #shinyjs::runjs("swal.close();")
-    
   })
   
   # Button to restore default settings for axes
