@@ -10,20 +10,20 @@ Singularity app by Colin Davenport
 ```
 ### takes ~10 minutes (uses up to 24 cores on a multicore machine!)
 ### build main version
-sudo singularity build ../scrnaseq_app.simg singularity_app_recipe.txt
+sudo singularity build ../../scrnaseq_app.simg singularity_app_recipe.txt
 ### build dev version
-sudo singularity build ../scrnaseq_app.simg singularity_app_recipe_dev.txt
+sudo singularity build ../../scrnaseq_app.simg singularity_app_recipe_dev.txt
 
 
 ```
 
 ## Run app - exits without msg
 ```
-singularity run ../scrnaseq_app.simg
+singularity run ../../scrnaseq_app.simg
 
-singularity exec ../scrnaseq_app.simg ls  /data/scrnaseq/
+singularity exec ../../scrnaseq_app.simg ls  /data/scrnaseq/
 
-singularity shell ../scrnaseq_app.simg 
+singularity shell ../../scrnaseq_app.simg 
 ```
 
 ### Actual app and repo to run:
@@ -33,7 +33,7 @@ https://github.com/MHH-RCUG/scrnaseq_app
 
 ### Test app in container. Currently missing pbmc_2020-06-08.rds', probable reason 'No such file or directory'
 ```
-singularity exec ../scrnaseq_app.simg     R -e "options('shiny.port'=3838,shiny.host='0.0.0.0'); shiny::runApp('/data/scrnaseq_app/scrnaseq_app.R')"
+singularity exec ../../scrnaseq_app.simg     R -e "options('shiny.port'=3838,shiny.host='0.0.0.0'); shiny::runApp('/data/scrnaseq_app/scrnaseq_app.R')"
 ```
 
 
@@ -43,6 +43,7 @@ Tested/built on:
 singularity version
 -3.5.3
 -Ubuntu 1604
+-Ubuntu 2004
 ```
 
 ### Helpful links - singularity setup and SLURM
