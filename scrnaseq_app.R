@@ -301,12 +301,12 @@ server = function(input, output, session) {
         theme(axis.text.x = element_text(angle=90, hjust=1, vjust=.5))
       
       # Heatmap
-      plots_Heatmap <<-
-        Seurat::DoHeatmap(
-          sc(), 
-          features=unlist(strsplit(input$genes, "_"))[c(T, F)], 
-          group.colors=param$col_clusters) + 
-        NoLegend()
+      # plots_Heatmap <<-
+      #   Seurat::DoHeatmap(
+      #     sc(), 
+      #     features=unlist(strsplit(input$genes, "_"))[c(T, F)], 
+      #     group.colors=param$col_clusters) + 
+      #   NoLegend()
     }
   })
   
@@ -426,9 +426,10 @@ server = function(input, output, session) {
           plots_DotPlot
         })
         
-        output$plot_dotplot = renderPlot({
-          plots_Heatmap
-        })
+        # output$plot_dotplot = renderPlot({
+        #   plots_Heatmap
+        # })
+        
       })
     }
   })
