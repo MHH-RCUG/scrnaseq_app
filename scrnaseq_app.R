@@ -32,7 +32,7 @@ plots_RidgePlotNorm = NULL
 plots_ViolinPlotRaw = NULL
 plots_ViolinPlotNorm = NULL
 plots_DotPlot = NULL
-
+plots_Heatmap = NULL
 
 # UI ---------------------------------
 ui = fluidPage(
@@ -68,6 +68,7 @@ ui = fluidPage(
       tabPanel("ViolinPlot (Raw)", uiOutput("ui_vln_raw")),
       tabPanel("ViolinPlot (Norm)", uiOutput("ui_vln_norm")),
       tabPanel("DotPlot", plotOutput("plot_dotplot")),
+      tabPanel("Heatmap", plotOutput("plot_heatmap")),
       tabPanel("Help", includeMarkdown("README.md"))
     ) #tabPanel: UI for the creation of tabs and which content to display
   ) #mainPanel
@@ -298,6 +299,14 @@ server = function(input, output, session) {
         theme_light() + theme(panel.border = element_blank()) + 
         ylab("Cluster") + 
         theme(axis.text.x = element_text(angle=90, hjust=1, vjust=.5))
+      
+      # Heatmap
+      plots_Heatmap <<-
+        Seurat::DoHeatmap(
+          sc(), 
+          features=unlist(strsplit(input$genes, "_"))[c(T, F)], 
+          group.colors=param$col_clusters) + 
+        NoLegend()
     }
   })
   
@@ -415,6 +424,10 @@ server = function(input, output, session) {
         
         output$plot_dotplot = renderPlot({
           plots_DotPlot
+        })
+        
+        output$plot_dotplot = renderPlot({
+          plots_Heatmap
         })
       })
     }
