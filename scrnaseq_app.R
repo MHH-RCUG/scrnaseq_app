@@ -1,7 +1,5 @@
 # Author: Marius Rueve
-
 # Global ---------------------------------
-
 # Load packages
 library(shiny)
 library(Seurat)
@@ -53,10 +51,10 @@ ui = fluidPage(
       accept = ".rds",
       buttonLabel = "Browse",
       placeholder = "Please upload .rds file!"
-    ), # File upload
+    ), # fileInput: Upload of .rds file
     
     uiOutput("insert_ui"),
-  ),
+  ), #sidebarPanel
   
   # Tabs
   mainPanel(
@@ -71,9 +69,9 @@ ui = fluidPage(
       tabPanel("ViolinPlot (Norm)", uiOutput("ui_vln_norm")),
       tabPanel("DotPlot", plotOutput("plot_dotplot")),
       tabPanel("Help", includeMarkdown("README.md"))
-    )
-  )
-)
+    ) #tabPanel: UI for the creation of tabs and which content to display
+  ) #mainPanel
+) #fluidPage
 
 
 # Server ---------------------------------
@@ -92,8 +90,10 @@ server = function(input, output, session) {
         accept = ".xlsx",
         buttonLabel = "Browse",
         placeholder = "No file selected"
-      ),
+      ), #fileInput: uplaod of an excel file (.xlsx) to select genes by ensemblID
+      
       tags$hr(),
+      
       fluidRow(column(
         6,
         numericInput(
@@ -103,7 +103,7 @@ server = function(input, output, session) {
           min = 1,
           max = 3000
         )
-      ),
+      ), #column: value of x-axis
       column(
         6,
         ofset = 3,
@@ -114,7 +114,7 @@ server = function(input, output, session) {
           min = 1,
           max = 3000
         )
-      )),
+      )), #column: value of y-axis
       actionButton("restore_axes", "Default settings"), # Restore default values of axes (px)
       tags$hr(),
       h4("3. Download:"),
@@ -123,18 +123,18 @@ server = function(input, output, session) {
         "Enter name of archive (.zip):",
         value = paste0("Download", "_", Sys.Date()),
         placeholder = paste0("Download", "_", Sys.Date())
-      ),
-      # Checkboxes
+      ), #textInput: give name of .zip file
       fluidRow(
         column(5,checkboxInput("check_featureplot", "FeaturePlot", value = TRUE)),
         column(5,checkboxInput("check_ridgeplot_raw", "RidgePlot (Raw)", value = TRUE)),
         column(5,checkboxInput("check_ridgeplot_norm", "RidgePlot (Norm)", value = TRUE)),
         column(5,checkboxInput("check_vlnplot_raw", "ViolinPlot (Raw)", value = TRUE)),
         column(5,checkboxInput("check_vlnplot_norm", "ViolinPlot (Norm)", value = TRUE)),
-        column(5, checkboxInput("check_dotplot", "DotPlot", value = TRUE))),
+        column(5, checkboxInput("check_dotplot", "DotPlot", value = TRUE))
+        ), #fluidRow: Cointains checkboxes wether or not to download certain plot types
       downloadButton("download_plots")
-    )
-  })
+    ) #tagList
+  }) #renderUI: dynamically expands the UI when the user uploads an .rds file
   
   # Upload =================================
   # .rds file upload
@@ -203,7 +203,7 @@ server = function(input, output, session) {
       updateSelectInput(session, "genes", "Select Genes:", features_names_ids, selected = x)
       shinyjs::delay(500,shinyjs::runjs("swal.close();"))
     }
-  })
+  }) #observerEvent
   
   # Button to restore default settings for axes
   observeEvent(input$restore_axes, {
