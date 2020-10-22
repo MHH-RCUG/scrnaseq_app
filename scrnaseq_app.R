@@ -84,6 +84,7 @@ server = function(input, output, session) {
       tags$hr(),
       h4("2. Select genes:"),
       selectInput("genes", "Select through list:", features_names_ids, multiple = TRUE), # Select genes 
+      actionButton("clear_selection", "Clear selection"), # 
       checkboxInput("header", "Check if Excel file contains Headers", TRUE),
       fileInput(
         inputId = "xlsx_file",
@@ -205,6 +206,10 @@ server = function(input, output, session) {
       shinyjs::delay(500,shinyjs::runjs("swal.close();"))
     }
   }) #observerEvent
+  
+  observeEvent(input$clear_selection, {
+    updateSelectInput(session, "genes", "Select Genes:", features_names_ids)
+  })
   
   # Button to restore default settings for axes
   observeEvent(input$restore_axes, {
