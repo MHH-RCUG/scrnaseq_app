@@ -87,11 +87,12 @@ MirrorURL: http://de.archive.ubuntu.com/ubuntu/
 
 
     # Install required R packages
-    R --slave -e 'install.packages(c("shiny", "Seurat",  "shinyalert"), repos="https://cloud.r-project.org/")'
+    R --slave -e 'install.packages(c("shiny", "Seurat"), repos="https://cloud.r-project.org/")'
     R --slave -e 'install.packages(c("ggplot2", "readxl"), repos="https://cloud.r-project.org/")'
     R --slave -e 'install.packages(c("golem"), repos="https://cloud.r-project.org/")'
-    R --slave -e 'install.packages(c("shinythemes"), repos="https://cloud.r-project.org/")'
+    R --slave -e 'install.packages(c("shinythemes", "shinyalert", "shinyjs"), repos="https://cloud.r-project.org/")'
     R --slave -e 'install.packages(c("markdown"), repos="https://cloud.r-project.org/")'
+    R --slave -e 'install.packages(c("zip"), repos="https://cloud.r-project.org/")'
 
 
     #mkdir /data
