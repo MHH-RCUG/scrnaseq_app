@@ -84,6 +84,7 @@ server = function(input, output, session) {
       tags$hr(),
       h4("2. Select genes:"),
       selectInput("genes", "Select through list:", features_names_ids, multiple = TRUE), # Select genes 
+      actionButton("clear_selection", "Clear selection"), # 
       checkboxInput("header", "Check if Excel file contains Headers", TRUE),
       fileInput(
         inputId = "xlsx_file",
@@ -205,6 +206,10 @@ server = function(input, output, session) {
       shinyjs::delay(500,shinyjs::runjs("swal.close();"))
     }
   }) #observerEvent
+  
+  observeEvent(input$clear_selection, {
+    updateSelectInput(session, "genes", "Select Genes:", features_names_ids)
+  })
   
   # Button to restore default settings for axes
   observeEvent(input$restore_axes, {
@@ -402,29 +407,31 @@ server = function(input, output, session) {
       local({
         #because expressions are evaluated at app init
         ii = i
-        output[[paste0("plot_feature", ii)]] = renderPlot({
+        output[[paste0("plot_feature", ii)]] = renderPlot(
             plots_FeaturePlot[[ii]]
-        })
+        )
         
-        output[[paste0("plot_ridge_raw", ii)]] = renderPlot({
+        output[[paste0("plot_ridge_raw", ii)]] = renderPlot(
           plots_RidgePlotRaw[[ii]]
-        })
+        )
         
-        output[[paste0("plot_ridge_norm", ii)]] = renderPlot({
+        output[[paste0("plot_ridge_norm", ii)]] = renderPlot(
           plots_RidgePlotNorm[[ii]]
-        })
+        )
         
-        output[[paste0("plot_vln_raw", ii)]] = renderPlot({
+        output[[paste0("plot_vln_raw", ii)]] = renderPlot(
           plots_ViolinPlotRaw[[ii]]
-        })
+        )
         
-        output[[paste0("plot_vln_norm", ii)]] = renderPlot({
+        output[[paste0("plot_vln_norm", ii)]] = renderPlot(
           plots_ViolinPlotNorm[[ii]]
-        })
+        )
         
-        output$plot_dotplot = renderPlot({
-          plots_DotPlot
-        })
+        output$plot_dotplot = renderPlot(
+          plots_DotPlot,
+          width = input$x_axis,
+          height = input$y_axis
+        )
         
         # output$plot_dotplot = renderPlot({
         #   plots_Heatmap
