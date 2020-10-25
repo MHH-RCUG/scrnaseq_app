@@ -84,8 +84,7 @@ server = function(input, output, session) {
       tags$hr(),
       h4("2. Select genes:"),
       selectInput("genes", "Select through list:", features_names_ids, multiple = TRUE), # Select genes 
-      actionButton("clear_selection", "Clear selection"), # 
-      checkboxInput("header", "Check if Excel file contains Headers", TRUE),
+      actionButton("clear_selection", "Clear selection"),
       fileInput(
         inputId = "xlsx_file",
         label = "Select through excel file: (.xlsx)",
@@ -123,8 +122,7 @@ server = function(input, output, session) {
       textInput(
         "archive_download",
         "Enter name of archive (.zip):",
-        value = paste0("Download", "_", Sys.Date()),
-        placeholder = paste0("Download", "_", Sys.Date())
+        value = paste0("Download", "_", Sys.Date())
       ), #textInput: give name of .zip file
       fluidRow(
         column(5,checkboxInput("check_featureplot", "FeaturePlot", value = TRUE)),
@@ -173,8 +171,9 @@ server = function(input, output, session) {
       tmp = NULL
     } else {
       tmp = readxl::read_excel(path = inFile$datapath,
-                       sheet = 1,
-                       col_names = input$header)
+                               sheet = 1,
+                               range = cell_cols("A:B"),
+                               col_names = FALSE)
       shinyalert(
         title = "Please wait!",
         text = "Upload complete! Please wait while the data is being processed!",
@@ -188,7 +187,6 @@ server = function(input, output, session) {
   
   observeEvent(excel_genes(),{
     if(length(excel_genes()) == 0){
-      print("test")
       shinyjs::runjs("swal.close();")
       shinyjs::delay(1000)
       shinyalert(
@@ -203,6 +201,10 @@ server = function(input, output, session) {
       excel_list = unlist(excel_genes()[,1])
       x = features_names_ids[unlist(lapply(excel_list, function(one_gene)grep(one_gene, features_names_ids)))]
       updateSelectInput(session, "genes", "Select Genes:", features_names_ids, selected = x)
+      updateTextInput("archive_download",
+                      "Enter name of archive (.zip):",
+                      value = input$xlsx_file$name
+                      )
       shinyjs::delay(500,shinyjs::runjs("swal.close();"))
     }
   }) #observerEvent
