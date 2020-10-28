@@ -205,11 +205,11 @@ server = function(input, output, session) {
                         label = "Select Genes:",
                         choices = features_names_ids, 
                         selected = x)
-      updateTextInput(session = session,
-                      inputId = "archive_download",
-                      label = "Enter name of archive (.zip):",
-                      value = input$xlsx_file$name
-                      )
+      # updateTextInput(session = session,
+      #                 inputId = "archive_download",
+      #                 label = "Enter name of archive (.zip):",
+      #                 value = input$xlsx_file$name
+      #                 )
       shinyjs::delay(500,shinyjs::runjs("swal.close();"))
     }
   }) #observerEvent
