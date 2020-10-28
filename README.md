@@ -2,7 +2,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/MHH-RCUG/scrnaseq_app">
-    <img src="www/MHH.png" alt="Logo">
+    <img src="www/Logo_engl_schwarz.png" height="25%" width="25%" alt="Logo">
   </a>
 
   <h2 align="center">scrnaseq_app</h2>
