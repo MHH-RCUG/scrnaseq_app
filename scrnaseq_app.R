@@ -200,9 +200,14 @@ server = function(input, output, session) {
     }else{
       excel_list = unlist(excel_genes()[,1])
       x = features_names_ids[unlist(lapply(excel_list, function(one_gene)grep(one_gene, features_names_ids)))]
-      updateSelectInput(session, "genes", "Select Genes:", features_names_ids, selected = x)
-      updateTextInput("archive_download",
-                      "Enter name of archive (.zip):",
+      updateSelectInput(session = session,
+                        inputId = "genes",
+                        label = "Select Genes:",
+                        choices = features_names_ids, 
+                        selected = x)
+      updateTextInput(session = session,
+                      inputId = "archive_download",
+                      label = "Enter name of archive (.zip):",
                       value = input$xlsx_file$name
                       )
       shinyjs::delay(500,shinyjs::runjs("swal.close();"))
