@@ -505,8 +505,8 @@ server = function(input, output, session) {
         # PDF
         fileName_pdf = "FeaturePlot.pdf"
         pdf(file = fileName_pdf,
-            width = 16,
-            height = 9)
+            width = (input$x_axis/96),
+            height = (input$y_axis/96))
         for (i in 1:length(input$genes)) {
           print(
             plots_FeaturePlot[[i]]
@@ -534,8 +534,8 @@ server = function(input, output, session) {
         # PDF
         fileName_pdf = "RidgePlot_Raw.pdf"
         pdf(file = fileName_pdf,
-            width = 16,
-            height = 9)
+            width = (input$x_axis/96),
+            height = (input$y_axis/96))
         for (i in 1:length(input$genes)) {
           print(
             plots_RidgePlotRaw[[i]]
@@ -563,8 +563,8 @@ server = function(input, output, session) {
         # PDF
         fileName_pdf = "RidgePlot_Norm.pdf"
         pdf(file = fileName_pdf,
-            width = 16,
-            height = 9)
+            width = (input$x_axis/96),
+            height = (input$y_axis/96))
         for (i in 1:length(input$genes)) {
           print(
             plots_RidgePlotNorm[[i]]
@@ -593,8 +593,8 @@ server = function(input, output, session) {
         # PDF ViolinPlot Raw
         fileName_pdf = "ViolinPlot_Raw.pdf"
         pdf(file = fileName_pdf,
-            width = 16,
-            height = 9)
+            width = (input$x_axis/96),
+            height = (input$y_axis/96))
         for (i in 1:length(input$genes)) {
           print(
             plots_ViolinPlotRaw[[i]]
@@ -622,8 +622,8 @@ server = function(input, output, session) {
         # PDF ViolinPlot Normalised
         fileName_pdf = "ViolinPlot_Norm.pdf"
         pdf(file = fileName_pdf,
-            width = 16,
-            height = 9)
+            width = (input$x_axis/96),
+            height = (input$y_axis/96))
         for (i in 1:length(input$genes)) {
           print(
             plots_ViolinPlotNorm[[i]]
@@ -650,8 +650,8 @@ server = function(input, output, session) {
         # PDF
         fileName_pdf = "DotPlot.pdf"
         pdf(file = fileName_pdf,
-            width = 16,
-            height = 9)
+            width = (input$x_axis/96),
+            height = (input$y_axis/96))
         print(
           plots_DotPlot
         )
