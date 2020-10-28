@@ -38,7 +38,7 @@ plots_Heatmap = NULL
 ui = fluidPage(
   
   #theme = shinytheme("paper"),
-  img(src = "MHH.png", align = "right"),
+  img(src = "Logo_engl_schwarz.png", height="15%", width="15%", align = "right"),
   titlePanel("scrnaseq_app"),
   
   sidebarPanel(
