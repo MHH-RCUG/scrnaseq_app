@@ -38,6 +38,7 @@ plots_Heatmap = NULL
 ui = fluidPage(
   
   #theme = shinytheme("paper"),
+  img(src = "RCUG_Logo.png", height="10%", width="10%", align = "right"),
   img(src = "Logo_engl_schwarz.png", height="15%", width="15%", align = "right"),
   titlePanel("scrnaseq_app"),
   
