@@ -17,12 +17,19 @@ MirrorURL: http://de.archive.ubuntu.com/ubuntu/
 
 %runscript
     #!/bin/bash
-    exec echo "Container version 0.1 July 2020"
+    exec echo "Container version 0.2 Novemeber 2020"
 
     library(shiny) 
     library(Seurat) 
     library(ggplot2) 
     library(readxl)
+    library(golem)
+    library(shinythemes)
+    library(shinyalert)
+    library(shinyjs)
+    library(markdown)
+    library(zip)
+
 
     cd /data/scrnaseq_app/
     # only if some branch is used, not master branch
