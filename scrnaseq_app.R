@@ -508,7 +508,7 @@ server = function(input, output, session) {
         }
         
         # Singularity bug tracking
-        if (file.exists(paste0("FeaturePlot_", input$genes[[i]], ".png"))){
+        if (file.exists(paste0("FeaturePlot_", input$genes[[1]], ".png"))){
           print(paste0("FeaturePlot_", input$genes[[1]], ".png"))
         }
         
