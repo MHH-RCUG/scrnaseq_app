@@ -471,7 +471,7 @@ server = function(input, output, session) {
       # })
 
       files = NULL
-      on.exit(unlink(files))
+      #on.exit(unlink(files))
       
       if(length(input$genes) == 0){
         shinyalert(
@@ -506,6 +506,12 @@ server = function(input, output, session) {
           dev.off()
           files = c(fileName_png, files)
         }
+        
+        # Singularity bug tracking
+        if (file.exists(paste0("FeaturePlot_", input$genes[[i]], ".png"))){
+          print(paste0("FeaturePlot_", input$genes[[1]], ".png"))
+        }
+        
         # PDF
         fileName_pdf = "FeaturePlot.pdf"
         pdf(file = fileName_pdf,
