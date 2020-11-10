@@ -243,6 +243,8 @@ server = function(input, output, session) {
   # Plots =================================
   ## Rendering Plots
   observeEvent(input$genes, {
+    print("Files while rendering plots:")
+    print(list.files())
     for (i in 1:length(input$genes)) {
       
       # Feature Plots
@@ -506,6 +508,12 @@ server = function(input, output, session) {
           dev.off()
           files = c(fileName_png, files)
         }
+        
+        # Singularity bug tracking
+        if (file.exists(paste0("FeaturePlot_", input$genes[[1]], ".png"))){
+          print(paste0("FeaturePlot_", input$genes[[1]], ".png"))
+        }
+        
         # PDF
         fileName_pdf = "FeaturePlot.pdf"
         pdf(file = fileName_pdf,
@@ -664,6 +672,8 @@ server = function(input, output, session) {
       }
       #print(files)
       # Create zip file for Download, uses array of files
+      print("Files before zip():")
+      print(list.files())
       zip(zipfile = file, files =  files)
       shinyjs::runjs("swal.close();")
     },
