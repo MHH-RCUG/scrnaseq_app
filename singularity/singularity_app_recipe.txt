@@ -111,9 +111,9 @@ MirrorURL: http://de.archive.ubuntu.com/ubuntu/
     #git checkout marius_changes
 
 
-    # download required example file
-    wget https://owncloud.gwdg.de/index.php/s/rRawkhIOVe1T5qi/download
-    mv download pbmc_2020-06-08.rds
+    # download required example file 
+    #wget https://owncloud.gwdg.de/index.php/s/rRawkhIOVe1T5qi/download
+    #mv download pbmc_2020-06-08.rds
 
 
 
