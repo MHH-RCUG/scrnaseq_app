@@ -38,7 +38,7 @@ ps -aux | grep R
 kill <PID> 
 
 # Start container
-singularity exec ../../scrnaseq_app.simg     R -e "options('shiny.port'=3838,shiny.host='0.0.0.0'); shiny::runApp('/data/scrnaseq_app/scrnaseq_app.R')"
+singularity exec  ../../scrnaseq_app.simg     R -e "options('shiny.port'=3838,shiny.host='0.0.0.0'); shiny::runApp('/data/scrnaseq_app/scrnaseq_app.R')"
 ```
 
 
@@ -56,8 +56,13 @@ singularity version
 https://njstem.wordpress.com/2018/08/02/r-script-seurat-with-a-singularity-container-using-slurm/
 
 
-### Dependencies : downloaded in script
+### Dependencies : was previously downloaded in script
 ```
 git clone https://github.com/MHH-RCUG/scrnaseq_app
 wget https://owncloud.gwdg.de/index.php/s/rRawkhIOVe1T5qi/download
 ```
+
+
+### Writable containers
+-Just for sandbox directories for testing
+-Instead, write images to directories which are bound into the container, eg /home/$USER, or /tmp
