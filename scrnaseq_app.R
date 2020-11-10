@@ -461,7 +461,7 @@ server = function(input, output, session) {
       paste0(input$archive_download, ".zip")
     },
     content = function(file) {
-       temporarily switch to the temp dir, in case you do not have write permission to the current working directory
+       #temporarily switch to the temp dir, in case you do not have write permission to the current working directory
        owd = setwd(tempdir())
        on.exit(setwd(owd))
       
