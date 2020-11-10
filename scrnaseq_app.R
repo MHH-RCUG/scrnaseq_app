@@ -243,6 +243,8 @@ server = function(input, output, session) {
   # Plots =================================
   ## Rendering Plots
   observeEvent(input$genes, {
+    print("Files while rendering plots:")
+    print(list.files())
     for (i in 1:length(input$genes)) {
       
       # Feature Plots
@@ -471,7 +473,7 @@ server = function(input, output, session) {
       # })
 
       files = NULL
-      #on.exit(unlink(files))
+      on.exit(unlink(files))
       
       if(length(input$genes) == 0){
         shinyalert(
@@ -670,6 +672,8 @@ server = function(input, output, session) {
       }
       #print(files)
       # Create zip file for Download, uses array of files
+      print("Files before zip():")
+      print(list.files())
       zip(zipfile = file, files =  files)
       shinyjs::runjs("swal.close();")
     },
