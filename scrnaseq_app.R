@@ -12,7 +12,7 @@ library(shinyjs)
 library(zip)
 
 # Set max upload size to 300 MB
-options(shiny.maxRequestSize = 300 * 1024 ^ 2)
+options(shiny.maxRequestSize = 5000 * 1024 ^ 2)
 
 # Parameter list for convenience
 param = list()
