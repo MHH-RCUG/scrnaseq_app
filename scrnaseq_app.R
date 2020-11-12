@@ -29,37 +29,45 @@ param$col = "palevioletred"
 # Empty object so Input UI gets rendered
 features_names_ids = NULL
 
-# Define global variable for plots
-plots_FeaturePlot = NULL
-plots_RidgePlotRaw = NULL
-plots_RidgePlotNorm = NULL
-plots_ViolinPlotRaw = NULL
-plots_ViolinPlotNorm = NULL
-plots_DotPlot = NULL
-plots_Heatmap = NULL
+# Define global variable to store plots
+stored_FeaturePlots = NULL
+stored_RidgePlotRaws = NULL
+stored_RidgePlotNorms = NULL
+stored_ViolinPlotRaws = NULL
+stored_ViolinPlotNorms = NULL
+stored_DotPlot = NULL
+stored_Heatmap = NULL
 
 # UI --------------------
 ui = fluidPage(
+
   #theme = shinytheme("paper"),
 
+  # Place RCUG logo at top right
   img(
     src = "RCUG_Logo.png",
     height = "10%",
     width = "10%",
     align = "right"
   ),
+
+  # Place MHH logo at top right
   img(
     src = "Logo_engl_schwarz.png",
     height = "15%",
     width = "15%",
     align = "right"
   ),
+
+  # Application title
   titlePanel("scrnaseq_app"),
 
+  # Sidebar
   sidebarPanel(
     width = 3,
     h4("1. Upload:"),
 
+    # Upload of .rds file
     fileInput(
       inputId = "rds_file",
       label = "Upload Seurat file: (.rds)",
@@ -68,12 +76,17 @@ ui = fluidPage(
       placeholder = "Please upload .rds file!"
     ),
 
+    # UI will be rendered once the .rds file has been uploaded
     uiOutput("insert_ui"),
   ),
 
+  # Main panel
   mainPanel(
+
     useShinyjs(),
     useShinyalert(),
+
+    # Set tabs
     tabsetPanel(
       type = "tabs",
       tabPanel("FeaturePlot", uiOutput("ui_feature")),
@@ -262,6 +275,7 @@ server = function(input, output, session) {
     }
   })
 
+  # If Button "clear selection" is pressed the selection is null
   observeEvent(input$clear_selection, {
     updateSelectInput(session, "genes", "Select Genes:", features_names_ids)
   })
@@ -293,7 +307,7 @@ server = function(input, output, session) {
   observeEvent(input$genes, {
     for (i in 1:length(input$genes)) {
       # Feature Plots
-      plots_FeaturePlot[[i]] <<- # <<- for global assignments
+      stored_FeaturePlots[[i]] <<- # <<- for global assignments
         Seurat::FeaturePlot(
           sc(),
           features = unlist(strsplit(input$genes[[i]], "_"))[c(T, F)],
@@ -303,7 +317,7 @@ server = function(input, output, session) {
         theme_light() + theme(panel.border = element_blank())
 
       # Ridge Plots Raw
-      plots_RidgePlotRaw[[i]] <<-
+      stored_RidgePlotRaws[[i]] <<-
         Seurat::RidgePlot(
           sc(),
           features = unlist(strsplit(input$genes[[i]], "_"))[c(T, F)],
@@ -315,7 +329,7 @@ server = function(input, output, session) {
         ylab("Cluster")
 
       # Ridge Plots Norm
-      plots_RidgePlotNorm[[i]] <<-
+      stored_RidgePlotNorms[[i]] <<-
         Seurat::RidgePlot(sc(),
                           features = unlist(strsplit(input$genes[[i]], "_"))[c(T, F)],
                           slot = "data") +
@@ -324,7 +338,7 @@ server = function(input, output, session) {
         ylab("Cluster")
 
       # Violin Plots Raw
-      plots_ViolinPlotRaw[[i]] <<-
+      stored_ViolinPlotRaws[[i]] <<-
         Seurat::VlnPlot(
           sc(),
           features = unlist(strsplit(input$genes[[i]], "_"))[c(T, F)],
@@ -337,7 +351,7 @@ server = function(input, output, session) {
         xlab("Cluster")
 
       # Violin Plots Norm
-      plots_ViolinPlotNorm[[i]] <<-
+      stored_ViolinPlotNorms[[i]] <<-
         Seurat::VlnPlot(sc(),
                         features = unlist(strsplit(input$genes[[i]], "_"))[c(T, F)],
                         pt.size = 0.2) +
@@ -346,7 +360,7 @@ server = function(input, output, session) {
         xlab("Cluster")
 
       # DotPlot
-      plots_DotPlot <<-
+      stored_DotPlot <<-
         Seurat::DotPlot(
           sc(),
           features = unlist(strsplit(input$genes, "_"))[c(T, F)],
@@ -361,7 +375,7 @@ server = function(input, output, session) {
         ))
 
       # Heatmap
-      plots_Heatmap <<-
+      stored_Heatmap <<-
         Seurat::DoHeatmap(
           sc(),
           features = unlist(strsplit(input$genes, "_"))[c(T, F)],
@@ -372,112 +386,121 @@ server = function(input, output, session) {
     }
   })
 
+
   # UI FeaturePlot #############################
   output$ui_feature = renderUI({
-    out_feature = list()
+    tmp = list()
 
     if (length(input$genes) == 0) {
       return(NULL)
     }
     for (i in 1:length(input$genes)) {
-      out_feature[[i]] =  plotOutput(
+      tmp[[i]] =  plotOutput(
         outputId = paste0("plot_feature", i),
         width = paste0(input$x_axis, "px"),
         height = paste0(input$y_axis, "px")
       )
     }
-    return(out_feature)
+    return(tmp)
   })
+
 
   # UI RidgePlot Raw #############################
   output$ui_ridge_raw = renderUI({
-    out_ridge_raw = list()
+    tmp = list()
 
     if (length(input$genes) == 0) {
       return(NULL)
     }
     for (i in 1:length(input$genes)) {
-      out_ridge_raw[[i]] =  plotOutput(
+      tmp[[i]] =  plotOutput(
         outputId = paste0("plot_ridge_raw", i),
         width = paste0(input$x_axis, "px"),
         height = paste0(input$y_axis, "px")
       )
     }
-    return(out_ridge_raw)
+    return(tmp)
   })
+
 
   # UI RidgePlot Normalised #############################
   output$ui_ridge_norm = renderUI({
-    out_ridge_norm = list()
+    tmp = list()
 
     if (length(input$genes) == 0) {
       return(NULL)
     }
     for (i in 1:length(input$genes)) {
-      out_ridge_norm[[i]] =  plotOutput(
+      tmp[[i]] =  plotOutput(
         outputId = paste0("plot_ridge_norm", i),
         width = paste0(input$x_axis, "px"),
         height = paste0(input$y_axis, "px")
       )
     }
-    return(out_ridge_norm)
+    return(tmp)
   })
+
 
   # UI ViolinPlot Raw #############################
   output$ui_vln_raw = renderUI({
-    out_vln_raw = list()
+    tmp = list()
 
     if (length(input$genes) == 0) {
       return(NULL)
     }
     for (i in 1:length(input$genes)) {
-      out_vln_raw[[i]] =  plotOutput(
+      tmp[[i]] =  plotOutput(
         outputId = paste0("plot_vln_raw", i),
         width = paste0(input$x_axis, "px"),
         height = paste0(input$y_axis, "px")
       )
     }
-    return(out_vln_raw)
+    return(tmp)
   })
+
 
   # UI ViolinPlot Normalised #############################
   output$ui_vln_norm = renderUI({
-    out_vln_norm = list()
+    tmp = list()
 
     if (length(input$genes) == 0) {
       return(NULL)
     }
     for (i in 1:length(input$genes)) {
-      out_vln_norm[[i]] =  plotOutput(
+      tmp[[i]] =  plotOutput(
         outputId = paste0("plot_vln_norm", i),
         width = paste0(input$x_axis, "px"),
         height = paste0(input$y_axis, "px")
       )
     }
-    return(out_vln_norm)
+    return(tmp)
   })
+
 
   # renderPlots() --> plotOutput() --> renderUI()
   observe({
     for (i in 1:length(input$genes)) {
       local({
-        #because expressions are evaluated at app init
+        # because expressions are evaluated at app init
         ii = i
-        output[[paste0("plot_feature", ii)]] = renderPlot(plots_FeaturePlot[[ii]])
 
-        output[[paste0("plot_ridge_raw", ii)]] = renderPlot(plots_RidgePlotRaw[[ii]])
+        # This chunks takes the stored plots from the global variable and renders a reactive plots that is
+        # suitable for assigning to an `output` slot; passing vector to UI
+        output[[paste0("plot_feature", ii)]] = renderPlot(stored_FeaturePlots[[ii]])
 
-        output[[paste0("plot_ridge_norm", ii)]] = renderPlot(plots_RidgePlotNorm[[ii]])
+        output[[paste0("plot_ridge_raw", ii)]] = renderPlot(stored_RidgePlotRaws[[ii]])
 
-        output[[paste0("plot_vln_raw", ii)]] = renderPlot(plots_ViolinPlotRaw[[ii]])
+        output[[paste0("plot_ridge_norm", ii)]] = renderPlot(stored_RidgePlotNorms[[ii]])
 
-        output[[paste0("plot_vln_norm", ii)]] = renderPlot(plots_ViolinPlotNorm[[ii]])
+        output[[paste0("plot_vln_raw", ii)]] = renderPlot(stored_ViolinPlotRaws[[ii]])
 
-        output$plot_dotplot = renderPlot(plots_DotPlot,
+        output[[paste0("plot_vln_norm", ii)]] = renderPlot(stored_ViolinPlotNorms[[ii]])
+
+        output$plot_dotplot = renderPlot(stored_DotPlot,
                                          width = input$x_axis,
                                          height = input$y_axis)
 
-        output$plot_heatmap = renderPlot(plots_Heatmap,
+        output$plot_heatmap = renderPlot(stored_Heatmap,
                                          width = input$x_axis,
                                          height = input$y_axis)
 
@@ -489,6 +512,7 @@ server = function(input, output, session) {
   # Downloads =================================
   output$download_plots = downloadHandler(
     filename = function() {
+      # Takes the filename from the input of the user
       paste0(input$archive_download, ".zip")
     },
     content = function(file) {
@@ -507,6 +531,7 @@ server = function(input, output, session) {
       on.exit(unlink(files))
 
       if (length(input$genes) == 0) {
+        # Message if download fails due to no genese selected
         shinyalert(
           title = "Download failed!",
           text = "Failed to download plots! Please make sure to upload .rds file and select genes before downloading!",
@@ -515,6 +540,7 @@ server = function(input, output, session) {
         )
         return(NULL)
       } else{
+        # Message that the archive is being created and the download will start soon
         shinyalert(
           title = "Please wait!",
           text = "The creation of files (.png and .pdf) can take a while. The download will start, once everything is ready.",
@@ -523,6 +549,7 @@ server = function(input, output, session) {
           showConfirmButton = FALSE
         )
       }
+
 
       # Download FeaturPlot #############################
       if (input$check_featureplot == TRUE) {
@@ -533,11 +560,10 @@ server = function(input, output, session) {
           png(fileName_png,
               width = input$x_axis,
               height = input$y_axis)
-          print(plots_FeaturePlot[[i]])
+          print(stored_FeaturePlots[[i]])
           dev.off()
           files = c(fileName_png, files)
         }
-
         # PDF
         fileName_pdf = "FeaturePlot.pdf"
         pdf(
@@ -546,11 +572,12 @@ server = function(input, output, session) {
           height = (input$y_axis / 96)
         )
         for (i in 1:length(input$genes)) {
-          print(plots_FeaturePlot[[i]])
+          print(stored_FeaturePlots[[i]])
         }
         dev.off()
         files = c(fileName_pdf, files)
       }
+
 
       # Download RidgePlot Raw #############################
       if (input$check_ridgeplot_raw == TRUE) {
@@ -561,7 +588,7 @@ server = function(input, output, session) {
           png(fileName_png,
               width = input$x_axis,
               height = input$y_axis)
-          print(plots_RidgePlotRaw[[i]])
+          print(stored_RidgePlotRaws[[i]])
           dev.off()
           files = c(fileName_png, files)
         }
@@ -573,11 +600,12 @@ server = function(input, output, session) {
           height = (input$y_axis / 96)
         )
         for (i in 1:length(input$genes)) {
-          print(plots_RidgePlotRaw[[i]])
+          print(stored_RidgePlotRaws[[i]])
         }
         dev.off()
         files = c(fileName_pdf, files)
       }
+
 
       # Download RidgePlot Normalised #############################
       if (input$check_ridgeplot_norm == TRUE) {
@@ -588,7 +616,7 @@ server = function(input, output, session) {
           png(fileName_png,
               width = input$x_axis,
               height = input$y_axis)
-          print(plots_RidgePlotNorm[[i]])
+          print(stored_RidgePlotNorms[[i]])
           dev.off()
           files = c(fileName_png, files)
         }
@@ -600,11 +628,12 @@ server = function(input, output, session) {
           height = (input$y_axis / 96)
         )
         for (i in 1:length(input$genes)) {
-          print(plots_RidgePlotNorm[[i]])
+          print(stored_RidgePlotNorms[[i]])
         }
         dev.off()
         files = c(fileName_pdf, files)
       }
+
 
       # Download ViolinPlot Raw #############################
       if (input$check_vlnplot_raw == TRUE) {
@@ -615,11 +644,10 @@ server = function(input, output, session) {
           png(fileName_png,
               width = input$x_axis,
               height = input$y_axis)
-          print(plots_ViolinPlotRaw[[i]])
+          print(stored_ViolinPlotRaws[[i]])
           dev.off()
           files = c(fileName_png, files)
         }
-
         # PDF ViolinPlot Raw
         fileName_pdf = "ViolinPlot_Raw.pdf"
         pdf(
@@ -628,11 +656,12 @@ server = function(input, output, session) {
           height = (input$y_axis / 96)
         )
         for (i in 1:length(input$genes)) {
-          print(plots_ViolinPlotRaw[[i]])
+          print(stored_ViolinPlotRaws[[i]])
         }
         dev.off()
         files = c(fileName_pdf, files)
       }
+
 
       # Download ViolinPlot Normalised #############################
       if (input$check_vlnplot_norm == TRUE) {
@@ -643,7 +672,7 @@ server = function(input, output, session) {
           png(fileName_png,
               width = input$x_axis,
               height = input$y_axis)
-          print(plots_ViolinPlotNorm[[i]])
+          print(stored_ViolinPlotNorms[[i]])
           dev.off()
           files = c(fileName_png, files)
         }
@@ -655,11 +684,12 @@ server = function(input, output, session) {
           height = (input$y_axis / 96)
         )
         for (i in 1:length(input$genes)) {
-          print(plots_ViolinPlotNorm[[i]])
+          print(stored_ViolinPlotNorms[[i]])
         }
         dev.off()
         files = c(fileName_pdf, files)
       }
+
 
       # Download DotPlot #############################
       if (input$check_dotplot == TRUE) {
@@ -669,10 +699,9 @@ server = function(input, output, session) {
         png(fileName_png,
             width = input$x_axis,
             height = input$y_axis)
-        print(plots_DotPlot)
+        print(stored_DotPlot)
         dev.off()
         files = c(fileName_png, files)
-
         # PDF
         fileName_pdf = "DotPlot.pdf"
         pdf(
@@ -680,10 +709,11 @@ server = function(input, output, session) {
           width = (input$x_axis / 96),
           height = (input$y_axis / 96)
         )
-        print(plots_DotPlot)
+        print(stored_DotPlot)
         dev.off()
         files = c(fileName_pdf, files)
       }
+
 
       # Create zip file for Download, uses array of files
       zip(zipfile = file, files =  files)
