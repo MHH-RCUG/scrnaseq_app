@@ -1,7 +1,9 @@
 # Author: Marius Rueve
 
-# This is the user-interface definition of a Shiny web application. You can
+# ! This is the user-interface definition of a Shiny web application. You can
 # run the application by clicking 'Run App' above.
+
+# ! For convenience click "Run External" to run in you default browser
 
 # Global --------------------
 # Load packages
