@@ -376,15 +376,27 @@ server = function(input, output, session) {
           vjust = .5
         ))
 
-      # Heatmap
-      stored_Heatmap <<-
-        Seurat::DoHeatmap(
-          sc(),
-          features = unlist(strsplit(input$genes, "_"))[c(T, F)],
-          group.colors = param$col_clusters,
-          slot = "counts"
-        ) +
-        NoLegend()
+      tryCatch({
+        # Heatmap
+        stored_Heatmap <<-
+          Seurat::DoHeatmap(
+            sc(),
+            features = unlist(strsplit(input$genes, "_"))[c(T, F)],
+            group.colors = param$col_clusters,
+            slot = "counts"
+          ) +
+          NoLegend()
+      },
+      warning = function(w){
+          showNotification(
+            ui = "One or more of the selected genes could not be found in the 
+                  default search locations. These gene(s) will not show up in the Heatmap!",
+            duration = NULL,
+            id = "heatmap_warning",
+            type = "warning"
+          )
+      }
+      )
     }
   })
 
