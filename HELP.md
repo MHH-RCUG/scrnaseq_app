@@ -21,10 +21,8 @@ In order to find certain genes you can simply just type in the name and/ or ense
 
 Create an excel file (.xlsx) which contains the ensemblIDs in the first column.  
 Template:
-| Ensembl_IDs | Gene_Names |
-| :--- | :--- |
-| First ID  | First Name |
-| Second ID | Second Name |
+
+![Excel file template](www/excel_file_template.png)
 
 Upload this file to the app and wait for the data to be processed.
 Once processed the selected genes will be displayed and you can correct your selection.
@@ -33,3 +31,4 @@ Once processed the selected genes will be displayed and you can correct your sel
 
 By default the download will contain every plot. If you only want certain plots you can uncheck the ones you don't want. You can rename the archive and hit download.
 This can take a moment, because the .png and .pdf files have to be created.
+ 
