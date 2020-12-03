@@ -155,6 +155,12 @@ server = function(input, output, session) {
           )
         )
       ),
+      
+      actionButton(inputId = "preset_512",
+                   label = "512x288 px"),
+      
+      actionButton(inputId = "preset_1024",
+                   label = "1024x576 px"),
 
       actionButton(inputId = "restore_axes",
                    label = "Default settings"),
@@ -280,6 +286,44 @@ server = function(input, output, session) {
   # If Button "clear selection" is pressed the selection is null
   observeEvent(input$clear_selection, {
     updateSelectInput(session, "genes", "Select Genes:", features_names_ids)
+  })
+  
+  observeEvent(input$preset_1024, {
+    updateNumericInput(
+      session,
+      "x_axis",
+      "X-Axis (px):",
+      value = 1024,
+      min = 1,
+      max = 3000
+    )
+    updateNumericInput(
+      session,
+      "y_axis",
+      "Y-Axis (px):",
+      value = 576,
+      min = 1,
+      max = 3000
+    )
+  })
+  
+  observeEvent(input$preset_512, {
+    updateNumericInput(
+      session,
+      "x_axis",
+      "X-Axis (px):",
+      value = 512,
+      min = 1,
+      max = 3000
+    )
+    updateNumericInput(
+      session,
+      "y_axis",
+      "Y-Axis (px):",
+      value = 288,
+      min = 1,
+      max = 3000
+    )
   })
 
   # Button to restore default settings for axes
