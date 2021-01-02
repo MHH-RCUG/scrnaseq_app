@@ -2,7 +2,7 @@
 
 **Please visit the GitHub-Page for any further information!**
 
-[<img src="www/GitHub_logo.png">](https://github.com/MHH-RCUG/scrnaseq_app/blob/master/README.md)
+[<img src="www/GitHub_logo.png" width="50%" height="50%">](https://github.com/MHH-RCUG/scrnaseq_app/blob/master/README.md)
 
 ## 1. Upload .rds file
 
