@@ -19,7 +19,7 @@ ui <- tagList(
         menuItemOutput("settings"),
         menuItemOutput("plots"),
         menuItemOutput("download"),
-        menuItem("Help", tabName = "help", icon = icon("question")),
+        menuItem("Help", tabName = "help", icon = icon("question"))
         #menuItem("About", tabName = "about", icon = icon("info"))
       )#sidebarMenu
     ),#dashboardSidebar
