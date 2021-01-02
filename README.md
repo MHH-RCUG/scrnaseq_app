@@ -2,11 +2,11 @@
 <br />
 <p align="center">
   <a href="https://www.mhh.de/">
-    <img src="www/Logo_engl_schwarz.png" height="25%" width="25%" alt="MHH">
+    <img src="shiny/www/Logo_engl_schwarz.png" height="25%" width="25%" alt="MHH">
   </a>
   
   <a href="https://www.mhh.de/genomics">
-    <img src="www/RCUG_Logo.png" height="15%" width="15%" alt="Logo">
+    <img src="shiny/www/RCUG_Logo.png" height="15%" width="15%" alt="Logo">
   </a>
   
 
