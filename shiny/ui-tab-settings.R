@@ -53,7 +53,7 @@ tabItem(
 
         numericInput(
           inputId = "res",
-          label = "Resolution: (higher values = bigger text)",
+          label = "Resolution of plot, in pixels per inch:",
           value = 144,
           min = 1,
           max = 3000
