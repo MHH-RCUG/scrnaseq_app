@@ -58,7 +58,6 @@ output$download_plots = downloadHandler(
       files = c(fileName_pdf, files)
     }
 
-
     # Download RidgePlot Raw #############################
     if (input$check_ridgeplot_raw == TRUE) {
       # PNG
@@ -85,7 +84,6 @@ output$download_plots = downloadHandler(
       dev.off()
       files = c(fileName_pdf, files)
     }
-
 
     # Download RidgePlot Normalised #############################
     if (input$check_ridgeplot_norm == TRUE) {
@@ -114,7 +112,6 @@ output$download_plots = downloadHandler(
       files = c(fileName_pdf, files)
     }
 
-
     # Download ViolinPlot Raw #############################
     if (input$check_vlnplot_raw == TRUE) {
       # PNG ViolinPlot Raw
@@ -142,7 +139,6 @@ output$download_plots = downloadHandler(
       files = c(fileName_pdf, files)
     }
 
-
     # Download ViolinPlot Normalised #############################
     if (input$check_vlnplot_norm == TRUE) {
       # PNG ViolinPlot Normalised
@@ -169,7 +165,6 @@ output$download_plots = downloadHandler(
       dev.off()
       files = c(fileName_pdf, files)
     }
-
 
     # Download DotPlot #############################
     if (input$check_dotplot == TRUE) {
