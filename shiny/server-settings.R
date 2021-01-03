@@ -43,7 +43,7 @@ tabItem(
     updateNumericInput(
       session = session,
       inputId = "res",
-      label = "Resolution: (higher values = bigger text)",
+      label = "Resolution of plot, in pixels per inch:",
       value = 70,
       min = 1,
       max = 300
@@ -54,7 +54,7 @@ tabItem(
     updateNumericInput(
       session = session,
       inputId = "res",
-      label = "Resolution: (higher values = bigger text)",
+      label = "Resolution of plot, in pixels per inch:",
       value = 144,
       min = 1,
       max = 300
