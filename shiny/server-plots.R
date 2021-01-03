@@ -159,7 +159,9 @@ observeEvent(input$renderPlots, {
     for (i in 1:length(input$genes)) {
       tmp[[i]] =  shinycssloaders::withSpinner(
         plotOutput(
-          outputId = paste0("plot_feature", i)
+          outputId = paste0("plot_feature", i),
+          width = paste0(input$x_axis, "px"),
+          height = paste0(input$y_axis, "px")
         )
       )
     }
@@ -176,7 +178,9 @@ observeEvent(input$renderPlots, {
     for (i in 1:length(input$genes)) {
       tmp[[i]] = shinycssloaders::withSpinner(
         plotOutput(
-          outputId = paste0("plot_ridge_raw", i)
+          outputId = paste0("plot_ridge_raw", i),
+          width = paste0(input$x_axis, "px"),
+          height = paste0(input$y_axis, "px")
         )
       )
     }
@@ -193,7 +197,9 @@ observeEvent(input$renderPlots, {
     for (i in 1:length(input$genes)) {
       tmp[[i]] = shinycssloaders::withSpinner(
         plotOutput(
-          outputId = paste0("plot_ridge_norm", i)
+          outputId = paste0("plot_ridge_norm", i),
+          width = paste0(input$x_axis, "px"),
+          height = paste0(input$y_axis, "px")
         )
       )
     }
@@ -210,7 +216,9 @@ observeEvent(input$renderPlots, {
     for (i in 1:length(input$genes)) {
       tmp[[i]] = shinycssloaders::withSpinner(
         plotOutput(
-          outputId = paste0("plot_vln_raw", i)
+          outputId = paste0("plot_vln_raw", i),
+          width = paste0(input$x_axis, "px"),
+          height = paste0(input$y_axis, "px")
         )
       )
     }
@@ -227,7 +235,9 @@ observeEvent(input$renderPlots, {
     for (i in 1:length(input$genes)) {
       tmp[[i]] = shinycssloaders::withSpinner(
         plotOutput(
-          outputId = paste0("plot_vln_norm", i)
+          outputId = paste0("plot_vln_norm", i),
+          width = paste0(input$x_axis, "px"),
+          height = paste0(input$y_axis, "px")
         )
       )
     }
