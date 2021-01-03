@@ -1,5 +1,6 @@
 library(shinydashboard)
 library(shinyjs)
+library(shinycssloaders)
 library(Seurat)
 library(ggplot2)
 library(readxl)
@@ -9,7 +10,6 @@ library(zip)
 
 # Define UI for application that draws a histogram
 ui <- tagList(
-
   dashboardPage(
     dashboardHeader(title = "scrnaseq_app"),
     dashboardSidebar(
@@ -33,12 +33,22 @@ ui <- tagList(
         source("ui-tab-datainput.R", local = TRUE)$value,
         source("ui-tab-settings.R", local = TRUE)$value,
         tabItem(tabName = "featureplots", uiOutput("ui_feature")),
-        tabItem(tabName = "ridgeplots_raw", uiOutput(outputId = "ui_ridge_raw")),
+        tabItem(tabName = "ridgeplots_raw", uiOutput("ui_ridge_raw")),
         tabItem(tabName = "ridgeplots_norm", uiOutput("ui_ridge_norm")),
         tabItem(tabName = "violinplots_raw", uiOutput("ui_vln_raw")),
         tabItem(tabName = "violinplots_norm", uiOutput("ui_vln_norm")),
-        tabItem(tabName = "dotplot", plotOutput("plot_dotplot")),
-        tabItem(tabName = "heatmap",plotOutput("plot_heatmap")),
+        tabItem(
+          tabName = "dotplot",
+          shinycssloaders::withSpinner(
+            plotOutput("plot_dotplot")
+          )
+        ),
+        tabItem(
+          tabName = "heatmap",
+          shinycssloaders::withSpinner(
+            plotOutput("plot_heatmap")
+          )
+        ),
         source("ui-tab-download.R", local = TRUE)$value,
         source("ui-tab-help.R", local = TRUE)$value
         )#tabItems
