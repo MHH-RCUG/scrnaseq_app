@@ -39,7 +39,8 @@ output$download_plots = downloadHandler(
 
         png(fileName_png,
             width = input$x_axis,
-            height = input$y_axis)
+            height = input$y_axis,
+            res = input$res)
         print(stored_FeaturePlots[[i]])
         dev.off()
         files = c(fileName_png, files)
@@ -48,8 +49,8 @@ output$download_plots = downloadHandler(
       fileName_pdf = "FeaturePlot.pdf"
       pdf(
         file = fileName_pdf,
-        width = (input$x_axis / 96),
-        height = (input$y_axis / 96)
+        width = (input$x_axis / input$res),
+        height = (input$y_axis / input$res)
       )
       for (i in 1:length(input$genes)) {
         print(stored_FeaturePlots[[i]])
@@ -66,7 +67,8 @@ output$download_plots = downloadHandler(
 
         png(fileName_png,
             width = input$x_axis,
-            height = input$y_axis)
+            height = input$y_axis,
+            res = input$res)
         print(stored_RidgePlotRaws[[i]])
         dev.off()
         files = c(fileName_png, files)
@@ -75,8 +77,8 @@ output$download_plots = downloadHandler(
       fileName_pdf = "RidgePlot_Raw.pdf"
       pdf(
         file = fileName_pdf,
-        width = (input$x_axis / 96),
-        height = (input$y_axis / 96)
+        width = (input$x_axis / input$res),
+        height = (input$y_axis / input$res)
       )
       for (i in 1:length(input$genes)) {
         print(stored_RidgePlotRaws[[i]])
@@ -93,7 +95,8 @@ output$download_plots = downloadHandler(
 
         png(fileName_png,
             width = input$x_axis,
-            height = input$y_axis)
+            height = input$y_axis,
+            res = input$res)
         print(stored_RidgePlotNorms[[i]])
         dev.off()
         files = c(fileName_png, files)
@@ -102,8 +105,8 @@ output$download_plots = downloadHandler(
       fileName_pdf = "RidgePlot_Norm.pdf"
       pdf(
         file = fileName_pdf,
-        width = (input$x_axis / 96),
-        height = (input$y_axis / 96)
+        width = (input$x_axis / input$res),
+        height = (input$y_axis / input$res)
       )
       for (i in 1:length(input$genes)) {
         print(stored_RidgePlotNorms[[i]])
@@ -120,7 +123,8 @@ output$download_plots = downloadHandler(
 
         png(fileName_png,
             width = input$x_axis,
-            height = input$y_axis)
+            height = input$y_axis,
+            res = input$res)
         print(stored_ViolinPlotRaws[[i]])
         dev.off()
         files = c(fileName_png, files)
@@ -129,8 +133,8 @@ output$download_plots = downloadHandler(
       fileName_pdf = "ViolinPlot_Raw.pdf"
       pdf(
         file = fileName_pdf,
-        width = (input$x_axis / 96),
-        height = (input$y_axis / 96)
+        width = (input$x_axis / input$res),
+        height = (input$y_axis / input$res)
       )
       for (i in 1:length(input$genes)) {
         print(stored_ViolinPlotRaws[[i]])
@@ -147,7 +151,8 @@ output$download_plots = downloadHandler(
 
         png(fileName_png,
             width = input$x_axis,
-            height = input$y_axis)
+            height = input$y_axis,
+            res = input$res)
         print(stored_ViolinPlotNorms[[i]])
         dev.off()
         files = c(fileName_png, files)
@@ -156,8 +161,8 @@ output$download_plots = downloadHandler(
       fileName_pdf = "ViolinPlot_Norm.pdf"
       pdf(
         file = fileName_pdf,
-        width = (input$x_axis / 96),
-        height = (input$y_axis / 96)
+        width = (input$x_axis / input$res),
+        height = (input$y_axis / input$res)
       )
       for (i in 1:length(input$genes)) {
         print(stored_ViolinPlotNorms[[i]])
@@ -173,7 +178,8 @@ output$download_plots = downloadHandler(
 
       png(fileName_png,
           width = input$x_axis,
-          height = input$y_axis)
+          height = input$y_axis,
+          res = input$res)
       print(stored_DotPlot)
       dev.off()
       files = c(fileName_png, files)
@@ -181,8 +187,8 @@ output$download_plots = downloadHandler(
       fileName_pdf = "DotPlot.pdf"
       pdf(
         file = fileName_pdf,
-        width = (input$x_axis / 96),
-        height = (input$y_axis / 96)
+        width = (input$x_axis / input$res),
+        height = (input$y_axis / input$res)
       )
       print(stored_DotPlot)
       dev.off()
@@ -196,7 +202,8 @@ output$download_plots = downloadHandler(
 
       png(fileName_png,
           width = input$x_axis,
-          height = input$y_axis)
+          height = input$y_axis,
+          res = input$res)
       print(stored_Heatmap)
       dev.off()
       files = c(fileName_png, files)
@@ -204,8 +211,8 @@ output$download_plots = downloadHandler(
       fileName_pdf = "Heatmap.pdf"
       pdf(
         file = fileName_pdf,
-        width = (input$x_axis / 96),
-        height = (input$y_axis / 96)
+        width = (input$x_axis / input$res),
+        height = (input$y_axis / input$res)
       )
       print(stored_Heatmap)
       dev.off()
