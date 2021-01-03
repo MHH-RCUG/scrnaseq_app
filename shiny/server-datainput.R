@@ -1,3 +1,4 @@
+# rds file upload
 sc = reactive({
   inFile = input$file_rds
   if (is.null(inFile)) {
@@ -15,6 +16,7 @@ sc = reactive({
   return(tmp)
 })
 
+# rds file processing
 observeEvent(sc(), {
   if (!is.null(sc())) {
     features_names_ids <<-
@@ -48,6 +50,7 @@ excel_genes = reactive({
   return(tmp)
 })
 
+# Excel file processing
 observeEvent(excel_genes(), {
   tryCatch(
     expr = {
@@ -81,14 +84,16 @@ observeEvent(excel_genes(), {
   )
 })#observeEvent
 
+# Returns true if .rds file has been processed and thus making gene slection available
 output$fileUploaded = reactive({
   return(!is.null(sc()))
 })#reactive
 outputOptions(output, 'fileUploaded', suspendWhenHidden = FALSE)
 
+# actionButton renders settings tab and selects it
 observeEvent(input$goto_settings,{
   output$settings = renderMenu({
-    menuItem("Settings", tabName = "settings", icon = icon("cog"), selected = TRUE)
+    menuItem("Settings", tabName = "settings", icon = icon("cog"))
   })
   updateTabItems(session = session,
                  inputId = "tabs",
