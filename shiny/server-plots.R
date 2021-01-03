@@ -13,7 +13,7 @@ observeEvent(input$renderPlots, {
              menuSubItem("Ridge Plots (Raw)", tabName = "ridgeplots_raw"),
              menuSubItem("Ridge Plots (Norm)", tabName = "ridgeplots_norm"),
              menuSubItem("Violin Plots (Raw)", tabName = "violinplots_raw"),
-             menuSubItem("Viloin Plots (Norm)", tabName = "violinplots_norm"),
+             menuSubItem("Violin Plots (Norm)", tabName = "violinplots_norm"),
              menuSubItem("Dot Plot", tabName = "dotplot"),
              menuSubItem("Heatmap", tabName = "heatmap")
     )#menuItem
@@ -76,44 +76,44 @@ observeEvent(input$renderPlots, {
       theme_light() + theme(panel.border = element_blank()) +
       labs(color = "Cell identity", fill = "Cell identity") +
       xlab("Cluster")
+  }#for
 
-    # DotPlot
-    stored_DotPlot <<-
-      Seurat::DotPlot(
+  # DotPlot
+  stored_DotPlot <<-
+    Seurat::DotPlot(
+      sc(),
+      features = unlist(strsplit(input$genes, "_"))[c(T, F)],
+      cols = c("lightgrey", param$col)
+    ) +
+    theme_light() + theme(panel.border = element_blank()) +
+    ylab("Cluster") +
+    theme(axis.text.x = element_text(
+      angle = 90,
+      hjust = 1,
+      vjust = .5
+    ))
+
+  tryCatch({
+    # Heatmap
+    stored_Heatmap <<-
+      Seurat::DoHeatmap(
         sc(),
         features = unlist(strsplit(input$genes, "_"))[c(T, F)],
-        cols = c("lightgrey", param$col)
+        group.colors = param$col_clusters,
+        slot = "counts"
       ) +
-      theme_light() + theme(panel.border = element_blank()) +
-      ylab("Cluster") +
-      theme(axis.text.x = element_text(
-        angle = 90,
-        hjust = 1,
-        vjust = .5
-      ))
-
-    tryCatch({
-      # Heatmap
-      stored_Heatmap <<-
-        Seurat::DoHeatmap(
-          sc(),
-          features = unlist(strsplit(input$genes, "_"))[c(T, F)],
-          group.colors = param$col_clusters,
-          slot = "counts"
-        ) +
-        NoLegend()
-    },
-    warning = function(w){
-      showNotification(
-        ui = "One or more of the selected genes could not be found in the
+      NoLegend()
+  },
+  warning = function(w){
+    showNotification(
+      ui = "One or more of the selected genes could not be found in the
                   default search locations. These gene(s) will not show up in the Heatmap!",
-        duration = NULL,
-        id = "heatmap_warning",
-        type = "warning"
-      )
-    }
+      duration = NULL,
+      id = "heatmap_warning",
+      type = "warning"
     )
-  }#for
+  }
+  )
 
   for (i in 1:length(input$genes)) {
     local({
@@ -147,15 +147,6 @@ observeEvent(input$renderPlots, {
                                                          res = input$res,
                                                          width = input$x_axis,
                                                          height = input$y_axis)
-      output$plot_dotplot = renderPlot(stored_DotPlot,
-                                       width = input$x_axis,
-                                       height = input$y_axis,
-                                       res = input$res)
-
-      output$plot_heatmap = renderPlot(stored_Heatmap,
-                                       width = input$x_axis,
-                                       height = input$y_axis,
-                                       res = input$res)
     })#local
   }#for
 
@@ -166,13 +157,15 @@ observeEvent(input$renderPlots, {
       return(NULL)
     }
     for (i in 1:length(input$genes)) {
-      tmp[[i]] =  plotOutput(
-        outputId = paste0("plot_feature", i)
+      tmp[[i]] =  shinycssloaders::withSpinner(
+        plotOutput(
+          outputId = paste0("plot_feature", i)
+        )
       )
     }
     return(tmp)
   })
-
+  outputOptions(output, "ui_feature", suspendWhenHidden = FALSE)
 
   # UI RidgePlot Raw #############################
   output$ui_ridge_raw = renderUI({
@@ -181,13 +174,15 @@ observeEvent(input$renderPlots, {
       return(NULL)
     }
     for (i in 1:length(input$genes)) {
-      tmp[[i]] =  plotOutput(
-        outputId = paste0("plot_ridge_raw", i),
+      tmp[[i]] = shinycssloaders::withSpinner(
+        plotOutput(
+          outputId = paste0("plot_ridge_raw", i)
+        )
       )
     }
     return(tmp)
   })
-
+  outputOptions(output, "ui_ridge_raw", suspendWhenHidden = FALSE)
 
   # UI RidgePlot Normalised #############################
   output$ui_ridge_norm = renderUI({
@@ -196,13 +191,15 @@ observeEvent(input$renderPlots, {
       return(NULL)
     }
     for (i in 1:length(input$genes)) {
-      tmp[[i]] =  plotOutput(
-        outputId = paste0("plot_ridge_norm", i),
+      tmp[[i]] = shinycssloaders::withSpinner(
+        plotOutput(
+          outputId = paste0("plot_ridge_norm", i)
+        )
       )
     }
     return(tmp)
   })
-
+  outputOptions(output, "ui_ridge_norm", suspendWhenHidden = FALSE)
 
   # UI ViolinPlot Raw #############################
   output$ui_vln_raw = renderUI({
@@ -211,13 +208,15 @@ observeEvent(input$renderPlots, {
       return(NULL)
     }
     for (i in 1:length(input$genes)) {
-      tmp[[i]] =  plotOutput(
-        outputId = paste0("plot_vln_raw", i),
+      tmp[[i]] = shinycssloaders::withSpinner(
+        plotOutput(
+          outputId = paste0("plot_vln_raw", i)
+        )
       )
     }
     return(tmp)
   })
-
+  outputOptions(output, "ui_vln_raw", suspendWhenHidden = FALSE)
 
   # UI ViolinPlot Normalised #############################
   output$ui_vln_norm = renderUI({
@@ -226,20 +225,28 @@ observeEvent(input$renderPlots, {
       return(NULL)
     }
     for (i in 1:length(input$genes)) {
-      tmp[[i]] =  plotOutput(
-        outputId = paste0("plot_vln_norm", i),
+      tmp[[i]] = shinycssloaders::withSpinner(
+        plotOutput(
+          outputId = paste0("plot_vln_norm", i)
+        )
       )
     }
     return(tmp)
   })
-
-  outputOptions(output, "ui_feature", suspendWhenHidden = FALSE)
-  outputOptions(output, "ui_ridge_raw", suspendWhenHidden = FALSE)
-  outputOptions(output, "ui_ridge_norm", suspendWhenHidden = FALSE)
-  outputOptions(output, "ui_vln_raw", suspendWhenHidden = FALSE)
   outputOptions(output, "ui_vln_norm", suspendWhenHidden = FALSE)
+
+  output$plot_dotplot = renderPlot(stored_DotPlot,
+                                   width = input$x_axis,
+                                   height = input$y_axis,
+                                   res = input$res)
   outputOptions(output, "plot_dotplot", suspendWhenHidden = FALSE)
+
+  output$plot_heatmap = renderPlot(stored_Heatmap,
+                                   width = input$x_axis,
+                                   height = input$y_axis,
+                                   res = input$res)
   outputOptions(output, "plot_heatmap", suspendWhenHidden = FALSE)
+  print(outputOptions(output))
 
   shinyjs::runjs("swal.close();")
   Sys.sleep(0.5)
