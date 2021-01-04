@@ -167,7 +167,6 @@ observeEvent(input$renderPlots, {
     }
     return(tmp)
   })
-  outputOptions(output, "ui_feature", suspendWhenHidden = FALSE)
 
   # UI RidgePlot Raw #############################
   output$ui_ridge_raw = renderUI({
@@ -186,7 +185,6 @@ observeEvent(input$renderPlots, {
     }
     return(tmp)
   })
-  outputOptions(output, "ui_ridge_raw", suspendWhenHidden = FALSE)
 
   # UI RidgePlot Normalised #############################
   output$ui_ridge_norm = renderUI({
@@ -205,7 +203,6 @@ observeEvent(input$renderPlots, {
     }
     return(tmp)
   })
-  outputOptions(output, "ui_ridge_norm", suspendWhenHidden = FALSE)
 
   # UI ViolinPlot Raw #############################
   output$ui_vln_raw = renderUI({
@@ -224,7 +221,6 @@ observeEvent(input$renderPlots, {
     }
     return(tmp)
   })
-  outputOptions(output, "ui_vln_raw", suspendWhenHidden = FALSE)
 
   # UI ViolinPlot Normalised #############################
   output$ui_vln_norm = renderUI({
@@ -243,20 +239,26 @@ observeEvent(input$renderPlots, {
     }
     return(tmp)
   })
-  outputOptions(output, "ui_vln_norm", suspendWhenHidden = FALSE)
 
   output$plot_dotplot = renderPlot(stored_DotPlot,
                                    width = input$x_axis,
                                    height = input$y_axis,
                                    res = input$res)
-  outputOptions(output, "plot_dotplot", suspendWhenHidden = FALSE)
+  # outputOptions(output, "plot_dotplot", suspendWhenHidden = FALSE)
 
   output$plot_heatmap = renderPlot(stored_Heatmap,
                                    width = input$x_axis,
                                    height = input$y_axis,
                                    res = input$res)
-  outputOptions(output, "plot_heatmap", suspendWhenHidden = FALSE)
-  print(outputOptions(output))
+  # outputOptions(output, "plot_heatmap", suspendWhenHidden = FALSE)
+
+  # for(i in 1:length(input$genes)){
+  #   outputOptions(output, paste0("plot_feature", i), suspendWhenHidden = FALSE)
+  #   outputOptions(output, paste0("plot_ridge_raw", i), suspendWhenHidden = FALSE)
+  #   outputOptions(output, paste0("plot_ridge_norm", i), suspendWhenHidden = FALSE)
+  #   outputOptions(output, paste0("plot_vln_raw", i), suspendWhenHidden = FALSE)
+  #   outputOptions(output, paste0("plot_vln_norm", i), suspendWhenHidden = FALSE)
+  # }
 
   shinyjs::runjs("swal.close();")
   Sys.sleep(0.5)
