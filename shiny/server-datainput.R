@@ -90,6 +90,11 @@ output$fileUploaded = reactive({
 })#reactive
 outputOptions(output, 'fileUploaded', suspendWhenHidden = FALSE)
 
+output$gene_selected = reactive({
+  return(!is.null(input$genes))
+})#reactive
+outputOptions(output, 'gene_selected', suspendWhenHidden = FALSE)
+
 # actionButton renders settings tab and selects it
 observeEvent(input$goto_settings,{
   output$settings = renderMenu({

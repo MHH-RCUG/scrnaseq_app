@@ -43,6 +43,10 @@ tabItem(
             placeholder = "No file selected"
           ),#fileInput
         ),#box
+      ),#conditionalPanel
+      
+      conditionalPanel(
+        "output.gene_selected == true",
         box(
           width = 12,
           solidHeader = TRUE,
@@ -51,7 +55,7 @@ tabItem(
           actionButton(inputId = "goto_settings",
                        label = "Go to settings!",
                        class = "btn btn-success btn-lg btn-block")
-        ),#box
+        )#box
       )#conditionalPanel
     )#column
     )#fluidRow

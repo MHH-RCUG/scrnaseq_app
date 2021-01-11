@@ -100,7 +100,8 @@ observeEvent(input$renderPlots, {
         sc(),
         features = unlist(strsplit(input$genes, "_"))[c(T, F)],
         group.colors = param$col_clusters,
-        slot = "counts"
+        slot = input$heatmap_slot,
+        assay = input$heatmap_assay
       ) +
       NoLegend()
   },
