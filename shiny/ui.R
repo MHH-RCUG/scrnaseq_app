@@ -19,8 +19,8 @@ ui <- tagList(
         menuItemOutput("settings"),
         menuItemOutput("plots"),
         menuItemOutput("download"),
-        menuItem("Help", tabName = "help", icon = icon("question"))
-        #menuItem("About", tabName = "about", icon = icon("info"))
+        menuItem("Help", tabName = "help", icon = icon("question")),
+        menuItem("About", tabName = "about", icon = icon("info"))
       )#sidebarMenu
     ),#dashboardSidebar
 
@@ -60,7 +60,7 @@ ui <- tagList(
         HTML(
         '
         <p align="center" width="4">scrnaseq_app</p>
-        <p align="center" width="4">Github: <a href="https://github.com/mariusrueve/scrnaseqV1">https://github.com/mariusrueve/scrnaseqV1</a></p>
+        <p align="center" width="4">Github: <a href="https://github.com/MHH-RCUG/scrnaseq_app">https://github.com/MHH-RCUG/scrnaseq_app</a></p>
         <p align="center" width="4">Created by: <a href="https://www.mhh.de/genomics/kontakt">MHH RCUG</a> </p>
         '
         )#HTML
