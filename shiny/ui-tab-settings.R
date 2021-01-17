@@ -64,6 +64,15 @@ tabItem(
                      class = "btn btn-outline-secondary"),
         actionButton(inputId = "ratio_1024",
                      label = "1024x576 px",
+                     class = "btn btn-outline-secondary"),
+        actionButton(inputId = "ratio_1152",
+                     label = "1152x648 px",
+                     class = "btn btn-outline-secondary"),
+        actionButton(inputId = "ratio_1280",
+                     label = "1280x720 px",
+                     class = "btn btn-outline-secondary"),
+        actionButton(inputId = "ratio_1920",
+                     label = "1920x1080 px",
                      class = "btn btn-outline-secondary")
       ),#box,
 
@@ -83,12 +92,14 @@ tabItem(
         ),
 
         actionButton(inputId = "resolution_70",
-                     label = "70",
-                     class = "btn btn-outline-primary"),
-
+                     label = "70 ppi",
+                     class = "btn btn-outline-secondary"),
+        actionButton(inputId = "resolution_110",
+                     label = "110 ppi",
+                     class = "btn btn-outline-secondary"),
         actionButton(inputId = "resolution_144",
-                     label = "144",
-                     class = "btn btn-outline-primary"),
+                     label = "144 ppi",
+                     class = "btn btn-outline-secondary"),
       ),#box
 
       box(
