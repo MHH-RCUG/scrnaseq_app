@@ -8,24 +8,16 @@
   <a href="https://www.mhh.de/genomics">
     <img src="shiny/www/RCUG_Logo.png" height="15%" width="15%" alt="Logo">
   </a>
-  
-
-  <h2 align="center">scrnaseq_app</h2>
-
-  <p align="center">
-    This is an R/Shiny app for visualisation of single cell RNA-seq (scRNASeq) data. Based on a provided Seurat object, one or more genes can be selected through a user interface, and several plots are generated, including feature plots, ridge plots, violin plots and dot plots. This project is based on <a href="https://github.com/ktrns/scrnaseq">scrnaseq</a>. The scrnaseq workflow was and is being developed by <a href="https://github.com/ktrns">Katrin Sameith</a> and <a href="https://github.com/andpet0101">Andreas Petzold</a> at the <a href="https://genomecenter.tu-dresden.de/about-us">DRESDEN-concept Genome Center (Dresden, Germany)</a>, in collaboration with the <a href="https://www.mhh.de/genomics">Research Core Unit Genomics (Hannover, Germany)</a>.
-    <br />
-    <a href="https://github.com/MHH-RCUG/scrnaseq_app"><strong>Explore the docs »</strong></a>
-    <br />
-    <br />
-     :bug:
-    <a href="https://github.com/MHH-RCUG/scrnaseq_app/issues">Report Bug</a>
-    ·  :question:
-    <a href="https://github.com/MHH-RCUG/scrnaseq_app/issues">Request Feature</a>
-  </p>
 </p>
 
+# scrnaseq_app
 
+This is an R/Shiny app for visualisation of single cell RNA-seq (scRNASeq) data. Based on a provided Seurat object, one or more genes can be selected through a user interface, and several plots are generated, including feature plots, ridge plots, violin plots and dot plots. This project is based on [scrnaseq](https://github.com/ktrns/scrnaseq).
+The scrnaseq workflow was and is being developed by [Katrin Sameith](https://github.com/ktrns) and [Andreas Petzold](https://github.com/andpet0101) at the [DRESDEN-concept Genome Center (Dresden, Germany)](https://genomecenter.tu-dresden.de/about-us), in collaboration with the [Research Core Unit Genomics (Hannover, Germany)](https://www.mhh.de/genomics).
+
+[:bug: Report Bug](https://github.com/MHH-RCUG/scrnaseq_app/issues) 
+·
+[:question: Request Feature](https://github.com/MHH-RCUG/scrnaseq_app/issues)
 
 <!-- TABLE OF CONTENTS -->
 ## Table of Contents
