@@ -21,6 +21,7 @@ observeEvent(sc(), {
   if (!is.null(sc())) {
     features_names_ids <<-
       paste(rownames(sc()[["RNA"]][[]]), "_", sc()[["RNA"]][[]][, 1], sep = "")
+    param$col <<- as.vector(sc()@misc[["colors"]][["seurat_clusters"]])
     updateSelectInput(session, "genes", "Select Genes:", features_names_ids)
   }
   shinyjs::delay(500, shinyjs::runjs("swal.close();"))
