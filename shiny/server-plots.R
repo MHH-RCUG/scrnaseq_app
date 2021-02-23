@@ -24,12 +24,13 @@ observeEvent(input$renderPlots, {
   })#renderMenu
 
   for (i in 1:length(input$genes)) {
+    print(param$col)
     # Feature Plots
     stored_FeaturePlots[[i]] <<- # <<- for global assignments
       Seurat::FeaturePlot(
         sc(),
         features = unlist(strsplit(input$genes[[i]], "_"))[c(T, F)],
-        cols = c("lightgrey", param$col),
+        col=c("grey", param$col),
         label = TRUE
       ) +
       theme_light() + theme(panel.border = element_blank())
