@@ -27,6 +27,23 @@ tabItem(
         
       ),#box_heatmap
       
+      
+      box(
+        width = 12,
+        title = "Select colors",
+        solidHeader = T,
+        status = "primary",
+        id = "selectcolors",
+        
+        selectInput(
+          inputId = "colors",
+          label = "Select colors for plots:",
+          choices = c(1,2,3),
+          multiple = TRUE
+        ),#selectInput
+      ),#box
+      
+      
       box(
         width = 12,
         title = "Change size of plots (in pixel)",
@@ -75,6 +92,7 @@ tabItem(
                      label = "1920x1080 px",
                      class = "btn btn-outline-secondary")
       ),#box,
+
 
       box(
         width = 12,
