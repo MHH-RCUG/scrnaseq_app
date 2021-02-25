@@ -1,6 +1,7 @@
 # Singularity: R_app_recipe.txt. Test/work in progress! 
 # Intended to download and run the R Shiny code from https://github.com/mariusrueve/scrnaseq in a singularity container based on Ubuntu 20.04
 # Colin Davenport, June 2020 - July 2020
+# changed: Torsten Glomb, February 2021
 #
 #
 # 1. Make sure your proxy settings are set up in your environment eg in .bashrc file as below
@@ -17,7 +18,7 @@ MirrorURL: http://de.archive.ubuntu.com/ubuntu/
 
 %runscript
     #!/bin/bash
-    exec echo "Container version 0.2 Novemeber 2020"
+    exec echo "Container version 0.3 February 2021"
 
     library(shiny) 
     library(Seurat) 
@@ -27,16 +28,17 @@ MirrorURL: http://de.archive.ubuntu.com/ubuntu/
     library(shinythemes)
     library(shinyalert)
     library(shinyjs)
+    library(shinydashboard)
+    library(shinycssloaders)
     library(markdown)
     library(zip)
-
 
     cd /data/scrnaseq_app/
     # only if some branch is used, not master branch
     #git checkout marius_changes
     
     # Run container in R Shiny
-    R -e "options('shiny.port'=3838,shiny.host='0.0.0.0'); shiny::runApp('/data/scrnaseq_app/scrnaseq_app.R')"
+    R -e "options('shiny.port'=3838,shiny.host='0.0.0.0'); shiny::runApp('/data/scrnaseq_app/runApp.R')"
 
 
 
@@ -47,7 +49,7 @@ MirrorURL: http://de.archive.ubuntu.com/ubuntu/
     export IN_CONTAINER=true
 
 %labels
-   AUTHOR Dr Colin Davenport
+   AUTHOR Dr Colin Davenport and Torsten Glomb
 
 %post
 
@@ -97,7 +99,7 @@ MirrorURL: http://de.archive.ubuntu.com/ubuntu/
     R --slave -e 'install.packages(c("shiny", "Seurat"), repos="https://cloud.r-project.org/")'
     R --slave -e 'install.packages(c("ggplot2", "readxl"), repos="https://cloud.r-project.org/")'
     R --slave -e 'install.packages(c("golem"), repos="https://cloud.r-project.org/")'
-    R --slave -e 'install.packages(c("shinythemes", "shinyalert", "shinyjs"), repos="https://cloud.r-project.org/")'
+    R --slave -e 'install.packages(c("shinythemes", "shinyalert", "shinyjs", "shinydashboard", "shinycssloaders"), repos="https://cloud.r-project.org/")'
     R --slave -e 'install.packages(c("markdown"), repos="https://cloud.r-project.org/")'
     R --slave -e 'install.packages(c("zip"), repos="https://cloud.r-project.org/")'
 
@@ -151,5 +153,3 @@ MirrorURL: http://de.archive.ubuntu.com/ubuntu/
     # https://github.com/vsoch/singularity-shiny/blob/master/prepare_template.sh
 #    mkdir -p /var/log/shiny-server
 #    chown shiny:shiny /var/log/shiny-server
-
-
