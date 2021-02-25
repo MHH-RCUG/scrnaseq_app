@@ -1,4 +1,4 @@
-options(shiny.maxRequestSize = 500*1024^2)
+options(shiny.maxRequestSize = 1000*1024^2)
 param = list()
 param$col = "palevioletred"
 
