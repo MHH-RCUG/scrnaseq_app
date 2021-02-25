@@ -30,7 +30,7 @@ observeEvent(input$renderPlots, {
       Seurat::FeaturePlot(
         sc(),
         features = unlist(strsplit(input$genes[[i]], "_"))[c(T, F)],
-        col=c("grey", param$col),
+        col=c("lightgrey", param$col),
         label = TRUE
       ) +
       theme_light() + theme(panel.border = element_blank())
