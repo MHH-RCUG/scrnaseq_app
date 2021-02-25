@@ -8,8 +8,10 @@ library(markdown) #Read Markdown
 library(shinyalert) #Alerts
 library(zip) #zip
 
-script.dir <- dirname(sys.frame(1)$ofile)
-setwd(script.dir) #set wd to file path
+if(!file.exists("./shiny/ui.R")){
+  script.dir <- dirname(sys.frame(1)$ofile)
+  setwd(script.dir) #set wd to file path
+}
 
 runApp(
   appDir = "shiny/",
