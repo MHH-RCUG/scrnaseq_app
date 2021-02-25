@@ -1,6 +1,7 @@
 options(shiny.maxRequestSize = 10000*1024^2)
 param = list()
 param$col = "palevioletred"
+param$col_cluster = "empty"
 
 # Empty object so Input UI gets rendered
 features_names_ids = NULL
