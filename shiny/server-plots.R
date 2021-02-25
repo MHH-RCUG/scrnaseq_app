@@ -32,7 +32,7 @@ observeEvent(input$renderPlots, {
         col=c("lightgrey", param$col),
         label = TRUE
       ) + 
-      AddStyle(input$genes[[i]])
+      AddStyle(title=input$genes[[i]])
 
     # Ridge Plots Raw
     stored_RidgePlotRaws[[i]] <<-
@@ -42,18 +42,22 @@ observeEvent(input$renderPlots, {
         assay = "RNA",
         slot = "counts"
       ) +
-      theme_light() + theme(panel.border = element_blank()) +
-      labs(color = "Cell identity", fill = "Cell identity") +
-      ylab("Cluster")
+      AddStyle(title=input$genes[[i]], 
+               legend_title="Cluster", 
+               fill=param$col_clusters, 
+               ylab="Cluster")
 
     # Ridge Plots Norm
     stored_RidgePlotNorms[[i]] <<-
-      Seurat::RidgePlot(sc(),
-                        features = unlist(strsplit(input$genes[[i]], "_"))[c(T, F)],
-                        slot = "data") +
-      theme_light() + theme(panel.border = element_blank()) +
-      labs(color = "Cell identity", fill = "Cell identity") +
-      ylab("Cluster")
+      Seurat::RidgePlot(
+        sc(),
+        features = unlist(strsplit(input$genes[[i]], "_"))[c(T, F)],
+        slot = "data"
+        ) +
+      AddStyle(title=input$genes[[i]], 
+               legend_title="Cluster", 
+               fill=param$col_clusters, 
+               ylab="Cluster")
 
     # Violin Plots Raw
     stored_ViolinPlotRaws[[i]] <<-
@@ -64,22 +68,22 @@ observeEvent(input$renderPlots, {
         slot = "counts",
         pt.size = 0.2
       ) + 
-      AddStyle(title = input$genes[[i]], 
-               legend_title = "Cluster", 
-               fill=param$col, 
+      AddStyle(title=input$genes[[i]], 
+               legend_title="Cluster", 
+               fill=param$col_clusters, 
                xlab="Cluster")
-      # theme_light() + theme(panel.border = element_blank()) +
-      # labs(color = "Cell identity", fill = "Cell identity") +
-      # xlab("Cluster")
 
     # Violin Plots Norm
     stored_ViolinPlotNorms[[i]] <<-
-      Seurat::VlnPlot(sc(),
-                      features = unlist(strsplit(input$genes[[i]], "_"))[c(T, F)],
-                      pt.size = 0.2) +
-      theme_light() + theme(panel.border = element_blank()) +
-      labs(color = "Cell identity", fill = "Cell identity") +
-      xlab("Cluster")
+      Seurat::VlnPlot(
+        object = sc(),
+        features = unlist(strsplit(input$genes[[i]], "_"))[c(T, F)],
+        pt.size = 0.2
+        ) +
+      AddStyle(title=input$genes[[i]], 
+               legend_title="Cluster", 
+               fill=param$col_clusters, 
+               xlab="Cluster") 
   }#for
 
   # DotPlot
@@ -89,13 +93,9 @@ observeEvent(input$renderPlots, {
       features = unlist(strsplit(input$genes, "_"))[c(T, F)],
       cols = c("lightgrey", param$col)
     ) +
-    theme_light() + theme(panel.border = element_blank()) +
-    ylab("Cluster") +
-    theme(axis.text.x = element_text(
-      angle = 90,
-      hjust = 1,
-      vjust = .5
-    ))
+    AddStyle(title=paste0("Test"), ylab="Cluster", legend_position="bottom") + 
+    theme(axis.text.x = element_text(angle=90, hjust=1, vjust=.5)) + 
+    guides(size=guide_legend(order=1))
 
   tryCatch({
     # Heatmap
@@ -107,7 +107,8 @@ observeEvent(input$renderPlots, {
         slot = input$heatmap_slot,
         assay = input$heatmap_assay
       ) +
-      NoLegend()
+      NoLegend() + 
+      theme(axis.text.y=element_blank())
   },
   warning = function(w){
     showNotification(
