@@ -8,6 +8,8 @@ library(markdown)
 library(shinyalert)
 library(zip)
 
+source("functions_plotting.R")
+
 # Define UI for application that draws a histogram
 ui <- tagList(
   dashboardPage(
