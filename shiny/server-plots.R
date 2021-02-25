@@ -24,7 +24,6 @@ observeEvent(input$renderPlots, {
   })#renderMenu
 
   for (i in 1:length(input$genes)) {
-    print(param$col)
     # Feature Plots
     stored_FeaturePlots[[i]] <<- # <<- for global assignments
       Seurat::FeaturePlot(
@@ -32,8 +31,8 @@ observeEvent(input$renderPlots, {
         features = unlist(strsplit(input$genes[[i]], "_"))[c(T, F)],
         col=c("lightgrey", param$col),
         label = TRUE
-      ) +
-      theme_light() + theme(panel.border = element_blank())
+      ) + 
+      AddStyle(input$genes[[i]])
 
     # Ridge Plots Raw
     stored_RidgePlotRaws[[i]] <<-
@@ -64,10 +63,14 @@ observeEvent(input$renderPlots, {
         assay = "RNA",
         slot = "counts",
         pt.size = 0.2
-      ) +
-      theme_light() + theme(panel.border = element_blank()) +
-      labs(color = "Cell identity", fill = "Cell identity") +
-      xlab("Cluster")
+      ) + 
+      AddStyle(title = input$genes[[i]], 
+               legend_title = "Cluster", 
+               fill=param$col, 
+               xlab="Cluster")
+      # theme_light() + theme(panel.border = element_blank()) +
+      # labs(color = "Cell identity", fill = "Cell identity") +
+      # xlab("Cluster")
 
     # Violin Plots Norm
     stored_ViolinPlotNorms[[i]] <<-
