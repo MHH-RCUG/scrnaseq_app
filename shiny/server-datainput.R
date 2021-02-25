@@ -21,8 +21,8 @@ observeEvent(sc(), {
   if (!is.null(sc())) {
     features_names_ids <<-
       paste(rownames(sc()[["RNA"]][[]]), "_", sc()[["RNA"]][[]][, 1], sep = "")
-    param$col <<- as.vector(sc()@misc[["colors"]][["seurat_clusters"]])
-    #param$col <<- sc@misc$colors$seurat_clusters
+    param$col_clusters <<- as.vector(sc()@misc[["colors"]][["seurat_clusters"]])
+    #param$col_cluster <<- sc@misc$colors$seurat_clusters
     
     updateSelectInput(
       session = session, 
@@ -34,8 +34,8 @@ observeEvent(sc(), {
       session = session,
       inputId = "colors",
       label = "Select colors for plots:",
-      choices = param$col,
-      selected = param$col
+      choices = param$col_clusters,
+      selected = param$col_clusters
       )
   }
   shinyjs::delay(500, shinyjs::runjs("swal.close();"))
