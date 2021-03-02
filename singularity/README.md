@@ -1,5 +1,5 @@
 # singularity_scrna_app
-A test environment for the R Shiny scrnaseq app by Marius Rueve
+An environment for the R Shiny scrnaseq app by Marius Rueve
 
 Singularity app by Colin Davenport
 
@@ -17,12 +17,10 @@ sudo singularity build ../../scrnaseq_app.simg singularity_app_recipe_dev.txt
 
 ```
 
-## Run app - exits without msg
+## To check if the build process did well - exits without msg
 ```
 singularity run ../../scrnaseq_app.simg
-
 singularity exec ../../scrnaseq_app.simg ls  /data/scrnaseq/
-
 singularity shell ../../scrnaseq_app.simg 
 ```
 
@@ -31,14 +29,15 @@ singularity shell ../../scrnaseq_app.simg
 https://github.com/MHH-RCUG/scrnaseq_app
 ```
 
-### Test app in container. Currently missing pbmc_2020-06-08.rds', probable reason 'No such file or directory'
+### Run app in container and make available for any browser that has contact to the server (e.g. inside the campus network).
+### Currently missing pbmc_2020-06-08.rds', probable reason 'No such file or directory'
 ```
 # kill previous container, if exists
 ps -aux | grep R
 kill <PID> 
 
 # Start container
-singularity exec  ../../scrnaseq_app.simg     R -e "options('shiny.port'=3838,shiny.host='0.0.0.0'); shiny::runApp('/data/scrnaseq_app/scrnaseq_app.R')"
+singularity exec  ../../scrnaseq_app.simg     R -e "options('shiny.port'=3838,shiny.host='0.0.0.0'); shiny::runApp('/data/scrnaseq_app/runAppp.R')"
 ```
 
 
@@ -54,13 +53,6 @@ singularity version
 ### Helpful links - singularity setup and SLURM
 
 https://njstem.wordpress.com/2018/08/02/r-script-seurat-with-a-singularity-container-using-slurm/
-
-
-### Dependencies : was previously downloaded in script
-```
-git clone https://github.com/MHH-RCUG/scrnaseq_app
-wget https://owncloud.gwdg.de/index.php/s/rRawkhIOVe1T5qi/download
-```
 
 
 ### Writable containers
