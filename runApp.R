@@ -1,5 +1,5 @@
 library(shinydashboard) #Basic
-library(shinyjs) #Javascript
+library(shinyjs) #Javascript for shiny
 library(shinycssloaders) #Loaders for plots
 library(Seurat) #Plots
 library(ggplot2) #Plots
