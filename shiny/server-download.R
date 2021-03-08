@@ -33,17 +33,31 @@ output$download_plots = downloadHandler(
 
     # Download FeaturPlot #############################
     if (input$check_featureplot == TRUE) {
-      # PNG
-      for (i in 1:length(input$genes)) {
-        fileName_png = paste0("FeaturePlot_", input$genes[[i]], ".png")
 
-        png(fileName_png,
-            width = input$x_axis,
-            height = input$y_axis,
-            res = input$res)
+      for (i in 1:length(input$genes)) {
+        
+        # PNG
+        fileName_png = paste0("FeaturePlot_", input$genes[[i]], ".png")
+        png(
+          filename = fileName_png,
+          width = input$x_axis,
+          height = input$y_axis,
+          res = input$res
+          )
         print(stored_FeaturePlots[[i]])
         dev.off()
         files = c(fileName_png, files)
+        
+        # TIFF
+        fileName_tiff = paste0("FeaturePlot_", input$genes[[i]], ".tiff")
+        tiff(
+          filename = fileName_tiff,
+          width = input$x_axis,
+          height = input$y_axis
+          )
+        print(stored_FeaturePlots[[i]])
+        dev.off()
+        files = c(fileName_tiff, files)
       }
       # PDF
       fileName_pdf = "FeaturePlot.pdf"
@@ -117,17 +131,30 @@ output$download_plots = downloadHandler(
 
     # Download ViolinPlot Raw #############################
     if (input$check_vlnplot_raw == TRUE) {
-      # PNG ViolinPlot Raw
       for (i in 1:length(input$genes)) {
+        
+        # PNG ViolinPlot Raw
         fileName_png = paste0("ViolinPlot_Raw_", input$genes[[i]], ".png")
-
-        png(fileName_png,
-            width = input$x_axis,
-            height = input$y_axis,
-            res = input$res)
+        png(
+          filename = fileName_png,
+          width = input$x_axis,
+          height = input$y_axis,
+          res = input$res
+          )
         print(stored_ViolinPlotRaws[[i]])
         dev.off()
         files = c(fileName_png, files)
+        
+        # TIFF ViolinPlot Raw
+        fileName_tiff = paste0("ViolinPlot_Raw_", input$genes[[i]], ".tiff")
+        tiff(
+          filename = fileName_tiff,
+          width = input$x_axis,
+          height = input$y_axis
+        )
+        print(stored_ViolinPlotRaws[[i]])
+        dev.off()
+        files = c(fileName_tiff, files)
       }
       # PDF ViolinPlot Raw
       fileName_pdf = "ViolinPlot_Raw.pdf"
