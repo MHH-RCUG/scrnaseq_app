@@ -24,12 +24,15 @@ observeEvent(sc(), {
     param$col_clusters <<- as.vector(sc()@misc[["colors"]][["seurat_clusters"]])
     #param$col_cluster <<- sc@misc$colors$seurat_clusters
     
-    updateSelectInput(
-      session = session, 
-      inputId = "genes",
-      label = "Select Genes:",
-      choices = features_names_ids
-      )
+    suppressWarnings(
+      updateSelectInput(
+        session = session, 
+        inputId = "genes",
+        label = "Select Genes:",
+        choices = features_names_ids
+      ) 
+    )
+    
     updateSelectInput(
       session = session,
       inputId = "colors",
@@ -53,7 +56,9 @@ excel_genes = reactive({
       range = cell_cols("A:B"),
       col_names = FALSE
     )
+
     Sys.sleep(1)
+    
     shinyalert(
       title = "Please wait!",
       text = "Upload complete! Please wait while the data is being processed!",
@@ -68,19 +73,14 @@ excel_genes = reactive({
 # Excel file processing
 observeEvent(excel_genes(), {
   tryCatch(
-    expr = {
+    {
       excel_list = unlist(excel_genes()[, 1])
       x = features_names_ids[unlist(lapply(excel_list, function(one_gene)
         grep(one_gene, features_names_ids)))]
-      updateSelectInput(
-        session = session,
-        inputId = "genes",
-        label = "Select Genes:",
-        choices = features_names_ids,
-        selected = x
-      )
     },
     error = function(e){
+      message("Excel file upload: There was an error")
+      message(e)
       shinyalert(
         title = "Error!",
         text = "The Excel file was empty!",
@@ -90,10 +90,21 @@ observeEvent(excel_genes(), {
       )
     },
     warning = function(w){
-      message("Excel file: There was a warning message.")
+      message("Excel file upload: There was a warning message.")
+      message(w)
     },
     finally = {
-      message("Excel file: tryCatch is finished.")
+      suppressWarnings(
+        updateSelectInput(
+          session = session,
+          inputId = "genes",
+          label = "Select Genes:",
+          choices = features_names_ids,
+          selected = x
+        )
+      )
+      
+      message("Excel file upload: tryCatch is finished.")
       shinyjs::delay(500, shinyjs::runjs("swal.close();"))
     }
   )
