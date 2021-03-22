@@ -17,4 +17,3 @@ runApp(
   appDir = "shiny/",
   launch.browser = TRUE
 )
-

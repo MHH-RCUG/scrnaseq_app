@@ -23,16 +23,16 @@ observeEvent(sc(), {
       paste(rownames(sc()[["RNA"]][[]]), "_", sc()[["RNA"]][[]][, 1], sep = "")
     param$col_clusters <<- as.vector(sc()@misc[["colors"]][["seurat_clusters"]])
     #param$col_cluster <<- sc@misc$colors$seurat_clusters
-    
+
     suppressWarnings(
       updateSelectInput(
-        session = session, 
+        session = session,
         inputId = "genes",
         label = "Select Genes:",
         choices = features_names_ids
-      ) 
+      )
     )
-    
+
     updateSelectInput(
       session = session,
       inputId = "colors",
@@ -58,7 +58,7 @@ excel_genes = reactive({
     )
 
     Sys.sleep(1)
-    
+
     shinyalert(
       title = "Please wait!",
       text = "Upload complete! Please wait while the data is being processed!",
@@ -103,7 +103,7 @@ observeEvent(excel_genes(), {
           selected = x
         )
       )
-      
+
       message("Excel file upload: tryCatch is finished.")
       shinyjs::delay(500, shinyjs::runjs("swal.close();"))
     }
@@ -124,9 +124,15 @@ outputOptions(output, 'gene_selected', suspendWhenHidden = FALSE)
 # actionButton renders settings tab and selects it
 observeEvent(input$goto_settings,{
   output$settings = renderMenu({
-    menuItem("Settings", tabName = "settings", icon = icon("cog"))
+    menuItem("Settings", tabName = "settings", icon = icon("cog"), startExpanded = TRUE,
+             menuSubItem("General", tabName = "settings_general"),
+             menuSubItem("Colors", tabName = "settings_colors"),
+             menuSubItem("Heatmap", tabName = "settings_heatmap")
+    )
   })
-  updateTabItems(session = session,
-                 inputId = "tabs",
-                 selected = "settings")
+  updateTabItems(
+    session = session,
+    inputId = "tabs",
+    selected = "settings_general"
+  )
 })

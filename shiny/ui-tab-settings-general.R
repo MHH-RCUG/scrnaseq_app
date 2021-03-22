@@ -1,49 +1,9 @@
 tabItem(
-  tabName = "settings",
+  tabName = "settings_general",
   fluidRow(
     column(
       width = 8,
 
-      box(
-        width = 12,
-        title = "Heatmap settings",
-        solidHeader = TRUE,
-        status = "primary",
-        id = "heatmap_settings",
-        
-        selectInput(
-          inputId = "heatmap_slot",
-          label = "Select data slot to use",
-          choices = c("counts", "data"),
-          selected = "counts"
-        ),
-        
-        selectInput(
-          inputId = "heatmap_assay",
-          label = "Assay to pull from",
-          choices = c("RNA", "SCT"),
-          selected = "RNA"
-        )
-        
-      ),#box_heatmap
-      
-      
-      box(
-        width = 12,
-        title = "Select colors",
-        solidHeader = T,
-        status = "primary",
-        id = "selectcolors",
-        
-        selectInput(
-          inputId = "colors",
-          label = "Select colors for plots:",
-          choices = c(1,2,3),
-          multiple = TRUE
-        ),#selectInput
-      ),#box
-      
-      
       box(
         width = 12,
         title = "Change size of plots (in pixel)",
@@ -128,7 +88,7 @@ tabItem(
         actionButton(inputId = "renderPlots",
                      label = "Render Plots!",
                      class = "btn btn-success btn-lg btn-block")
-      ),#box
+      )#box
     )#column
   )#fluidRow
 )#tabItem

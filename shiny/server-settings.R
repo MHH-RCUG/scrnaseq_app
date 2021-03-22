@@ -38,7 +38,7 @@ tabItem(
       max = 3000
     )
   }),
-  
+
   observeEvent(input$ratio_1152, {
     updateNumericInput(
       session = session,
@@ -57,7 +57,7 @@ tabItem(
       max = 3000
     )
   }),
-  
+
   observeEvent(input$ratio_1280, {
     updateNumericInput(
       session = session,
@@ -76,7 +76,7 @@ tabItem(
       max = 3000
     )
   }),
-  
+
   observeEvent(input$ratio_1920, {
     updateNumericInput(
       session = session,
@@ -106,7 +106,7 @@ tabItem(
       max = 300
     )
   }),
-  
+
   observeEvent(input$resolution_110, {
     updateNumericInput(
       session = session,

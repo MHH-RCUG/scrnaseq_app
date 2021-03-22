@@ -44,16 +44,19 @@ tabItem(
           ),#fileInput
         ),#box
       ),#conditionalPanel
-      
+
       conditionalPanel(
         "output.gene_selected == true",
         box(
           width = 12,
           solidHeader = TRUE,
           status = "primary",
-          id = "goto_settings",
+          id = "datainput_buttons",
           actionButton(inputId = "goto_settings",
-                       label = "Go to settings!",
+                       label = "Next!",
+                       class = "btn btn-success btn-lg btn-block"),
+          actionButton(inputId = "render-defaults",
+                       label = "Render with default settings!",
                        class = "btn btn-success btn-lg btn-block")
         )#box
       )#conditionalPanel
