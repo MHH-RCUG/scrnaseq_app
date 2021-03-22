@@ -121,8 +121,7 @@ output$gene_selected = reactive({
 })#reactive
 outputOptions(output, 'gene_selected', suspendWhenHidden = FALSE)
 
-# actionButton renders settings tab and selects it
-observeEvent(input$goto_settings,{
+render_tab_settings = function(){
   output$settings = renderMenu({
     menuItem("Settings", tabName = "settings", icon = icon("cog"), startExpanded = TRUE,
              menuSubItem("General", tabName = "settings_general"),
@@ -135,4 +134,14 @@ observeEvent(input$goto_settings,{
     inputId = "tabs",
     selected = "settings_general"
   )
+}
+
+# actionButton renders settings tab and selects it
+observeEvent(input$goto_settings,{
+  render_tab_settings()
+})
+
+observeEvent(input$render_with_defaults,{
+  render_tab_settings()
+  render_plots()
 })

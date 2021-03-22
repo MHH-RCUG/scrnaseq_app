@@ -2,7 +2,7 @@ tabItem(
   tabName = "datainput",
   fluidRow(
     column(
-      width = 8,
+      width = 6,
       box(
         width = 12,
         title = "Upload Data (.rds)",
@@ -55,7 +55,7 @@ tabItem(
           actionButton(inputId = "goto_settings",
                        label = "Next!",
                        class = "btn btn-success btn-lg btn-block"),
-          actionButton(inputId = "render-defaults",
+          actionButton(inputId = "render_with_defaults",
                        label = "Render with default settings!",
                        class = "btn btn-success btn-lg btn-block")
         )#box

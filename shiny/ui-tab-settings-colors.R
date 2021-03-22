@@ -3,8 +3,7 @@ tabItem(
   
   fluidRow(
     column(
-      width = 8,
-      
+      width = 6,
       box(
         width = 12,
         title = "Select colors",

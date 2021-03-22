@@ -2,8 +2,7 @@ tabItem(
   tabName = "settings_general",
   fluidRow(
     column(
-      width = 8,
-
+      width = 6,
       box(
         width = 12,
         title = "Change size of plots (in pixel)",
