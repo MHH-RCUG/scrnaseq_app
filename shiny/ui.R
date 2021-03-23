@@ -30,7 +30,6 @@ ui <- tagList(
         source("ui-tab-settings-colors.R", local = TRUE)$value,
         source("ui-tab-settings-heatmap.R", local = TRUE)$value,
 
-
         # "tabItem"s for plots
         tabItem(
           tabName = "featureplots",

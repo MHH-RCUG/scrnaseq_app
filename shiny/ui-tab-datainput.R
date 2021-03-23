@@ -42,7 +42,21 @@ tabItem(
             buttonLabel = "Browse",
             placeholder = "No file selected"
           ),#fileInput
-        ),#box
+          
+          box(
+            width = 12,
+            title = "Example",
+            solidHeader = FALSE,
+            #status = "info",
+            collapsible = TRUE,
+            collapsed = TRUE,
+
+            img(
+              src = "excel_file_template.png",
+              align = "right"
+            )
+          )#box
+        )#box
       ),#conditionalPanel
 
       conditionalPanel(
