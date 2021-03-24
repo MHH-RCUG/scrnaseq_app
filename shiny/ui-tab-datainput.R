@@ -45,7 +45,7 @@ tabItem(
           
           box(
             width = 12,
-            title = "Example",
+            title = "Example Excel File",
             solidHeader = FALSE,
             #status = "info",
             collapsible = TRUE,
@@ -53,7 +53,7 @@ tabItem(
 
             img(
               src = "excel_file_template.png",
-              align = "right"
+              align = "left"
             )
           )#box
         )#box
