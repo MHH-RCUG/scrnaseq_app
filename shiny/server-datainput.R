@@ -22,7 +22,6 @@ observeEvent(sc(), {
     features_names_ids <<-
       paste(rownames(sc()[["RNA"]][[]]), "_", sc()[["RNA"]][[]][, 1], sep = "")
     param$col_clusters <<- as.vector(sc()@misc[["colors"]][["seurat_clusters"]])
-    #param$col_cluster <<- sc@misc$colors$seurat_clusters
 
     suppressWarnings(
       updateSelectInput(
