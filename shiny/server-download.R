@@ -1,3 +1,4 @@
+#Wirt functions for png tiff and pdf to reduce repi
 output$download_plots = downloadHandler(
   filename = function() {
     # Takes the filename from the input of the user
