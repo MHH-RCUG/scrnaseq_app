@@ -8,6 +8,7 @@ render_plots = function(){
     type = "info",
     showConfirmButton = FALSE
   )
+  
   output$plots = renderMenu({
     menuItem("Plots", tabName = "plots", icon = icon("bar-chart"), startExpanded = TRUE,
              menuSubItem("Feature Plots", tabName = "featureplots"),
@@ -262,7 +263,8 @@ render_plots = function(){
   updateTabItems(session = session,
                  inputId = "tabs",
                  selected = "featureplots")
-}
+}#funcion: render_plots
+
 observeEvent(input$renderPlots, {
   render_plots()
 })#observeEvent
