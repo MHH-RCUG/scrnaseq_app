@@ -38,6 +38,9 @@ tabItem(
         actionButton(inputId = "ratio_512",
                      label = "512x288 px",
                      class = "btn btn-outline-secondary"),
+        actionButton(inputId = "ratio_768",
+                     label = "768x432 px",
+                     class = "btn btn-outline-secondary"),
         actionButton(inputId = "ratio_1024",
                      label = "1024x576 px",
                      class = "btn btn-outline-secondary"),
@@ -76,6 +79,9 @@ tabItem(
                      class = "btn btn-outline-secondary"),
         actionButton(inputId = "resolution_144",
                      label = "144 ppi",
+                     class = "btn btn-outline-secondary"),
+        actionButton(inputId = "resolution_300",
+                     label = "300 ppi",
                      class = "btn btn-outline-secondary"),
       ),#box
 
