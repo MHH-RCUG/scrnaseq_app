@@ -78,8 +78,9 @@ ui <- tagList(
         <p align="center" width="4">scrnaseq_app</p>
         <p align="center" width="4">Github: <a href="https://github.com/MHH-RCUG/scrnaseq_app">https://github.com/MHH-RCUG/scrnaseq_app</a></p>
         <p align="center" width="4">Created by: <a href="https://www.mhh.de/genomics/kontakt">MHH RCUG</a> </p>
+        <p align="center" width="4"><a href="https://www.mhh.de/genomics"> <img src="RCUG_Logo.png" height="15%" width="15%" alt="RCUG"></a><a href="https://www.mhh.de/"> <img src="Logo_engl_schwarz.png" height="15%" width="15%" alt="RCUG"></a></p>
         '
         )#HTML
-        ),#wellPanel
-      )#footer
+      )#wellPanel
+    )#footer
   )#UI
