@@ -1,3 +1,4 @@
+library(shiny)
 library(shinydashboard) #Basic
 library(shinyjs) #Javascript for shiny
 library(shinycssloaders) #Loaders for plots
