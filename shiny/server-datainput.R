@@ -20,7 +20,7 @@ sc = reactive({
 observeEvent(sc(), {
   if (!is.null(sc())) {
     features_names_ids <<-
-      paste(rownames(sc()[["RNA"]][[]]), "_", sc()[["RNA"]][[]][, 1], sep = "")
+      paste(rownames(sc()[["RNA"]][[]]), "_", sc()@assays[["RNA"]]@meta.features[["feature_id"]], sep = "")
     param$col_clusters <<- as.vector(sc()@misc[["colors"]][["seurat_clusters"]])
 
     suppressWarnings(
