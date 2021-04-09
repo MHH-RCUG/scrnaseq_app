@@ -120,6 +120,21 @@ output$gene_selected = reactive({
 })#reactive
 outputOptions(output, 'gene_selected', suspendWhenHidden = FALSE)
 
+observeEvent(input$select_marker_genes,{
+  marker_genes_list = sc()@misc[["gene_lists"]][["CC_S_phase"]]
+  
+  x = features_names_ids[unlist(lapply(marker_genes_list, function(one_gene)
+    grep(paste0("^",one_gene,"_"), features_names_ids)))]
+  
+  updateSelectInput(
+    session = session,
+    inputId = "genes",
+    label = "Select Genes:",
+    choices = features_names_ids,
+    selected = x
+  )
+})
+
 render_tab_settings = function(){
   output$settings = renderMenu({
     menuItem("Settings", tabName = "settings", icon = icon("cog"), startExpanded = TRUE,

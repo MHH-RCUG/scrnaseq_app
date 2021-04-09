@@ -34,7 +34,15 @@ tabItem(
             choices = c(1, 2, 3),
             multiple = TRUE
           ),#selectInput
-
+          
+          actionButton(
+            inputId = "select_marker_genes",
+            label = "Marker Genes",
+            icon = icon("marker")
+          ),
+          
+          tags$br(),
+          
           fileInput(
             inputId = "xlsx_file",
             label = "Select through excel file: (.xlsx)",
