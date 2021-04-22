@@ -28,21 +28,29 @@ tabItem(
           status = "primary",
           id = "selectgenes",
 
-          selectInput(
+          selectizeInput(
             inputId = "genes",
-            label = "Select through list:",
-            choices = c(1, 2, 3),
+            label = "Select genes manually:",
+            choices = NULL,
             multiple = TRUE
           ),#selectInput
           
+          tags$hr(),
+          
+          selectizeInput(
+            inputId = "select_gene_list",
+            label = "Select through a gene list:",
+            choices = NULL,
+            selected = NULL,
+            multiple = FALSE
+          ),
           actionButton(
-            inputId = "select_marker_genes",
-            label = "Marker Genes",
-            icon = icon("marker")
+            inputId = "button_gene_list",
+            label = "Select list"
           ),
           
-          tags$br(),
-          
+          tags$hr(),
+
           fileInput(
             inputId = "xlsx_file",
             label = "Select through excel file: (.xlsx)",

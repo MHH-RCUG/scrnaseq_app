@@ -11,7 +11,7 @@ tabItem(
         status = "primary",
         id = "selectcolors",
         
-        selectInput(
+        selectizeInput(
           inputId = "colors",
           label = "Select colors for plots:",
           choices = c(1,2,3),

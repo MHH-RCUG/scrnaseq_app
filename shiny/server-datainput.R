@@ -21,24 +21,31 @@ observeEvent(sc(), {
   if (!is.null(sc())) {
     features_names_ids <<-
       paste(rownames(sc()[["RNA"]][[]]), "_", sc()@assays[["RNA"]]@meta.features[["feature_id"]], sep = "")
-    param$col_clusters <<- as.vector(sc()@misc[["colors"]][["seurat_clusters"]])
+    param$col_clusters <<- as.vector(sc()@misc[["colour_lists"]][["seurat_clusters"]])
+    gene_lists <<- names(sc()@misc[["gene_lists"]])
+    print(gene_lists)
 
     suppressWarnings(
-      updateSelectInput(
+      updateSelectizeInput(
         session = session,
         inputId = "genes",
-        label = "Select Genes:",
-        choices = features_names_ids
+        choices = features_names_ids,
+        server = TRUE
       )
     )
-
-    updateSelectInput(
+    updateSelectizeInput(
       session = session,
       inputId = "colors",
-      label = "Select colors for plots:",
       choices = param$col_clusters,
       selected = param$col_clusters
       )
+    updateSelectizeInput(
+      session = session,
+      inputId = "select_gene_list",
+      choices = c("", gene_lists),
+      selected = NULL,
+      server = TRUE
+    )
   }
   shinyjs::delay(500, shinyjs::runjs("swal.close();"))
 })#observeEvent
@@ -94,16 +101,15 @@ observeEvent(excel_genes(), {
     },
     finally = {
       suppressWarnings(
-        updateSelectInput(
+        updateSelectizeInput(
           session = session,
           inputId = "genes",
           label = "Select Genes:",
           choices = features_names_ids,
-          selected = x
+          selected = x,
+          server = TRUE
         )
       )
-
-      message("Excel file upload: tryCatch is finished.")
       shinyjs::delay(500, shinyjs::runjs("swal.close();"))
     }
   )
@@ -120,20 +126,100 @@ output$gene_selected = reactive({
 })#reactive
 outputOptions(output, 'gene_selected', suspendWhenHidden = FALSE)
 
-observeEvent(input$select_marker_genes,{
-  marker_genes_list = sc()@misc[["gene_lists"]][["CC_S_phase"]]
-  if(is.null(marker_genes_list)){
-    x = features_names_ids[unlist(lapply(marker_genes_list, function(one_gene)
-      grep(paste0("^",one_gene,"_"), features_names_ids)))]
+observeEvent(input$button_gene_list,{
+  shinyalert(
+    title = "Please wait!",
+    text = "Upload complete! Please wait while the data is being processed!",
+    size = "s",
+    type = "info",
+    showConfirmButton = FALSE
+  )
+  
+  tmp = NULL
+  tryCatch(
+    {
+      tmp = features_names_ids[unlist(lapply(sc()@misc[["gene_lists"]][[input$select_gene_list]], function(one_gene)
+        grep(paste0("^",one_gene,"_"), features_names_ids)))]
+    },
+    error = function(e){
+      message("Error in selecting marker genes")
+      message(e)
+    },
+    warning = function(w){
+      message("Warning in selecting marker genes")
+      message(w)
+    },
+    finally = {
+      if(length(tmp)==0){
+        shinyjs::delay(500, shinyjs::runjs("swal.close();"))
+        shinyalert(
+          title = "Error!",
+          text = "Error: Marker genes could not be selected",
+          size = "s",
+          type = "error",
+          showConfirmButton = TRUE
+        )
+      } else {
+        updateSelectizeInput(
+          session = session,
+          inputId = "genes",
+          label = "Select Genes:",
+          choices = features_names_ids,
+          selected = tmp,
+          server = TRUE
+        )
+        shinyjs::delay(500, shinyjs::runjs("swal.close();"))
+      }
+    }
+  )
+})
 
-    updateSelectInput(
-      session = session,
-      inputId = "genes",
-      label = "Select Genes:",
-      choices = features_names_ids,
-      selected = x
-    )
-  }
+observeEvent(input$select_marker_genes, {
+  marker_genes_list = NULL
+  shinyalert(
+    title = "Please wait!",
+    text = "Upload complete! Please wait while the data is being processed!",
+    size = "s",
+    type = "info",
+    showConfirmButton = FALSE
+  )
+  tryCatch(
+    {
+      marker_genes_list = features_names_ids[unlist(lapply(sc()@misc[["gene_lists"]][["CC_S_phase"]], function(one_gene)
+        grep(paste0("^",one_gene,"_"), features_names_ids)))]
+    },
+    error = function(e){
+      message("Error in selecting marker genes")
+      message(e)
+
+    },
+    warning = function(w){
+      message("Warning in selecting marker genes")
+      message(w)
+    },
+    finally = {
+      if(length(marker_genes_list)==0){
+        shinyjs::delay(500, shinyjs::runjs("swal.close();"))
+        shinyalert(
+          title = "Error!",
+          text = "Error: Marker genes could not be selected",
+          size = "s",
+          type = "error",
+          showConfirmButton = TRUE
+        )
+      } else {
+        updateSelectizeInput(
+          session = session,
+          inputId = "genes",
+          label = "Select Genes:",
+          choices = features_names_ids,
+          selected = marker_genes_list,
+          server = TRUE
+        )
+        shinyjs::delay(500, shinyjs::runjs("swal.close();"))
+      }
+    }
+  )
 })
 
 render_tab_settings = function(){

@@ -6,6 +6,8 @@ param$col_cluster = "empty"
 # Empty object so Input UI gets rendered
 features_names_ids = NULL
 
+gene_lists = NULL
+
 # Define global variable to store plots
 stored_FeaturePlots = NULL
 stored_RidgePlotRaws = NULL
