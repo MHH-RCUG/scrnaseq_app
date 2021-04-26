@@ -133,7 +133,21 @@ ui = tagList(
         # UI - Plots--------------------------------------------------------------------------------
         tabPanel(
             title = "Plots",
-            icon = icon("bar-chart")
+            icon = icon("bar-chart"),
+            
+            tabsetPanel(
+                tabPanel(
+                    title = "Feature Plots",
+                    
+                    
+                ),
+                tabPanel(
+                    title = "Ridge Plot"
+                ),
+                tabPanel(
+                    title = "test"
+                )
+            )
         ),
         # UI - Download-----------------------------------------------------------------------------
         tabPanel(
@@ -199,11 +213,12 @@ server = function(input, output) {
             tagList(
                 tags$hr(),
                 tags$h3("2. Selection"),
-                selectizeInput(width = "50%",
-                            inputId = "select_genes",
-                            label = "Select through list:",
-                            choices = NULL,
-                            multiple = TRUE
+                selectizeInput(
+                    width = "50%",
+                    inputId = "select_genes",
+                    label = "Select genes:",
+                    choices = NULL,
+                    multiple = TRUE
                 ),
                 fileInput(
                     width = "50%",
@@ -215,13 +230,11 @@ server = function(input, output) {
                 )
             )
         )
-        suppressWarnings(
-            updateSelectizeInput(
-                inputId = "select_genes",
-                label = "Select Genes:",
-                choices = features_names_ids,
-                server = TRUE
-            )
+        updateSelectizeInput(
+            inputId = "select_genes",
+            label = "Select Genes:",
+            choices = features_names_ids,
+            server = TRUE
         )
         shinyjs::delay(500, shinyjs::runjs("swal.close();"))
     })
