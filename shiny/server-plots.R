@@ -8,7 +8,7 @@ render_plots = function(){
     type = "info",
     showConfirmButton = FALSE
   )
-  
+
   output$plots = renderMenu({
     menuItem("Plots", tabName = "plots", icon = icon("bar-chart"), startExpanded = TRUE,
              menuSubItem("Feature Plots", tabName = "featureplots"),
@@ -20,11 +20,11 @@ render_plots = function(){
              menuSubItem("Heatmap", tabName = "heatmap")
     )#menuItem
   })#renderMenu
-  
+
   output$download = renderMenu({
     menuItem("Download", tabName = "download", icon = icon("download"))
   })#renderMenu
-  
+
   for (i in 1:length(input$genes)) {
     # Feature Plots
     stored_FeaturePlots[[i]] <<- # <<- for global assignments
@@ -33,9 +33,9 @@ render_plots = function(){
         features = unlist(strsplit(input$genes[[i]], "_"))[c(T, F)],
         col=c("lightgrey", param$col),
         label = TRUE
-      ) + 
+      ) +
       AddStyle(title=input$genes[[i]])
-    
+
     # Ridge Plots Raw
     stored_RidgePlotRaws[[i]] <<-
       Seurat::RidgePlot(
@@ -44,11 +44,11 @@ render_plots = function(){
         assay = "RNA",
         slot = "counts"
       ) +
-      AddStyle(title=input$genes[[i]], 
-               legend_title="Cluster", 
-               fill=param$col_clusters, 
+      AddStyle(title=input$genes[[i]],
+               legend_title="Cluster",
+               fill=param$col_clusters,
                ylab="Cluster")
-    
+
     # Ridge Plots Norm
     stored_RidgePlotNorms[[i]] <<-
       Seurat::RidgePlot(
@@ -56,11 +56,11 @@ render_plots = function(){
         features = unlist(strsplit(input$genes[[i]], "_"))[c(T, F)],
         slot = "data"
       ) +
-      AddStyle(title=input$genes[[i]], 
-               legend_title="Cluster", 
-               fill=param$col_clusters, 
+      AddStyle(title=input$genes[[i]],
+               legend_title="Cluster",
+               fill=param$col_clusters,
                ylab="Cluster")
-    
+
     # Violin Plots Raw
     stored_ViolinPlotRaws[[i]] <<-
       Seurat::VlnPlot(
@@ -69,12 +69,12 @@ render_plots = function(){
         assay = "RNA",
         slot = "counts",
         pt.size = 0.2
-      ) + 
-      AddStyle(title=input$genes[[i]], 
-               legend_title="Cluster", 
-               fill=param$col_clusters, 
+      ) +
+      AddStyle(title=input$genes[[i]],
+               legend_title="Cluster",
+               fill=param$col_clusters,
                xlab="Cluster")
-    
+
     # Violin Plots Norm
     stored_ViolinPlotNorms[[i]] <<-
       Seurat::VlnPlot(
@@ -82,12 +82,12 @@ render_plots = function(){
         features = unlist(strsplit(input$genes[[i]], "_"))[c(T, F)],
         pt.size = 0.2
       ) +
-      AddStyle(title=input$genes[[i]], 
-               legend_title="Cluster", 
-               fill=param$col_clusters, 
-               xlab="Cluster") 
+      AddStyle(title = input$genes[[i]],
+               legend_title = "Cluster",
+               fill = param$col_clusters,
+               xlab = "Cluster")
   }#for
-  
+
   # DotPlot
   stored_DotPlot <<-
     Seurat::DotPlot(
@@ -95,10 +95,10 @@ render_plots = function(){
       features = unlist(strsplit(input$genes, "_"))[c(T, F)],
       cols = c("lightgrey", param$col)
     ) +
-    AddStyle(title=paste0("Test"), ylab="Cluster", legend_position="bottom") + 
-    theme(axis.text.x = element_text(angle=90, hjust=1, vjust=.5)) + 
-    guides(size=guide_legend(order=1))
-  
+    AddStyle(title = paste0("Test"), ylab="Cluster", legend_position = "bottom") +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = .5)) +
+    guides(size = guide_legend(order = 1))
+
   tryCatch({
     # Heatmap
     stored_Heatmap <<-
@@ -109,8 +109,8 @@ render_plots = function(){
         slot = input$heatmap_slot,
         assay = input$heatmap_assay
       ) +
-      NoLegend() + 
-      theme(axis.text.y=element_blank())
+      NoLegend() +
+      theme(axis.text.y = element_blank())
   },
   warning = function(w){
     showNotification(
@@ -122,42 +122,42 @@ render_plots = function(){
     )
   }
   )
-  
+
   for (i in 1:length(input$genes)) {
     local({
       # Without it, the value of i in the renderPlot() will be the same across all instances,
       # because of when the expression is evaluated.
       ii = i
-      
+
       # This chunks takes the stored plots from the global variable and renders a reactive plots that is
       # suitable for assigning to an `output` slot; passing vector to UI
       output[[paste0("plot_feature", ii)]] = renderPlot(stored_FeaturePlots[[ii]],
                                                         res = input$res,
                                                         width = input$x_axis,
                                                         height = input$y_axis)
-      
+
       output[[paste0("plot_ridge_raw", ii)]] = renderPlot(stored_RidgePlotRaws[[ii]],
                                                           res = input$res,
                                                           width = input$x_axis,
                                                           height = input$y_axis)
-      
+
       output[[paste0("plot_ridge_norm", ii)]] = renderPlot(stored_RidgePlotNorms[[ii]],
                                                            res = input$res,
                                                            width = input$x_axis,
                                                            height = input$y_axis)
-      
+
       output[[paste0("plot_vln_raw", ii)]] = renderPlot(stored_ViolinPlotRaws[[ii]],
                                                         res = input$res,
                                                         width = input$x_axis,
                                                         height = input$y_axis)
-      
+
       output[[paste0("plot_vln_norm", ii)]] = renderPlot(stored_ViolinPlotNorms[[ii]],
                                                          res = input$res,
                                                          width = input$x_axis,
                                                          height = input$y_axis)
     })#local
   }#for
-  
+
   # UI FeaturePlot #############################
   output$ui_feature = renderUI({
     tmp = list()
@@ -175,7 +175,7 @@ render_plots = function(){
     }
     return(tmp)
   })
-  
+
   # UI RidgePlot Raw #############################
   output$ui_ridge_raw = renderUI({
     tmp = list()
@@ -193,7 +193,7 @@ render_plots = function(){
     }
     return(tmp)
   })
-  
+
   # UI RidgePlot Normalised #############################
   output$ui_ridge_norm = renderUI({
     tmp = list()
@@ -211,7 +211,7 @@ render_plots = function(){
     }
     return(tmp)
   })
-  
+
   # UI ViolinPlot Raw #############################
   output$ui_vln_raw = renderUI({
     tmp = list()
@@ -229,7 +229,7 @@ render_plots = function(){
     }
     return(tmp)
   })
-  
+
   # UI ViolinPlot Normalised #############################
   output$ui_vln_norm = renderUI({
     tmp = list()
@@ -247,7 +247,7 @@ render_plots = function(){
     }
     return(tmp)
   })
-  
+
   output$plot_dotplot = renderPlot(stored_DotPlot,
                                    width = input$x_axis,
                                    height = input$y_axis,
@@ -257,7 +257,7 @@ render_plots = function(){
                                    width = input$x_axis,
                                    height = input$y_axis,
                                    res = input$res)
-  
+
   shinyjs::runjs("swal.close();")
   Sys.sleep(0.5)
   updateTabItems(session = session,
