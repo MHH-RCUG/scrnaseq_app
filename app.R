@@ -1,6 +1,5 @@
 # Libraries
 library(shiny)
-library(shinydashboard)
 library(shinyjs)
 library(shinycssloaders)
 library(shinythemes)
@@ -148,7 +147,8 @@ ui = tagList(
         tabPanel(
             title = "Plots",
             icon = icon("bar-chart"),
-
+            
+            # Panel with tabs, to switch between plot types
             tabsetPanel(
                 tabPanel(
                     title = "Feature Plots",
@@ -157,10 +157,40 @@ ui = tagList(
                     )
                 ),
                 tabPanel(
-                    title = "Ridge Plot"
+                    title = "Ridge Plots (Raw)",
+                    uiOutput(
+                        outputId = "ui_ridge_raw"
+                    )
                 ),
                 tabPanel(
-                    title = "test"
+                    title = "Ridge Plots (Norm)",
+                    uiOutput(
+                        outputId = "ui_ridge_norm"
+                    )
+                ),
+                tabPanel(
+                    title = "Violin Plots (Raw)",
+                    uiOutput(
+                        outputId = "ui_vln_raw"
+                    )
+                ),
+                tabPanel(
+                    title = "Violin Plots (Norm)",
+                    uiOutput(
+                        outputId = "ui_vln_norm"
+                    )
+                ),
+                tabPanel(
+                    title = "Dotplot",
+                    shinycssloaders::withSpinner(
+                        plotOutput("plot_dotplot")
+                    )
+                ),
+                tabPanel(
+                    title = "Heatmap",
+                    shinycssloaders::withSpinner(
+                        plotOutput("plot_heatmap")
+                    )
                 )
             )
         ),
