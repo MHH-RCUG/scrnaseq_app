@@ -1,41 +1,49 @@
-
-# Global--------------------------------------------------------------------------------------------
-
-
 # Libraries
 library(shiny)
 library(shinydashboard)
 library(shinyjs)
+library(shinycssloaders)
 library(shinythemes)
 library(shinyalert)
+library(Seurat)
+library(ggplot2)
 library(readxl)
 
 # Setting options
 options(shiny.maxRequestSize = 10000*1024^2)
 
+source("www/functions_plotting.R")
+
 # Declare global variables and params
 features_names_ids = NULL
+
+# Define global variable to store plots
+stored_FeaturePlots = NULL
+stored_RidgePlotRaws = NULL
+stored_RidgePlotNorms = NULL
+stored_ViolinPlotRaws = NULL
+stored_ViolinPlotNorms = NULL
+stored_DotPlot = NULL
+stored_Heatmap = NULL
 
 param = list()
 param$col = "palevioletred"
 param$col_cluster = "empty"
-
-# Functions-----------------------------------------------------------------------------------------
 
 # UI------------------------------------------------------------------------------------------------
 ui = tagList(
     # Initialze the use of shinyjs and shinyalert
     shinyjs::useShinyjs(),
     shinyalert::useShinyalert(),
-    
+
     navbarPage(
         # Loading themes with shinythemes
         theme = shinythemes::shinytheme("flatly"),
-        
+
         # The title of the app
         title = "scrnaseq_app",
         id = "tabs",
-        
+
         # UI - Data Input---------------------------------------------------------------------------
         # Defining the tab "Input Data"
         tabPanel(
@@ -65,12 +73,12 @@ ui = tagList(
                 )
             ),
         ),
-        
+
         # UI - Settings-----------------------------------------------------------------------------
         tabPanel(
             title = "Settings",
             icon = icon("cog"),
-            
+
             sidebarLayout(
                 sidebarPanel(
                     tags$h1("Test")
@@ -79,7 +87,6 @@ ui = tagList(
                     fluidRow(
                         column(
                             width = 12,
-                            
                             splitLayout(
                                 cellWidths = c("25%","25%"),
                                 numericInput(
@@ -97,7 +104,14 @@ ui = tagList(
                                     min = 1,
                                     max = 3000,
                                     #width = "50%"
-                                )  
+                                )
+                            ),
+                            numericInput(
+                              inputId = "res",
+                              label = "Resolution of plot, in pixels per inch:",
+                              value = 144,
+                              min = 1,
+                              max = 3000
                             ),
                         ),
                     ),
@@ -125,7 +139,7 @@ ui = tagList(
                                          class = "btn btn-outline-secondary")
                         )
                     ),
-                    
+
                     tags$div()
                 )
             )
@@ -134,12 +148,13 @@ ui = tagList(
         tabPanel(
             title = "Plots",
             icon = icon("bar-chart"),
-            
+
             tabsetPanel(
                 tabPanel(
                     title = "Feature Plots",
-                    
-                    
+                    uiOutput(
+                      outputId = "ui_feature"
+                    )
                 ),
                 tabPanel(
                     title = "Ridge Plot"
@@ -167,7 +182,10 @@ ui = tagList(
 )
 
 # Server--------------------------------------------------------------------------------------------
-server = function(input, output) {
+server = function(input, output, session) {
+
+  source("www/global.R", local = TRUE)
+
     # Server - Hide Tabs----------------------------------------------------------------------------
     ## Hide unused tabs in the beginning
     hideTab(
@@ -182,7 +200,7 @@ server = function(input, output) {
         inputId = "tabs",
         target = "Download"
     )
-    
+
     # Server - Data Input---------------------------------------------------------------------------
     ## Upload .rds file
     sc = reactive({
@@ -201,7 +219,7 @@ server = function(input, output) {
         }
         return(tmp)
     })
-    
+
     ## Process uploaded .rds file
     observeEvent(sc(), {
         if (!is.null(sc())) {
@@ -238,7 +256,7 @@ server = function(input, output) {
         )
         shinyjs::delay(500, shinyjs::runjs("swal.close();"))
     })
-    
+
     ## Excel file upload
     excel_genes = reactive({
         inFile = input$xlsx_file
@@ -262,7 +280,7 @@ server = function(input, output) {
         }
         return(tmp)
     })
-    
+
     ## Excel file processing
     observeEvent(excel_genes(), {
         tryCatch(
@@ -300,7 +318,7 @@ server = function(input, output) {
             }
         )
     })
-    
+
     ## Render buttons when genes are selected
     observeEvent(input$select_genes,{
         output$ui_datainput_buttons = renderMenu(
@@ -322,9 +340,11 @@ server = function(input, output) {
             )
         )
     })
-    
-    ## 
+
+    ##
     observeEvent(input$render_with_defaults,{
+        render_plots()
+
         showTab(
             inputId = "tabs",
             target = "Settings"
@@ -338,8 +358,9 @@ server = function(input, output) {
             inputId = "tabs",
             target = "Download"
         )
+
     })
-    
+
     ## Action button to go to settings
     observeEvent(input$goto_settings,{
         showTab(
@@ -349,12 +370,13 @@ server = function(input, output) {
         )
     })
 
-    
+
     # Server - Settings-----------------------------------------------------------------------------
-    
+
 
     # Server - Plots--------------------------------------------------------------------------------
+
 }
 
-# Run the application 
+# Run the application
 shinyApp(ui = ui, server = server)
