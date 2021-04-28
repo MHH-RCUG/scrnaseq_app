@@ -8,15 +8,13 @@ library(Seurat)
 library(ggplot2)
 library(readxl)
 
-# Setting options
+# Increase max upload size
 options(shiny.maxRequestSize = 10000*1024^2)
 
 source("www/functions_plotting.R")
 
-# Declare global variables and params
+# Define global variables
 features_names_ids = NULL
-
-# Define global variable to store plots
 stored_FeaturePlots = NULL
 stored_RidgePlotRaws = NULL
 stored_RidgePlotNorms = NULL
@@ -25,6 +23,7 @@ stored_ViolinPlotNorms = NULL
 stored_DotPlot = NULL
 stored_Heatmap = NULL
 
+# Define parameters
 param = list()
 param$col = "palevioletred"
 param$col_cluster = "empty"
@@ -43,7 +42,7 @@ ui = tagList(
         title = "scrnaseq_app",
         id = "tabs",
 
-        # UI - Data Input---------------------------------------------------------------------------
+        # UI-Data Input---------------------------------------------------------------------------
         # Defining the tab "Input Data"
         tabPanel(
             title = "Data Input",
@@ -73,7 +72,7 @@ ui = tagList(
             ),
         ),
 
-        # UI - Settings-----------------------------------------------------------------------------
+        # UI-Settings-----------------------------------------------------------------------------
         tabPanel(
             title = "Settings",
             icon = icon("cog"),
@@ -138,12 +137,11 @@ ui = tagList(
                                          class = "btn btn-outline-secondary")
                         )
                     ),
-
                     tags$div()
                 )
             )
         ),
-        # UI - Plots--------------------------------------------------------------------------------
+        # UI-Plots--------------------------------------------------------------------------------
         tabPanel(
             title = "Plots",
             icon = icon("bar-chart"),
@@ -194,12 +192,12 @@ ui = tagList(
                 )
             )
         ),
-        # UI - Download-----------------------------------------------------------------------------
+        # UI-Download-----------------------------------------------------------------------------
         tabPanel(
             title = "Download",
             icon = icon("download")
         ),
-        # UI - Help---------------------------------------------------------------------------------
+        # UI-Help---------------------------------------------------------------------------------
         tabPanel(
             title = "Help",
             icon = icon("question"),
@@ -216,8 +214,8 @@ server = function(input, output, session) {
 
   source("www/global.R", local = TRUE)
 
-    # Server - Hide Tabs----------------------------------------------------------------------------
-    ## Hide unused tabs in the beginning
+    # Server-Hide Tabs----------------------------------------------------------------------------
+    # Hide unused tabs in the beginning
     hideTab(
         inputId = "tabs",
         target = "Settings"
@@ -231,8 +229,8 @@ server = function(input, output, session) {
         target = "Download"
     )
 
-    # Server - Data Input---------------------------------------------------------------------------
-    ## Upload .rds file
+    # Server-Data Input---------------------------------------------------------------------------
+    # Upload .rds file
     sc = reactive({
         inFile = input$file_rds
         if (is.null(inFile)) {
@@ -250,7 +248,7 @@ server = function(input, output, session) {
         return(tmp)
     })
 
-    ## Process uploaded .rds file
+    # Process uploaded .rds file
     observeEvent(sc(), {
         if (!is.null(sc())) {
             features_names_ids <<-
@@ -287,7 +285,7 @@ server = function(input, output, session) {
         shinyjs::delay(500, shinyjs::runjs("swal.close();"))
     })
 
-    ## Excel file upload
+    # Excel file upload
     excel_genes = reactive({
         inFile = input$xlsx_file
         if (is.null(inFile)) {
@@ -311,7 +309,7 @@ server = function(input, output, session) {
         return(tmp)
     })
 
-    ## Excel file processing
+    # Excel file processing
     observeEvent(excel_genes(), {
         tryCatch(
             {
@@ -349,7 +347,7 @@ server = function(input, output, session) {
         )
     })
 
-    ## Render buttons when genes are selected
+    # Render UI for buttons when genes are selected
     observeEvent(input$select_genes,{
         output$ui_datainput_buttons = renderMenu(
             tagList(
@@ -370,11 +368,10 @@ server = function(input, output, session) {
             )
         )
     })
-
-    ##
+    
+    # Excecute when button "render with default settings" is pressed
     observeEvent(input$render_with_defaults,{
         render_plots()
-
         showTab(
             inputId = "tabs",
             target = "Settings"
@@ -388,10 +385,9 @@ server = function(input, output, session) {
             inputId = "tabs",
             target = "Download"
         )
-
     })
 
-    ## Action button to go to settings
+    # Action button to go to settings
     observeEvent(input$goto_settings,{
         showTab(
             inputId = "tabs",
@@ -400,11 +396,10 @@ server = function(input, output, session) {
         )
     })
 
+    # Server-Settings-----------------------------------------------------------------------------
 
-    # Server - Settings-----------------------------------------------------------------------------
 
-
-    # Server - Plots--------------------------------------------------------------------------------
+    # Server-Plots--------------------------------------------------------------------------------
 
 }
 
