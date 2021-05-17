@@ -12,6 +12,7 @@ library(readxl)
 options(shiny.maxRequestSize = 10000*1024^2)
 
 source("www/functions_plotting.R")
+source("www/global.R", local = TRUE)
 
 # Define global variables
 features_names_ids = NULL
@@ -49,7 +50,7 @@ ui = tagList(
             icon = icon("upload"),
             fluidPage(
                 fluidRow(
-                    column(
+                		column(
                         width = 12,
                         align = "center",
                         tags$h3("1. Upload"),
@@ -104,40 +105,52 @@ ui = tagList(
                                     #width = "50%"
                                 )
                             ),
-                            numericInput(
-                              inputId = "res",
-                              label = "Resolution of plot, in pixels per inch:",
-                              value = 144,
-                              min = 1,
-                              max = 3000
-                            ),
                         ),
                     ),
                     fluidRow(
                         column(
                             width = 12,
                             ## Action buttons to set the aspect ratio
-                            actionButton(inputId = "ratio_512",
-                                         label = "512x288 px",
-                                         class = "btn btn-outline-secondary"),
-                            actionButton(inputId = "ratio_768",
-                                         label = "768x432 px",
-                                         class = "btn btn-outline-secondary"),
-                            actionButton(inputId = "ratio_1024",
-                                         label = "1024x576 px",
-                                         class = "btn btn-outline-secondary"),
-                            actionButton(inputId = "ratio_1152",
-                                         label = "1152x648 px",
-                                         class = "btn btn-outline-secondary"),
-                            actionButton(inputId = "ratio_1280",
-                                         label = "1280x720 px",
-                                         class = "btn btn-outline-secondary"),
-                            actionButton(inputId = "ratio_1920",
-                                         label = "1920x1080 px",
-                                         class = "btn btn-outline-secondary")
+                            actionButton(
+                                inputId = "ratio_512",
+                                label = "512x288 px",
+                                class = "btn btn-outline-secondary"
+                            ),
+                            actionButton(
+                                inputId = "ratio_768",
+                                label = "768x432 px",
+                                class = "btn btn-outline-secondary"
+                            ),
+                            actionButton(
+                                inputId = "ratio_1024",
+                                label = "1024x576 px",
+                                class = "btn btn-outline-secondary"
+                            ),
+                            actionButton(
+                                inputId = "ratio_1152",
+                                label = "1152x648 px",
+                                class = "btn btn-outline-secondary"
+                            ),
+                            actionButton(
+                                inputId = "ratio_1280",
+                                label = "1280x720 px",
+                                class = "btn btn-outline-secondary"
+                            ),
+                            actionButton(
+                                inputId = "ratio_1920",
+                                label = "1920x1080 px",
+                                class = "btn btn-outline-secondary"
+                            )
                         )
                     ),
-                    tags$div()
+                    tags$hr(),
+                    numericInput(
+                      inputId = "res",
+                      label = "Resolution of plot, in pixels per inch:",
+                      value = 144,
+                      min = 1,
+                      max = 3000
+                    )
                 )
             )
         ),
@@ -211,9 +224,6 @@ ui = tagList(
 
 # Server--------------------------------------------------------------------------------------------
 server = function(input, output, session) {
-
-  source("www/global.R", local = TRUE)
-
     # Server-Hide Tabs----------------------------------------------------------------------------
     # Hide unused tabs in the beginning
     hideTab(
@@ -349,7 +359,7 @@ server = function(input, output, session) {
 
     # Render UI for buttons when genes are selected
     observeEvent(input$select_genes,{
-        output$ui_datainput_buttons = renderMenu(
+        output$ui_datainput_buttons = renderUI(
             tagList(
                 tags$hr(),
                 tags$h3("3. Render"),
@@ -371,7 +381,146 @@ server = function(input, output, session) {
     
     # Excecute when button "render with default settings" is pressed
     observeEvent(input$render_with_defaults,{
-        render_plots()
+    	shinyalert(
+    		title = "Please wait!",
+    		text = "The creation of plots can take a while.",
+    		size = "s",
+    		type = "info",
+    		showConfirmButton = FALSE
+    	)
+    	seurat_functions(
+    		gene_list = input$select_genes,
+    		seurat_object = sc(),
+    		heatmap_slot = input$heatmap_slot,
+    		heatmap_assay = input$heatmap_assay
+    		)
+    	for (i in 1:length(input$select_genes)) {
+    	  local({
+    	    # Without it, the value of i in the renderPlot() will be the same across all instances,
+    	    # because of when the expression is evaluated.
+    	    ii = i
+    	    output[[paste0("plot_feature", ii)]] = renderPlot(stored_FeaturePlots[[ii]],
+    	                                                      res = input$res,
+    	                                                      width = input$x_axis,
+    	                                                      height = input$y_axis)
+    	    
+    	    output[[paste0("plot_ridge_raw", ii)]] = renderPlot(stored_RidgePlotRaws[[ii]],
+    	                                                        res = input$res,
+    	                                                        width = input$x_axis,
+    	                                                        height = input$y_axis)
+    	    
+    	    output[[paste0("plot_ridge_norm", ii)]] = renderPlot(stored_RidgePlotNorms[[ii]],
+    	                                                         res = input$res,
+    	                                                         width = input$x_axis,
+    	                                                         height = input$y_axis)
+    	    
+    	    output[[paste0("plot_vln_raw", ii)]] = renderPlot(stored_ViolinPlotRaws[[ii]],
+    	                                                      res = input$res,
+    	                                                      width = input$x_axis,
+    	                                                      height = input$y_axis)
+    	    
+    	    output[[paste0("plot_vln_norm", ii)]] = renderPlot(stored_ViolinPlotNorms[[ii]],
+    	                                                       res = input$res,
+    	                                                       width = input$x_axis,
+    	                                                       height = input$y_axis)
+    	  })
+    	}
+    	output$plot_dotplot = renderPlot(stored_DotPlot,
+    	                                 width = input$x_axis,
+    	                                 height = input$y_axis,
+    	                                 res = input$res)
+    	
+    	output$plot_heatmap = renderPlot(stored_Heatmap,
+    	                                 width = input$x_axis,
+    	                                 height = input$y_axis,
+    	                                 res = input$res)
+    	output$ui_feature = renderUI({
+    	  tmp = list()
+    	  if (length(input$select_genes) == 0) {
+    	    return(NULL)
+    	  }
+    	  for (i in 1:length(input$select_genes)) {
+    	    tmp[[i]] =  shinycssloaders::withSpinner(
+    	      plotOutput(
+    	        outputId = paste0("plot_feature", i),
+    	        width = paste0(input$x_axis, "px"),
+    	        height = paste0(input$y_axis, "px")
+    	      )
+    	    )
+    	  }
+    	  return(tmp)
+    	})
+    	
+    	output$ui_ridge_raw = renderUI({
+    	  tmp = list()
+    	  if (length(input$select_genes) == 0) {
+    	    return(NULL)
+    	  }
+    	  for (i in 1:length(input$select_genes)) {
+    	    tmp[[i]] = shinycssloaders::withSpinner(
+    	      plotOutput(
+    	        outputId = paste0("plot_ridge_raw", i),
+    	        width = paste0(input$x_axis, "px"),
+    	        height = paste0(input$y_axis, "px")
+    	      )
+    	    )
+    	  }
+    	  return(tmp)
+    	})
+    	
+    	output$ui_ridge_norm = renderUI({
+    	  tmp = list()
+    	  if (length(input$select_genes) == 0) {
+    	    return(NULL)
+    	  }
+    	  for (i in 1:length(input$select_genes)) {
+    	    tmp[[i]] = shinycssloaders::withSpinner(
+    	      plotOutput(
+    	        outputId = paste0("plot_ridge_norm", i),
+    	        width = paste0(input$x_axis, "px"),
+    	        height = paste0(input$y_axis, "px")
+    	      )
+    	    )
+    	  }
+    	  return(tmp)
+    	})
+    	
+    	output$ui_vln_raw = renderUI({
+    	  tmp = list()
+    	  if (length(input$select_genes) == 0) {
+    	    return(NULL)
+    	  }
+    	  for (i in 1:length(input$select_genes)) {
+    	    tmp[[i]] = shinycssloaders::withSpinner(
+    	      plotOutput(
+    	        outputId = paste0("plot_vln_raw", i),
+    	        width = paste0(input$x_axis, "px"),
+    	        height = paste0(input$y_axis, "px")
+    	      )
+    	    )
+    	  }
+    	  return(tmp)
+    	})
+    	
+    	output$ui_vln_norm = renderUI({
+    	  tmp = list()
+    	  if (length(input$select_genes) == 0) {
+    	    return(NULL)
+    	  }
+    	  for (i in 1:length(input$select_genes)) {
+    	    tmp[[i]] = shinycssloaders::withSpinner(
+    	      plotOutput(
+    	        outputId = paste0("plot_vln_norm", i),
+    	        width = paste0(input$x_axis, "px"),
+    	        height = paste0(input$y_axis, "px")
+    	      )
+    	    )
+    	  }
+    	  return(tmp)
+    	})
+    		
+    	shinyjs::runjs("swal.close();")
+    	
         showTab(
             inputId = "tabs",
             target = "Settings"
