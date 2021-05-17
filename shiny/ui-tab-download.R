@@ -29,6 +29,23 @@ tabItem(
           ),
         ),
       ),#box
+      
+      box(
+        width = 12,
+        title = "Select file format",
+        solidHeader = TRUE,
+        status = "primary",
+        id = "download_fileformat",
+        
+        fluidRow(
+          column(
+            width = 6,
+            checkboxInput("check_pdf", "PDF", value = TRUE),
+            checkboxInput("check_tiff", "TIFF", value = TRUE),
+            checkboxInput("check_png", "PNG", value = TRUE),
+          )
+        )
+      ),#box
 
       box(
         width = 12,

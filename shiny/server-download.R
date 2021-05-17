@@ -33,288 +33,329 @@ output$download_plots = downloadHandler(
     }
 
     # Download FeaturPlot #############################
-    if (input$check_featureplot == TRUE) {
+    if (input$check_featureplot) {
       for (i in 1:length(input$genes)) {
-        # PNG
-        fileName_png = paste0("FeaturePlot_", input$genes[[i]], ".png")
-        png(
-          filename = fileName_png,
-          width = input$x_axis,
-          height = input$y_axis,
-          res = input$res
+        # PNG FeaturPlot
+        if(input$check_png) {
+          fileName_png = paste0("FeaturePlot_", input$genes[[i]], ".png")
+          png(
+            filename = fileName_png,
+            width = input$x_axis,
+            height = input$y_axis,
+            res = input$res
           )
-        print(stored_FeaturePlots[[i]])
-        dev.off()
-        files = c(fileName_png, files)
+          print(stored_FeaturePlots[[i]])
+          dev.off()
+          files = c(fileName_png, files)
+        }
 
-        # TIFF
-        fileName_tiff = paste0("FeaturePlot_", input$genes[[i]], ".tiff")
-        tiff(
-          filename = fileName_tiff,
-          width = input$x_axis,
-          height = input$y_axis,
-          res = input$res
+        # TIFF FeaturPlot
+        if(input$check_tiff) {
+          fileName_tiff = paste0("FeaturePlot_", input$genes[[i]], ".tiff")
+          tiff(
+            filename = fileName_tiff,
+            width = input$x_axis,
+            height = input$y_axis,
+            res = input$res
           )
-        print(stored_FeaturePlots[[i]])
+          print(stored_FeaturePlots[[i]])
+          dev.off()
+          files = c(fileName_tiff, files)
+        }
+      }
+      
+      # PDF FeaturPlot
+      if(input$check_pdf) {
+        fileName_pdf = "FeaturePlot.pdf"
+        pdf(
+          file = fileName_pdf,
+          width = (input$x_axis / input$res),
+          height = (input$y_axis / input$res)
+        )
+        for (i in 1:length(input$genes)) {
+          print(stored_FeaturePlots[[i]])
+        }
         dev.off()
-        files = c(fileName_tiff, files)
+        files = c(fileName_pdf, files)
       }
-      # PDF
-      fileName_pdf = "FeaturePlot.pdf"
-      pdf(
-        file = fileName_pdf,
-        width = (input$x_axis / input$res),
-        height = (input$y_axis / input$res)
-      )
-      for (i in 1:length(input$genes)) {
-        print(stored_FeaturePlots[[i]])
-      }
-      dev.off()
-      files = c(fileName_pdf, files)
     }
 
 
     # Download RidgePlot Raw #############################
-    if (input$check_ridgeplot_raw == TRUE) {
-      # PNG
+    if (input$check_ridgeplot_raw) {
       for (i in 1:length(input$genes)) {
         # PNG RidgePlot Raw
-        fileName_png = paste0("RidgePlot_Raw_", input$genes[[i]], ".png")
-        png(fileName_png,
-            width = input$x_axis,
-            height = input$y_axis,
-            res = input$res)
-        print(stored_RidgePlotRaws[[i]])
-        dev.off()
-        files = c(fileName_png, files)
+        if(input$check_png){
+          fileName_png = paste0("RidgePlot_Raw_", input$genes[[i]], ".png")
+          png(fileName_png,
+              width = input$x_axis,
+              height = input$y_axis,
+              res = input$res)
+          print(stored_RidgePlotRaws[[i]])
+          dev.off()
+          files = c(fileName_png, files)
+        }
 
         # TIFF RidgePlot Raw
-        fileName_tiff = paste0("RidgePlot_Raw_", input$genes[[i]], ".tiff")
-        tiff(
-          filename = fileName_tiff,
-          width = input$x_axis,
-          height = input$y_axis,
-          res = input$res
+        if (input$check_tiff) {
+          fileName_tiff = paste0("RidgePlot_Raw_", input$genes[[i]], ".tiff")
+          tiff(
+            filename = fileName_tiff,
+            width = input$x_axis,
+            height = input$y_axis,
+            res = input$res
           )
-        print(stored_RidgePlotRaws[[i]])
-        dev.off()
-        files = c(fileName_tiff, files)
+          print(stored_RidgePlotRaws[[i]])
+          dev.off()
+          files = c(fileName_tiff, files)
+        }
       }
       # PDF
-      fileName_pdf = "RidgePlot_Raw.pdf"
-      pdf(
-        file = fileName_pdf,
-        width = (input$x_axis / input$res),
-        height = (input$y_axis / input$res)
-      )
-      for (i in 1:length(input$genes)) {
-        print(stored_RidgePlotRaws[[i]])
+      if (input$check_pdf) {
+        fileName_pdf = "RidgePlot_Raw.pdf"
+        pdf(
+          file = fileName_pdf,
+          width = (input$x_axis / input$res),
+          height = (input$y_axis / input$res)
+        )
+        for (i in 1:length(input$genes)) {
+          print(stored_RidgePlotRaws[[i]])
+        }
+        dev.off()
+        files = c(fileName_pdf, files)
       }
-      dev.off()
-      files = c(fileName_pdf, files)
     }
 
 
     # Download RidgePlot Normalised #############################
-    if (input$check_ridgeplot_norm == TRUE) {
+    if (input$check_ridgeplot_norm ) {
       for (i in 1:length(input$genes)) {
         # PNG RidgePlot Norm
-        fileName_png = paste0("RidgePlot_Norm_", input$genes[[i]], ".png")
-        png(
-          filename = fileName_png,
-          width = input$x_axis,
-          height = input$y_axis,
-          res = input$res
+        if (input$check_png) {
+          fileName_png = paste0("RidgePlot_Norm_", input$genes[[i]], ".png")
+          png(
+            filename = fileName_png,
+            width = input$x_axis,
+            height = input$y_axis,
+            res = input$res
           )
-        print(stored_RidgePlotNorms[[i]])
-        dev.off()
-        files = c(fileName_png, files)
+          print(stored_RidgePlotNorms[[i]])
+          dev.off()
+          files = c(fileName_png, files)
+        }
 
         # TIFF RidgePlot Norm
-        fileName_tiff = paste0("RidgePlot_Norm_", input$genes[[i]], ".tiff")
-        tiff(
-          filename = fileName_tiff,
-          width = input$x_axis,
-          height = input$y_axis,
-          res = input$res
+        if (input$check_tiff) {
+          fileName_tiff = paste0("RidgePlot_Norm_", input$genes[[i]], ".tiff")
+          tiff(
+            filename = fileName_tiff,
+            width = input$x_axis,
+            height = input$y_axis,
+            res = input$res
           )
-        print(stored_RidgePlotNorms[[i]])
+          print(stored_RidgePlotNorms[[i]])
+          dev.off()
+          files = c(fileName_tiff, files)
+        }
+      }
+      # PDF RidgePlot Norm
+      if (input$check_pdf) {
+        fileName_pdf = "RidgePlot_Norm.pdf"
+        pdf(
+          file = fileName_pdf,
+          width = (input$x_axis / input$res),
+          height = (input$y_axis / input$res)
+        )
+        for (i in 1:length(input$genes)) {
+          print(stored_RidgePlotNorms[[i]])
+        }
         dev.off()
-        files = c(fileName_tiff, files)
+        files = c(fileName_pdf, files)
       }
-      # PDF
-      fileName_pdf = "RidgePlot_Norm.pdf"
-      pdf(
-        file = fileName_pdf,
-        width = (input$x_axis / input$res),
-        height = (input$y_axis / input$res)
-      )
-      for (i in 1:length(input$genes)) {
-        print(stored_RidgePlotNorms[[i]])
-      }
-      dev.off()
-      files = c(fileName_pdf, files)
     }
 
 
     # Download ViolinPlot Raw #############################
-    if (input$check_vlnplot_raw == TRUE) {
+    if (input$check_vlnplot_raw) {
       for (i in 1:length(input$genes)) {
         # PNG ViolinPlot Raw
-        fileName_png = paste0("ViolinPlot_Raw_", input$genes[[i]], ".png")
-        png(
-          filename = fileName_png,
-          width = input$x_axis,
-          height = input$y_axis,
-          res = input$res
+        if (input$check_png) {
+          fileName_png = paste0("ViolinPlot_Raw_", input$genes[[i]], ".png")
+          png(
+            filename = fileName_png,
+            width = input$x_axis,
+            height = input$y_axis,
+            res = input$res
           )
-        print(stored_ViolinPlotRaws[[i]])
-        dev.off()
-        files = c(fileName_png, files)
+          print(stored_ViolinPlotRaws[[i]])
+          dev.off()
+          files = c(fileName_png, files)
+        }
 
         # TIFF ViolinPlot Raw
-        fileName_tiff = paste0("ViolinPlot_Raw_", input$genes[[i]], ".tiff")
-        tiff(
-          filename = fileName_tiff,
-          width = input$x_axis,
-          height = input$y_axis,
-          res = input$res
-        )
-        print(stored_ViolinPlotRaws[[i]])
-        dev.off()
-        files = c(fileName_tiff, files)
+        if (input$check_tiff) {
+          fileName_tiff = paste0("ViolinPlot_Raw_", input$genes[[i]], ".tiff")
+          tiff(
+            filename = fileName_tiff,
+            width = input$x_axis,
+            height = input$y_axis,
+            res = input$res
+          )
+          print(stored_ViolinPlotRaws[[i]])
+          dev.off()
+          files = c(fileName_tiff, files) 
+        }
       }
 
       # PDF ViolinPlot Raw
-      fileName_pdf = "ViolinPlot_Raw.pdf"
-      pdf(
-        file = fileName_pdf,
-        width = (input$x_axis / input$res),
-        height = (input$y_axis / input$res)
-      )
-      for (i in 1:length(input$genes)) {
-        print(stored_ViolinPlotRaws[[i]])
+      if (input$check_pdf) {
+        fileName_pdf = "ViolinPlot_Raw.pdf"
+        pdf(
+          file = fileName_pdf,
+          width = (input$x_axis / input$res),
+          height = (input$y_axis / input$res)
+        )
+        for (i in 1:length(input$genes)) {
+          print(stored_ViolinPlotRaws[[i]])
+        }
+        dev.off()
+        files = c(fileName_pdf, files)
       }
-      dev.off()
-      files = c(fileName_pdf, files)
     }
 
     # Download ViolinPlot Normalised #############################
-    if (input$check_vlnplot_norm == TRUE) {
+    if (input$check_vlnplot_norm) {
       for (i in 1:length(input$genes)) {
         # PNG ViolinPlot Normalised
-        fileName_png = paste0("ViolinPlot_Norm_", input$genes[[i]], ".png")
+        if (input$check_png) {
+          fileName_png = paste0("ViolinPlot_Norm_", input$genes[[i]], ".png")
+          png(
+            filename = fileName_png,
+            width = input$x_axis,
+            height = input$y_axis,
+            res = input$res
+          )
+          print(stored_ViolinPlotNorms[[i]])
+          dev.off()
+          files = c(fileName_png, files) 
+        }
+
+        # TIFF ViolinPlot Normalised
+        if (input$check_tiff) {
+          fileName_tiff = paste0("ViolinPlot_Norm_", input$genes[[i]], ".tiff")
+          tiff(
+            filename = fileName_tiff,
+            width = input$x_axis,
+            height = input$y_axis,
+            res = input$res
+          )
+          print(stored_ViolinPlotNorms[[i]])
+          dev.off()
+          files = c(fileName_tiff, files) 
+        }
+      }
+
+      # PDF ViolinPlot Normalised
+      if (input$check_pdf) {
+        fileName_pdf = "ViolinPlot_Norm.pdf"
+        pdf(
+          file = fileName_pdf,
+          width = (input$x_axis / input$res),
+          height = (input$y_axis / input$res)
+        )
+        for (i in 1:length(input$genes)) {
+          print(stored_ViolinPlotNorms[[i]])
+        }
+        dev.off()
+        files = c(fileName_pdf, files) 
+      }
+    }
+
+    # Download DotPlot #############################
+    if (input$check_dotplot) {
+      # PNG DotPlot
+      if (input$check_png) {
+        fileName_png = "DotPlot.png"
         png(
           filename = fileName_png,
           width = input$x_axis,
           height = input$y_axis,
           res = input$res
-          )
-        print(stored_ViolinPlotNorms[[i]])
+        )
+        print(stored_DotPlot)
         dev.off()
         files = c(fileName_png, files)
+      }
 
-        # TIFF ViolinPlot Normalised
-        fileName_tiff = paste0("ViolinPlot_Norm_", input$genes[[i]], ".tiff")
+      # TIFF DotPlot
+      if (input$check_tiff) {
+        fileName_tiff = "DotPlot.tiff"
         tiff(
           filename = fileName_tiff,
           width = input$x_axis,
           height = input$y_axis,
           res = input$res
         )
-        print(stored_ViolinPlotNorms[[i]])
+        print(stored_DotPlot)
         dev.off()
-        files = c(fileName_tiff, files)
+        files = c(fileName_tiff, files) 
       }
-
-      # PDF ViolinPlot Normalised
-      fileName_pdf = "ViolinPlot_Norm.pdf"
-      pdf(
-        file = fileName_pdf,
-        width = (input$x_axis / input$res),
-        height = (input$y_axis / input$res)
-      )
-      for (i in 1:length(input$genes)) {
-        print(stored_ViolinPlotNorms[[i]])
-      }
-      dev.off()
-      files = c(fileName_pdf, files)
-    }
-
-
-    # Download DotPlot #############################
-    if (input$check_dotplot == TRUE) {
-      # PNG DotPlot
-      fileName_png = "DotPlot.png"
-      png(
-        filename = fileName_png,
-        width = input$x_axis,
-        height = input$y_axis,
-        res = input$res
-        )
-      print(stored_DotPlot)
-      dev.off()
-      files = c(fileName_png, files)
-
-      # TIFF DotPlot
-      fileName_tiff = "DotPlot.tiff"
-      tiff(
-        filename = fileName_tiff,
-        width = input$x_axis,
-        height = input$y_axis,
-        res = input$res
-      )
-      print(stored_DotPlot)
-      dev.off()
-      files = c(fileName_tiff, files)
 
       # PDF
-      fileName_pdf = "DotPlot.pdf"
-      pdf(
-        file = fileName_pdf,
-        width = (input$x_axis / input$res),
-        height = (input$y_axis / input$res)
-      )
-      print(stored_DotPlot)
-      dev.off()
-      files = c(fileName_pdf, files)
+      if (input$check_pdf) {
+        fileName_pdf = "DotPlot.pdf"
+        pdf(
+          file = fileName_pdf,
+          width = (input$x_axis / input$res),
+          height = (input$y_axis / input$res)
+        )
+        print(stored_DotPlot)
+        dev.off()
+        files = c(fileName_pdf, files) 
+      }
     }
 
 
     # Download Heatmap #############################
     if (input$check_heatmap == TRUE) {
       # PNG Heatmap
-      fileName_png = "Heatmap.png"
-      png(fileName_png,
-          width = input$x_axis,
-          height = input$y_axis,
-          res = input$res)
-      print(stored_Heatmap)
-      dev.off()
-      files = c(fileName_png, files)
+      if (input$check_png) {
+        fileName_png = "Heatmap.png"
+        png(fileName_png,
+            width = input$x_axis,
+            height = input$y_axis,
+            res = input$res)
+        print(stored_Heatmap)
+        dev.off()
+        files = c(fileName_png, files) 
+      }
 
       # TIFF Heatmap
-      fileName_tiff = "Heatmap.tiff"
-      tiff(
-        filename = fileName_tiff,
-        width = input$x_axis,
-        height = input$y_axis,
-        res = input$res
+      if (input$check_tiff) {
+        fileName_tiff = "Heatmap.tiff"
+        tiff(
+          filename = fileName_tiff,
+          width = input$x_axis,
+          height = input$y_axis,
+          res = input$res
         )
-      print(stored_Heatmap)
-      dev.off()
-      files = c(fileName_tiff, files)
+        print(stored_Heatmap)
+        dev.off()
+        files = c(fileName_tiff, files)
+      }
 
       # PDF Heatmap
-      fileName_pdf = "Heatmap.pdf"
-      pdf(
-        file = fileName_pdf,
-        width = (input$x_axis / input$res),
-        height = (input$y_axis / input$res)
-      )
-      print(stored_Heatmap)
-      dev.off()
-      files = c(fileName_pdf, files)
+      if (input$check_pdf) {
+        fileName_pdf = "Heatmap.pdf"
+        pdf(
+          file = fileName_pdf,
+          width = (input$x_axis / input$res),
+          height = (input$y_axis / input$res)
+        )
+        print(stored_Heatmap)
+        dev.off()
+        files = c(fileName_pdf, files) 
+      }
     }
 
     # Create zip file for Download, uses array of files
