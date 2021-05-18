@@ -82,12 +82,12 @@ tabItem(
           solidHeader = TRUE,
           status = "primary",
           id = "datainput_buttons",
-          actionButton(inputId = "goto_settings",
-                       label = "Next!",
-                       class = "btn btn-success btn-lg btn-block"),
           actionButton(inputId = "render_with_defaults",
                        label = "Render with default settings!",
-                       class = "btn btn-success btn-lg btn-block")
+                       class = "btn btn-success btn-lg btn-block"),
+          actionButton(inputId = "goto_settings",
+                       label = "Advanced Settings!",
+                       class = "btn btn-secondary btn-lg btn-block")
         )#box
       )#conditionalPanel
     )#column
