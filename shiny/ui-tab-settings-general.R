@@ -16,7 +16,7 @@ tabItem(
             numericInput(
               inputId = "x_axis",
               label = "X-Axis (px):",
-              value = 1024,
+              value = 1280,
               min = 1,
               max = 3000
             )
@@ -28,7 +28,7 @@ tabItem(
             numericInput(
               inputId = "y_axis",
               label = "Y-Axis (px):",
-              value = 576,
+              value = 720,
               min = 1,
               max = 3000
             )
@@ -66,22 +66,22 @@ tabItem(
         numericInput(
           inputId = "res",
           label = "Resolution of plot, in pixels per inch:",
-          value = 144,
+          value = 300,
           min = 1,
           max = 3000
         ),
 
         actionButton(inputId = "resolution_70",
-                     label = "70 ppi",
+                     label = "70 dpi",
                      class = "btn btn-outline-secondary"),
         actionButton(inputId = "resolution_110",
-                     label = "110 ppi",
+                     label = "110 dpi",
                      class = "btn btn-outline-secondary"),
         actionButton(inputId = "resolution_144",
-                     label = "144 ppi",
+                     label = "144 dpi",
                      class = "btn btn-outline-secondary"),
         actionButton(inputId = "resolution_300",
-                     label = "300 ppi",
+                     label = "300 dpi",
                      class = "btn btn-outline-secondary"),
       ),#box
 
