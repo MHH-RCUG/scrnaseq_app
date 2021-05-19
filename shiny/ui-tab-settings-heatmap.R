@@ -9,8 +9,7 @@ tabItem(
         title = "Heatmap settings",
         solidHeader = TRUE,
         status = "primary",
-        id = "heatmap_settings",
-        
+
         selectInput(
           inputId = "heatmap_slot",
           label = "Select data slot to use",
@@ -24,8 +23,16 @@ tabItem(
           choices = c("RNA", "SCT"),
           selected = "RNA"
         )
-        
       ),#box_heatmap
+      box(
+        width = 12,
+        title = "Info",
+        solidHeader = TRUE,
+        status = "primary",
+
+        p(strong("slot: "),"Data slot to use, choose from 'counts', 'data', or 'scale.data'"),
+        p(strong("assay: "),"Assay to pull from")
+      )
     )#column
   )#fluidRow
 )#tabItem
