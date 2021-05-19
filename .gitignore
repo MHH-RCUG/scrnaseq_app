@@ -7,3 +7,4 @@
 scrnaseq_app.Rproj
 pbmc_2020-06-09.rds
 .DS_Store
+.RDataTmp
