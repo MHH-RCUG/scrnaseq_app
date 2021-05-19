@@ -92,11 +92,10 @@ observeEvent(excel_genes(), {
         grep(one_gene, features_names_ids)))]
     },
     error = function(e){
-      message("Excel file upload: There was an error")
-      message(e)
+      message = toString(e)
       shinyalert(
         title = "Error!",
-        text = "The Excel file was empty!",
+        text = e,
         size = "s",
         type = "error",
         showConfirmButton = TRUE
