@@ -12,7 +12,7 @@ tabItem(
 
         fileInput(
           inputId = "file_rds",
-          label = "Upload Seurat file: (.rds)",
+          label = "Upload Seurat File: (.rds)",
           accept = ".rds",
           buttonLabel = "Browse",
           placeholder = "Please upload .rds file!"
@@ -23,14 +23,14 @@ tabItem(
         "output.fileUploaded == true",
         box(
           width = 12,
-          title = "Select genes",
+          title = "Select Genes",
           solidHeader = T,
           status = "primary",
           id = "selectgenes",
 
           selectizeInput(
             inputId = "genes",
-            label = "Select genes manually:",
+            label = "Select Genes Manually:",
             choices = NULL,
             multiple = TRUE
           ),#selectInput
@@ -39,21 +39,21 @@ tabItem(
           
           selectizeInput(
             inputId = "select_gene_list",
-            label = "Select through a gene list:",
+            label = "Select through Gene List:",
             choices = NULL,
             selected = NULL,
             multiple = FALSE
           ),
           actionButton(
             inputId = "button_gene_list",
-            label = "Select list"
+            label = "Select List"
           ),
           
           tags$hr(),
 
           fileInput(
             inputId = "xlsx_file",
-            label = "Select through excel file: (.xlsx)",
+            label = "Select through Excel File: (.xlsx)",
             accept = ".xlsx",
             buttonLabel = "Browse",
             placeholder = "No file selected"
@@ -83,10 +83,10 @@ tabItem(
           status = "primary",
           id = "datainput_buttons",
           actionButton(inputId = "render_with_defaults",
-                       label = "Render with default settings!",
+                       label = "Render with Default Settings",
                        class = "btn btn-success btn-lg btn-block"),
           actionButton(inputId = "goto_settings",
-                       label = "Advanced Settings!",
+                       label = "Advanced Settings",
                        class = "btn btn-secondary btn-lg btn-block")
         )#box
       )#conditionalPanel
