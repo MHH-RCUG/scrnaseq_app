@@ -23,7 +23,8 @@ observeEvent(sc(), {
       paste(rownames(sc()[["RNA"]][[]]), "_", sc()@assays[["RNA"]]@meta.features[["feature_id"]], sep = "")
     param$col_clusters <<- as.vector(sc()@misc[["colour_lists"]][["seurat_clusters"]])
     gene_lists <<- names(sc()@misc[["gene_lists"]])
-    print(gene_lists)
+    heatmap_assays <<- names(sc()@assays)
+    #print(gene_lists)
 
     suppressWarnings(
       updateSelectizeInput(
@@ -45,6 +46,12 @@ observeEvent(sc(), {
       choices = c("", gene_lists),
       selected = NULL,
       server = TRUE
+    )
+    updateSelectInput(
+      session = session,
+      inputId = "heatmap_assay",
+      choices = heatmap_assays,
+      selected = heatmap_assays[1]
     )
   }
   shinyjs::delay(500, shinyjs::runjs("swal.close();"))
