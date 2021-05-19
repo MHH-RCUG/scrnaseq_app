@@ -1,12 +1,13 @@
-options(shiny.maxRequestSize = 10000*1024^2)
+options(shiny.maxRequestSize = 10000*1024^2) #10GB
 param = list()
 param$col = "palevioletred"
 param$col_cluster = "empty"
 
 # Empty object so Input UI gets rendered
 features_names_ids = NULL
-
 gene_lists = NULL
+heatmap_slots = NULL
+heatmap_assays = NULL
 
 # Define global variable to store plots
 stored_FeaturePlots = NULL
