@@ -33,24 +33,24 @@ ui <- tagList(
         # "tabItem"s for plots
         tabItem(
           tabName = "featureplots",
-          uiOutput("ui_feature")
-          ),
+          uiOutput("ui_feature"),
+        ),
         tabItem(
           tabName = "ridgeplots_raw",
-          uiOutput("ui_ridge_raw")
-          ),
+          uiOutput("ui_ridge_raw"),
+        ),
         tabItem(
           tabName = "ridgeplots_norm",
           uiOutput("ui_ridge_norm")
-          ),
+        ),
         tabItem(
           tabName = "violinplots_raw",
           uiOutput("ui_vln_raw")
-          ),
+        ),
         tabItem(
           tabName = "violinplots_norm",
           uiOutput("ui_vln_norm")
-          ),
+        ),
         tabItem(
           tabName = "dotplot",
           shinycssloaders::withSpinner(
