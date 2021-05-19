@@ -112,6 +112,16 @@ render_plots = function(){
       NoLegend() +
       theme(axis.text.y = element_blank())
   },
+  error = function(e){
+    message = toString(e)
+    shinyalert(
+      title = "Error!",
+      text = message,
+      size = "s",
+      type = "error",
+      showConfirmButton = TRUE
+    )
+  },
   warning = function(w){
     showNotification(
       ui = "One or more of the selected genes could not be found in the
