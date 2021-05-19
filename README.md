@@ -52,7 +52,7 @@ To get the app running, you need to follow these simple steps.
 
 ### Upload .rds file
 
-First, you need to upload an .rds file containing your Seurat object. If you do not have this file yet but would still like to try the app, you can use this [example](https://owncloud.gwdg.de/index.php/s/rRawkhIOVe1T5qi).
+First, you need to upload an .rds file containing your Seurat object. If you do not have this file yet but would still like to try the app, you can use this [example](https://owncloud.gwdg.de/index.php/s/n166rmnAYGbWCA5).
 
 ### Select genes
 
