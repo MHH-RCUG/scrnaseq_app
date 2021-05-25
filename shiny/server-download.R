@@ -1,16 +1,16 @@
-#Wirt functions for png tiff and pdf to reduce repi
-output$download_plots = downloadHandler(
+# Wirt functions for png tiff and pdf to reduce repi
+output$download_plots <- downloadHandler(
   filename = function() {
     # Takes the filename from the input of the user
     paste0(input$archive_download, ".zip")
   },
   content = function(file) {
-    #temporarily switch to the temp dir, in case you do not have write permission to the current working directory
-    owd = setwd(tempdir())
+    # temporarily switch to the temp dir, in case you do not have write permission to the current working directory
+    owd <- setwd(tempdir())
     on.exit(setwd(owd))
-    #on.exit(unlink(files))
+    # on.exit(unlink(files))
 
-    files = NULL
+    files <- NULL
 
     if (length(input$genes) == 0) {
       # Message if download fails due to no genese selected
@@ -21,7 +21,7 @@ output$download_plots = downloadHandler(
         type = "error"
       )
       return(NULL)
-    } else{
+    } else {
       # Message that the archive is being created and the download will start soon
       shinyalert(
         title = "Please wait!",
@@ -36,8 +36,8 @@ output$download_plots = downloadHandler(
     if (input$check_featureplot) {
       for (i in 1:length(input$genes)) {
         # PNG FeaturPlot
-        if(input$check_png) {
-          fileName_png = paste0("FeaturePlot_", input$genes[[i]], ".png")
+        if (input$check_png) {
+          fileName_png <- paste0("FeaturePlot_", input$genes[[i]], ".png")
           png(
             filename = fileName_png,
             width = input$x_axis,
@@ -46,12 +46,12 @@ output$download_plots = downloadHandler(
           )
           print(stored_FeaturePlots[[i]])
           dev.off()
-          files = c(fileName_png, files)
+          files <- c(fileName_png, files)
         }
 
         # TIFF FeaturPlot
-        if(input$check_tiff) {
-          fileName_tiff = paste0("FeaturePlot_", input$genes[[i]], ".tiff")
+        if (input$check_tiff) {
+          fileName_tiff <- paste0("FeaturePlot_", input$genes[[i]], ".tiff")
           tiff(
             filename = fileName_tiff,
             width = input$x_axis,
@@ -60,13 +60,13 @@ output$download_plots = downloadHandler(
           )
           print(stored_FeaturePlots[[i]])
           dev.off()
-          files = c(fileName_tiff, files)
+          files <- c(fileName_tiff, files)
         }
       }
-      
+
       # PDF FeaturPlot
-      if(input$check_pdf) {
-        fileName_pdf = "FeaturePlot.pdf"
+      if (input$check_pdf) {
+        fileName_pdf <- "FeaturePlot.pdf"
         pdf(
           file = fileName_pdf,
           width = (input$x_axis / input$res),
@@ -76,7 +76,7 @@ output$download_plots = downloadHandler(
           print(stored_FeaturePlots[[i]])
         }
         dev.off()
-        files = c(fileName_pdf, files)
+        files <- c(fileName_pdf, files)
       }
     }
 
@@ -85,20 +85,21 @@ output$download_plots = downloadHandler(
     if (input$check_ridgeplot_raw) {
       for (i in 1:length(input$genes)) {
         # PNG RidgePlot Raw
-        if(input$check_png){
-          fileName_png = paste0("RidgePlot_Raw_", input$genes[[i]], ".png")
+        if (input$check_png) {
+          fileName_png <- paste0("RidgePlot_Raw_", input$genes[[i]], ".png")
           png(fileName_png,
-              width = input$x_axis,
-              height = input$y_axis,
-              res = input$res)
+            width = input$x_axis,
+            height = input$y_axis,
+            res = input$res
+          )
           print(stored_RidgePlotRaws[[i]])
           dev.off()
-          files = c(fileName_png, files)
+          files <- c(fileName_png, files)
         }
 
         # TIFF RidgePlot Raw
         if (input$check_tiff) {
-          fileName_tiff = paste0("RidgePlot_Raw_", input$genes[[i]], ".tiff")
+          fileName_tiff <- paste0("RidgePlot_Raw_", input$genes[[i]], ".tiff")
           tiff(
             filename = fileName_tiff,
             width = input$x_axis,
@@ -107,12 +108,12 @@ output$download_plots = downloadHandler(
           )
           print(stored_RidgePlotRaws[[i]])
           dev.off()
-          files = c(fileName_tiff, files)
+          files <- c(fileName_tiff, files)
         }
       }
       # PDF
       if (input$check_pdf) {
-        fileName_pdf = "RidgePlot_Raw.pdf"
+        fileName_pdf <- "RidgePlot_Raw.pdf"
         pdf(
           file = fileName_pdf,
           width = (input$x_axis / input$res),
@@ -122,17 +123,17 @@ output$download_plots = downloadHandler(
           print(stored_RidgePlotRaws[[i]])
         }
         dev.off()
-        files = c(fileName_pdf, files)
+        files <- c(fileName_pdf, files)
       }
     }
 
 
     # Download RidgePlot Normalised #############################
-    if (input$check_ridgeplot_norm ) {
+    if (input$check_ridgeplot_norm) {
       for (i in 1:length(input$genes)) {
         # PNG RidgePlot Norm
         if (input$check_png) {
-          fileName_png = paste0("RidgePlot_Norm_", input$genes[[i]], ".png")
+          fileName_png <- paste0("RidgePlot_Norm_", input$genes[[i]], ".png")
           png(
             filename = fileName_png,
             width = input$x_axis,
@@ -141,12 +142,12 @@ output$download_plots = downloadHandler(
           )
           print(stored_RidgePlotNorms[[i]])
           dev.off()
-          files = c(fileName_png, files)
+          files <- c(fileName_png, files)
         }
 
         # TIFF RidgePlot Norm
         if (input$check_tiff) {
-          fileName_tiff = paste0("RidgePlot_Norm_", input$genes[[i]], ".tiff")
+          fileName_tiff <- paste0("RidgePlot_Norm_", input$genes[[i]], ".tiff")
           tiff(
             filename = fileName_tiff,
             width = input$x_axis,
@@ -155,12 +156,12 @@ output$download_plots = downloadHandler(
           )
           print(stored_RidgePlotNorms[[i]])
           dev.off()
-          files = c(fileName_tiff, files)
+          files <- c(fileName_tiff, files)
         }
       }
       # PDF RidgePlot Norm
       if (input$check_pdf) {
-        fileName_pdf = "RidgePlot_Norm.pdf"
+        fileName_pdf <- "RidgePlot_Norm.pdf"
         pdf(
           file = fileName_pdf,
           width = (input$x_axis / input$res),
@@ -170,7 +171,7 @@ output$download_plots = downloadHandler(
           print(stored_RidgePlotNorms[[i]])
         }
         dev.off()
-        files = c(fileName_pdf, files)
+        files <- c(fileName_pdf, files)
       }
     }
 
@@ -180,7 +181,7 @@ output$download_plots = downloadHandler(
       for (i in 1:length(input$genes)) {
         # PNG ViolinPlot Raw
         if (input$check_png) {
-          fileName_png = paste0("ViolinPlot_Raw_", input$genes[[i]], ".png")
+          fileName_png <- paste0("ViolinPlot_Raw_", input$genes[[i]], ".png")
           png(
             filename = fileName_png,
             width = input$x_axis,
@@ -189,12 +190,12 @@ output$download_plots = downloadHandler(
           )
           print(stored_ViolinPlotRaws[[i]])
           dev.off()
-          files = c(fileName_png, files)
+          files <- c(fileName_png, files)
         }
 
         # TIFF ViolinPlot Raw
         if (input$check_tiff) {
-          fileName_tiff = paste0("ViolinPlot_Raw_", input$genes[[i]], ".tiff")
+          fileName_tiff <- paste0("ViolinPlot_Raw_", input$genes[[i]], ".tiff")
           tiff(
             filename = fileName_tiff,
             width = input$x_axis,
@@ -203,13 +204,13 @@ output$download_plots = downloadHandler(
           )
           print(stored_ViolinPlotRaws[[i]])
           dev.off()
-          files = c(fileName_tiff, files) 
+          files <- c(fileName_tiff, files)
         }
       }
 
       # PDF ViolinPlot Raw
       if (input$check_pdf) {
-        fileName_pdf = "ViolinPlot_Raw.pdf"
+        fileName_pdf <- "ViolinPlot_Raw.pdf"
         pdf(
           file = fileName_pdf,
           width = (input$x_axis / input$res),
@@ -219,7 +220,7 @@ output$download_plots = downloadHandler(
           print(stored_ViolinPlotRaws[[i]])
         }
         dev.off()
-        files = c(fileName_pdf, files)
+        files <- c(fileName_pdf, files)
       }
     }
 
@@ -228,7 +229,7 @@ output$download_plots = downloadHandler(
       for (i in 1:length(input$genes)) {
         # PNG ViolinPlot Normalised
         if (input$check_png) {
-          fileName_png = paste0("ViolinPlot_Norm_", input$genes[[i]], ".png")
+          fileName_png <- paste0("ViolinPlot_Norm_", input$genes[[i]], ".png")
           png(
             filename = fileName_png,
             width = input$x_axis,
@@ -237,12 +238,12 @@ output$download_plots = downloadHandler(
           )
           print(stored_ViolinPlotNorms[[i]])
           dev.off()
-          files = c(fileName_png, files) 
+          files <- c(fileName_png, files)
         }
 
         # TIFF ViolinPlot Normalised
         if (input$check_tiff) {
-          fileName_tiff = paste0("ViolinPlot_Norm_", input$genes[[i]], ".tiff")
+          fileName_tiff <- paste0("ViolinPlot_Norm_", input$genes[[i]], ".tiff")
           tiff(
             filename = fileName_tiff,
             width = input$x_axis,
@@ -251,13 +252,13 @@ output$download_plots = downloadHandler(
           )
           print(stored_ViolinPlotNorms[[i]])
           dev.off()
-          files = c(fileName_tiff, files) 
+          files <- c(fileName_tiff, files)
         }
       }
 
       # PDF ViolinPlot Normalised
       if (input$check_pdf) {
-        fileName_pdf = "ViolinPlot_Norm.pdf"
+        fileName_pdf <- "ViolinPlot_Norm.pdf"
         pdf(
           file = fileName_pdf,
           width = (input$x_axis / input$res),
@@ -267,7 +268,7 @@ output$download_plots = downloadHandler(
           print(stored_ViolinPlotNorms[[i]])
         }
         dev.off()
-        files = c(fileName_pdf, files) 
+        files <- c(fileName_pdf, files)
       }
     }
 
@@ -275,7 +276,7 @@ output$download_plots = downloadHandler(
     if (input$check_dotplot) {
       # PNG DotPlot
       if (input$check_png) {
-        fileName_png = "DotPlot.png"
+        fileName_png <- "DotPlot.png"
         png(
           filename = fileName_png,
           width = input$x_axis,
@@ -284,12 +285,12 @@ output$download_plots = downloadHandler(
         )
         print(stored_DotPlot)
         dev.off()
-        files = c(fileName_png, files)
+        files <- c(fileName_png, files)
       }
 
       # TIFF DotPlot
       if (input$check_tiff) {
-        fileName_tiff = "DotPlot.tiff"
+        fileName_tiff <- "DotPlot.tiff"
         tiff(
           filename = fileName_tiff,
           width = input$x_axis,
@@ -298,12 +299,12 @@ output$download_plots = downloadHandler(
         )
         print(stored_DotPlot)
         dev.off()
-        files = c(fileName_tiff, files) 
+        files <- c(fileName_tiff, files)
       }
 
       # PDF
       if (input$check_pdf) {
-        fileName_pdf = "DotPlot.pdf"
+        fileName_pdf <- "DotPlot.pdf"
         pdf(
           file = fileName_pdf,
           width = (input$x_axis / input$res),
@@ -311,7 +312,7 @@ output$download_plots = downloadHandler(
         )
         print(stored_DotPlot)
         dev.off()
-        files = c(fileName_pdf, files) 
+        files <- c(fileName_pdf, files)
       }
     }
 
@@ -320,19 +321,20 @@ output$download_plots = downloadHandler(
     if (input$check_heatmap == TRUE) {
       # PNG Heatmap
       if (input$check_png) {
-        fileName_png = "Heatmap.png"
+        fileName_png <- "Heatmap.png"
         png(fileName_png,
-            width = input$x_axis,
-            height = input$y_axis,
-            res = input$res)
+          width = input$x_axis,
+          height = input$y_axis,
+          res = input$res
+        )
         print(stored_Heatmap)
         dev.off()
-        files = c(fileName_png, files) 
+        files <- c(fileName_png, files)
       }
 
       # TIFF Heatmap
       if (input$check_tiff) {
-        fileName_tiff = "Heatmap.tiff"
+        fileName_tiff <- "Heatmap.tiff"
         tiff(
           filename = fileName_tiff,
           width = input$x_axis,
@@ -341,12 +343,12 @@ output$download_plots = downloadHandler(
         )
         print(stored_Heatmap)
         dev.off()
-        files = c(fileName_tiff, files)
+        files <- c(fileName_tiff, files)
       }
 
       # PDF Heatmap
       if (input$check_pdf) {
-        fileName_pdf = "Heatmap.pdf"
+        fileName_pdf <- "Heatmap.pdf"
         pdf(
           file = fileName_pdf,
           width = (input$x_axis / input$res),
@@ -354,13 +356,13 @@ output$download_plots = downloadHandler(
         )
         print(stored_Heatmap)
         dev.off()
-        files = c(fileName_pdf, files) 
+        files <- c(fileName_pdf, files)
       }
     }
 
     # Create zip file for Download, uses array of files
     shinyjs::runjs("swal.close();")
-    zip(zipfile = file, files =  files)
+    zip(zipfile = file, files = files)
   },
   contentType = "application/zip"
 )
