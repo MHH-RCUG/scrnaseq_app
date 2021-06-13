@@ -110,7 +110,6 @@ observeEvent(excel_genes(), {
         updateSelectizeInput(
           session = session,
           inputId = "genes",
-          label = "Select Genes:",
           choices = features_names_ids,
           selected = x,
           server = TRUE
@@ -169,7 +168,6 @@ observeEvent(input$button_gene_list,{
         updateSelectizeInput(
           session = session,
           inputId = "genes",
-          label = "Select Genes:",
           choices = features_names_ids,
           selected = tmp,
           server = TRUE
@@ -217,7 +215,6 @@ observeEvent(input$select_marker_genes, {
         updateSelectizeInput(
           session = session,
           inputId = "genes",
-          label = "Select Genes:",
           choices = features_names_ids,
           selected = marker_genes_list,
           server = TRUE
