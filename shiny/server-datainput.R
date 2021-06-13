@@ -85,6 +85,7 @@ excel_genes = reactive({
 
 # Excel file processing
 observeEvent(excel_genes(), {
+  tmp = NULL
   tryCatch(
     {
       excel_list = unlist(excel_genes()[, 1])
@@ -106,16 +107,27 @@ observeEvent(excel_genes(), {
       message(w)
     },
     finally = {
-      suppressWarnings(
-        updateSelectizeInput(
-          session = session,
-          inputId = "genes",
-          choices = features_names_ids,
-          selected = x,
-          server = TRUE
+      if(length(tmp)==0){
+        shinyjs::delay(500, shinyjs::runjs("swal.close();"))
+        shinyalert(
+          title = "Error!",
+          text = "Excel File was empty",
+          size = "s",
+          type = "error",
+          showConfirmButton = TRUE
         )
-      )
-      shinyjs::delay(500, shinyjs::runjs("swal.close();"))
+      } else {
+        suppressWarnings(
+          updateSelectizeInput(
+            session = session,
+            inputId = "genes",
+            choices = features_names_ids,
+            selected = x,
+            server = TRUE
+          )
+        )
+        shinyjs::delay(500, shinyjs::runjs("swal.close();"))
+      }
     }
   )
 })#observeEvent
@@ -159,7 +171,7 @@ observeEvent(input$button_gene_list,{
         shinyjs::delay(500, shinyjs::runjs("swal.close();"))
         shinyalert(
           title = "Error!",
-          text = "Error: Marker genes could not be selected",
+          text = "Marker genes could not be selected",
           size = "s",
           type = "error",
           showConfirmButton = TRUE
