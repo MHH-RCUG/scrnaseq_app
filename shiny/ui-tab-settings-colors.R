@@ -17,6 +17,16 @@ tabItem(
           choices = c(1,2,3),
           multiple = TRUE
         ),#selectInput
+      ),#box
+      
+      box(
+        width = 12,
+        solidHeader = TRUE,
+        status = "primary",
+        id = "render_plots",
+        actionButton(inputId = "renderPlots",
+                     label = "Render Plots!",
+                     class = "btn btn-success btn-lg btn-block")
       )#box
     )
   )

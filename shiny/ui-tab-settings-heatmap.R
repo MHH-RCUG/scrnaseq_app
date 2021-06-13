@@ -24,6 +24,7 @@ tabItem(
           selected = "RNA"
         )
       ),#box_heatmap
+      
       box(
         width = 12,
         title = "Info",
@@ -32,7 +33,17 @@ tabItem(
 
         p(strong("slot: "),"Data slot to use, choose from 'counts', 'data', or 'scale.data'"),
         p(strong("assay: "),"Assay to pull from")
-      )
+      ),
+      
+      box(
+        width = 12,
+        solidHeader = TRUE,
+        status = "primary",
+        id = "render_plots",
+        actionButton(inputId = "renderPlots",
+                     label = "Render Plots!",
+                     class = "btn btn-success btn-lg btn-block")
+      )#box
     )#column
   )#fluidRow
 )#tabItem

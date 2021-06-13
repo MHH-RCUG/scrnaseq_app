@@ -83,7 +83,7 @@ tabItem(
           status = "primary",
           id = "datainput_buttons",
           actionButton(inputId = "render_with_defaults",
-                       label = "Render with Default Settings",
+                       label = "Render Plots!",
                        class = "btn btn-success btn-lg btn-block"),
           actionButton(inputId = "goto_settings",
                        label = "Advanced Settings",
