@@ -5,7 +5,7 @@ tabItem(
       width = 6,
       box(
         width = 12,
-        title = "Change size of plots (in pixel)",
+        title = "Change Size (in pixel) and Resolution (in dpi) of Plots",
         solidHeader = TRUE,
         status = "primary",
         id = "changepixel",
@@ -16,7 +16,7 @@ tabItem(
             numericInput(
               inputId = "x_axis",
               label = "X-Axis (px):",
-              value = 1280,
+              value = 512,
               min = 1,
               max = 3000
             )
@@ -28,63 +28,41 @@ tabItem(
             numericInput(
               inputId = "y_axis",
               label = "Y-Axis (px):",
-              value = 720,
+              value = 288,
               min = 1,
               max = 3000
             )
           )
         ),
-
-        actionButton(inputId = "ratio_512",
-                     label = "512x288 px",
-                     class = "btn btn-outline-secondary"),
-        actionButton(inputId = "ratio_768",
-                     label = "768x432 px",
-                     class = "btn btn-outline-secondary"),
-        actionButton(inputId = "ratio_1024",
-                     label = "1024x576 px",
-                     class = "btn btn-outline-secondary"),
-        actionButton(inputId = "ratio_1152",
-                     label = "1152x648 px",
-                     class = "btn btn-outline-secondary"),
-        actionButton(inputId = "ratio_1280",
-                     label = "1280x720 px",
-                     class = "btn btn-outline-secondary"),
-        actionButton(inputId = "ratio_1920",
-                     label = "1920x1080 px",
-                     class = "btn btn-outline-secondary")
-      ),#box,
-
-
-      box(
-        width = 12,
-        title = "Change resolution of plots",
-        solidHeader = TRUE,
-        status = "primary",
-        id = "uploadbox",
-
+        
         numericInput(
           inputId = "res",
           label = "Resolution of plot, in pixels per inch:",
-          value = 300,
+          value = 70,
           min = 1,
           max = 3000
-        ),
+        )
+      ),#box,
 
-        actionButton(inputId = "resolution_70",
-                     label = "70 dpi",
+      box(
+        width = 12,
+        title = "Presets",
+        solidHeader = TRUE,
+        status = "primary",
+        
+        actionButton(inputId = "preset_512x288_70",
+                     label = "512 x 288; 70 dpi",
                      class = "btn btn-outline-secondary"),
-        actionButton(inputId = "resolution_110",
-                     label = "110 dpi",
+        actionButton(inputId = "preset_768x432_110",
+                     label = "768 x 432; 110 dpi",
                      class = "btn btn-outline-secondary"),
-        actionButton(inputId = "resolution_144",
-                     label = "144 dpi",
+        actionButton(inputId = "preset_1280x720_144",
+                     label = "1280 x 720; 144 dpi",
                      class = "btn btn-outline-secondary"),
-        actionButton(inputId = "resolution_300",
-                     label = "300 dpi",
+        actionButton(inputId = "preset_1920x1080_300",
+                     label = "1920 x 1080; 300 dpi",
                      class = "btn btn-outline-secondary"),
-      ),#box
-
+      ),
       box(
         width = 12,
         solidHeader = TRUE,

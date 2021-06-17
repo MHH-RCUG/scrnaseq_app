@@ -34,52 +34,28 @@ update_resolution = function(input_res){
 tabItem(
   tabName = "settings",
 
-  #Buttons for aspect ratio
-  observeEvent(input$ratio_512, {
+  #Buttons for presets
+  observeEvent(input$preset_512x288_70, {
     update_x_axis(512)
     update_y_axis(288)
-  }),
-  
-  observeEvent(input$ratio_768, {
-    update_x_axis(768)
-    update_y_axis(432)
-  }),
-
-  observeEvent(input$ratio_1024, {
-    update_x_axis(1024)
-    update_y_axis(576)
-  }),
-
-  observeEvent(input$ratio_1152, {
-    update_x_axis(1152)
-    update_y_axis(648)
-  }),
-
-  observeEvent(input$ratio_1280, {
-    update_x_axis(1280)
-    update_y_axis(720)
-  }),
-
-  observeEvent(input$ratio_1920, {
-    update_x_axis(1920)
-    update_y_axis(1080)
-  }),
-  
-  
-  #Buttons for resolution/ ppi
-  observeEvent(input$resolution_70, {
     update_resolution(70)
   }),
-
-  observeEvent(input$resolution_110, {
+  
+  observeEvent(input$preset_768x432_110, {
+    update_x_axis(768)
+    update_y_axis(432)
     update_resolution(110)
   }),
 
-  observeEvent(input$resolution_144, {
+  observeEvent(input$preset_1280x720_144, {
+    update_x_axis(1280)
+    update_y_axis(720)
     update_resolution(144)
   }),
-  
-  observeEvent(input$resolution_300, {
+
+  observeEvent(input$preset_1920x1080_300, {
+    update_x_axis(1920)
+    update_y_axis(1080)
     update_resolution(300)
-  })
+  }),
 )
