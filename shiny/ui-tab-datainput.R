@@ -46,7 +46,8 @@ tabItem(
           ),
           actionButton(
             inputId = "button_gene_list",
-            label = "Select List"
+            label = "Select List",
+            width = "100%"
           ),
           
           tags$hr(),
