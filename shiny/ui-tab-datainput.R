@@ -14,6 +14,7 @@ tabItem(
           inputId = "file_rds",
           label = "Upload Seurat File: (.rds)",
           accept = ".rds",
+          multiple = FALSE,
           buttonLabel = "Browse",
           placeholder = "Please upload .rds file!"
         )#fileInput
