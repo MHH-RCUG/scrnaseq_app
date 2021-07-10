@@ -40,7 +40,7 @@ tabItem(
         solidHeader = TRUE,
         status = "primary",
         id = "render_plots",
-        actionButton(inputId = "renderPlots",
+        actionButton(inputId = "renderPlotsHeatmap",
                      label = "Render Plots!",
                      class = "btn btn-success btn-lg btn-block")
       )#box
