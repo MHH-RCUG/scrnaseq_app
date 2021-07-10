@@ -105,7 +105,7 @@ render_plots = function(){
       Seurat::DoHeatmap(
         sc(),
         features = unlist(strsplit(input$genes, "_"))[c(T, F)],
-        group.colors = param$col_clusters,
+        group.colors = input$colors,
         slot = input$heatmap_slot,
         assay = input$heatmap_assay
       ) +
@@ -277,4 +277,12 @@ render_plots = function(){
 
 observeEvent(input$renderPlots, {
   render_plots()
+})#observeEvent
+
+observeEvent(input$renderPlotsColors, {
+	render_plots()
+})#observeEvent
+
+observeEvent(input$renderPlotsHeatmap, {
+	render_plots()
 })#observeEvent
