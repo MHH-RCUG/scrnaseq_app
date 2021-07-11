@@ -46,19 +46,19 @@ render_plots = function(){
       ) +
       AddStyle(title=input$genes[[i]],
                legend_title="Cluster",
-               fill=param$col_clusters,
+               fill=input$colors,
                ylab="Cluster")
 
     # Ridge Plots Norm
     stored_RidgePlotNorms[[i]] <<-
       Seurat::RidgePlot(
-        sc(),
+        object = sc(),
         features = unlist(strsplit(input$genes[[i]], "_"))[c(T, F)],
         slot = "data"
       ) +
       AddStyle(title=input$genes[[i]],
                legend_title="Cluster",
-               fill=param$col_clusters,
+               fill=input$colors,
                ylab="Cluster")
 
     # Violin Plots Raw
