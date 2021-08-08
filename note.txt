@@ -1,1 +1,0 @@
-app.R and /www in this folder are an experiment.
